@@ -32,7 +32,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                 val enabled = configs.all { it.enabled }
 
                 if (enabled) {
-                    val filters = configs.flatMap { it.filters }.toMutableList()
+                    val filters = configs.flatMap { it.filters }.toMutableSet()
 
                     // set default ribbon
                     if (filters.isEmpty() && variant.buildType.isDebuggable) {
