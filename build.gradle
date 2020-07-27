@@ -4,21 +4,3 @@ apply from: './metadata.gradle'
 ext {
     metadata.version = versionName
 }
-
-buildscript {
-    repositories {
-        jcenter()
-        google()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'com.project.starter:plugins:0.13.0'
-    }
-}
-
-allprojects {
-    repositories {
-        jcenter()
-        google()
-    }
-}

@@ -1,0 +1,91 @@
+apply plugin: 'com.starter.application.android'
+apply plugin: 'com.starter.easylauncher'
+
+android {
+
+    defaultConfig {
+        minSdkVersion 15
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+
+            //Debuggable, will get a default ribbon in the launcher icon
+        }
+        beta {
+            signingConfig signingConfigs.debug
+
+            //Debuggable, will get a default ribbon in the launcher icon
+            debuggable true
+        }
+        canary {
+            signingConfig signingConfigs.debug
+
+            //Non-debuggable, will not get any default ribbon
+            debuggable false
+        }
+        release {
+            signingConfig signingConfigs.debug
+
+            //Non-debuggable, will not get any default ribbon
+        }
+    }
+
+    flavorDimensions 'environment'
+    productFlavors {
+        local { dimension 'environment' }
+        qa { dimension 'environment' }
+        staging { dimension 'environment' }
+        production { dimension 'environment' }
+    }
+}
+
+easylauncher {
+    iconNames "@mipmap/ic_launcher_foreground" // Traditional launcher icon
+    foregroundIconNames "@mipmap/ic_launcher_foreground" // Foreground of adaptive launcher icon
+
+    defaultFlavorNaming = true // Use flavor name for default ribbon, instead of the type name
+
+    productFlavors {
+        local {}
+        qa {
+            // Add one more filter to all `qa` variants
+            filters = redRibbonFilter()
+        }
+        staging {
+            filters = [
+                    customColorRibbonFilter("custom", "#556600CC", "#FFFFFF", "bottom", 0.2)
+            ]
+        }
+        production {}
+    }
+
+    buildTypes {
+        beta {
+            // Add two more filters to all `beta` variants
+            filters = [
+                    customColorRibbonFilter("#0000FF"),
+                    overlayFilter(new File("example-custom/launcherOverlay/beta.png"))
+            ]
+        }
+        canary {
+            // Remove ALL filters to `canary` variants
+            enable false
+        }
+        release {}
+    }
+
+    variants {
+        productionDebug {
+            // OVERRIDE all previous filters defined for `productionDebug` variant
+            filters = orangeRibbonFilter("custom")
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+}
