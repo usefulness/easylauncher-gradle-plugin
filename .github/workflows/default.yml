@@ -20,6 +20,16 @@ jobs:
               uses: actions/setup-java@v1
               with:
                   java-version: 1.8
+            - uses: actions/cache@v2
+              with:
+                path: ~/.gradle/caches
+                key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('buildSrc/*.kt') }}
+                restore-keys: |
+                  gradle-
+            - uses: actions/cache@v2
+              with:
+                path: ~/.gradle/wrapper
+                key: wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
             - name: Code style check
               run: ./gradlew projectCodestyle
             - name: Assemble
