@@ -1,9 +1,10 @@
 System.setProperty("java.awt.headless", "true")
 
 repositories {
+    google()
     jcenter()
 }
 
 dependencies {
-    compile project(':plugin')
+    implementation project(':plugin')
 }

@@ -1,22 +1,12 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
+apply plugin: 'com.starter.application.android'
 apply plugin: 'com.akaita.android.easylauncher'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-    }
-
-    lintOptions {
-        abortOnError false
     }
 
     buildTypes {
@@ -44,11 +34,12 @@ android {
         }
     }
 
+    flavorDimensions 'environment'
     productFlavors {
-        local {}
-        qa {}
-        staging {}
-        production {}
+        local { dimension 'environment' }
+        qa { dimension 'environment' }
+        staging { dimension 'environment' }
+        production { dimension 'environment' }
     }
 }
 
@@ -96,6 +87,5 @@ easylauncher {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:27.1.1'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:1.2.61"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }

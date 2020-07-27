@@ -3,7 +3,6 @@ package com.akaita.android.easylauncher.example
 import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
 
