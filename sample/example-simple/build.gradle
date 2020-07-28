@@ -1,0 +1,10 @@
+apply plugin: 'com.starter.application.android'
+apply plugin: 'com.starter.easylauncher'
+
+android {
+    defaultConfig {
+        minSdkVersion 15
+        versionCode 1
+        versionName "1.0"
+    }
+}

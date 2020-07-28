@@ -1,20 +1,25 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        gradlePluginPortal()
+    }
+}
+plugins {
+    id 'java-gradle-plugin'
+    id 'com.starter.library.kotlin' version "0.13.0"
+}
 repositories {
+    google()
     jcenter()
+    gradlePluginPortal()
 }
 
-apply plugin: 'groovy'
-
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
 dependencies {
-    compile gradleApi()
-    compile localGroovy()
-    compile 'com.android.tools.build:gradle:2.3.3'
+    implementation 'com.android.tools.build:gradle:4.0.1'
 
-    testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
-        exclude group:'org.codehaus.groovy'
+    testImplementation('org.spockframework:spock-core:1.0-groovy-2.4') {
+        exclude group: 'org.codehaus.groovy'
     }
 }
 
