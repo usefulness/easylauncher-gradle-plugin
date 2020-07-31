@@ -9,18 +9,25 @@ plugins {
     id 'java-gradle-plugin'
     id 'com.starter.library.kotlin' version "0.13.0"
 }
+
 repositories {
     google()
     jcenter()
     gradlePluginPortal()
 }
 
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "skipped", "failed"
+    }
+}
+
 dependencies {
     implementation 'com.android.tools.build:gradle:4.0.1'
 
-    testImplementation('org.spockframework:spock-core:1.0-groovy-2.4') {
-        exclude group: 'org.codehaus.groovy'
-    }
+    testImplementation 'org.assertj:assertj-core:3.16.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
 }
 
 if (rootProject.hasProperty('versionName') && rootProject.hasProperty('bintrayUser')) {

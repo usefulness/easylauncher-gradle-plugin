@@ -5,7 +5,5 @@ import java.io.Serializable
 
 interface EasyLauncherFilter : Serializable {
 
-    fun setAdaptiveLauncherMode(enable: Boolean)
-
-    fun apply(image: BufferedImage)
+    fun apply(image: BufferedImage, adaptive: Boolean = false)
 }

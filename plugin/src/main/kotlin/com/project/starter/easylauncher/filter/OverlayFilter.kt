@@ -9,13 +9,7 @@ import javax.imageio.ImageIO
 @Suppress("MagicNumber")
 class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
 
-    private var addPadding = false
-
-    override fun setAdaptiveLauncherMode(enable: Boolean) {
-        addPadding = enable
-    }
-
-    override fun apply(image: BufferedImage) {
+    override fun apply(image: BufferedImage, adaptive: Boolean) {
         var fgImage: Image? = null
         try {
             fgImage = ImageIO.read(fgFile)
@@ -27,7 +21,7 @@ class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
             val height = image.width
             var scale =
                 Math.min(width / fgImage.getWidth(null).toFloat(), height / fgImage.getHeight(null).toFloat())
-            if (addPadding) {
+            if (adaptive) {
                 scale *= (72f / 108)
             }
             val fgImageScaled = fgImage.getScaledInstance(
@@ -39,7 +33,7 @@ class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
 
             // TODO allow to choose the gravity for the overlay
             // TODO allow to choose the scaling type
-            if (addPadding) {
+            if (adaptive) {
                 graphics.drawImage(fgImageScaled, (width * (1 - 72f / 108) / 2).toInt(), (height * (1 - 72f / 108) / 2).toInt(), null)
             } else {
                 graphics.drawImage(fgImageScaled, 0, 0, null)

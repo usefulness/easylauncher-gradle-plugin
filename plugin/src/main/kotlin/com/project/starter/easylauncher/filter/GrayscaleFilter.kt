@@ -4,11 +4,8 @@ import java.awt.image.BufferedImage
 
 @Suppress("MagicNumber")
 class GrayscaleFilter : EasyLauncherFilter {
-    override fun setAdaptiveLauncherMode(enable: Boolean) {
-        // Do nothing
-    }
 
-    override fun apply(image: BufferedImage) {
+    override fun apply(image: BufferedImage, adaptive: Boolean) {
         val width = image.width
         val height = image.height
         for (y in 0 until height) {

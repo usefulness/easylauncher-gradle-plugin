@@ -36,17 +36,28 @@ android {
 
     flavorDimensions 'environment'
     productFlavors {
-        local { dimension 'environment' }
-        qa { dimension 'environment' }
-        staging { dimension 'environment' }
-        production { dimension 'environment' }
+        local {
+            dimension 'environment'
+            applicationIdSuffix = ".local"
+            versionNameSuffix ".local"
+        }
+        qa {
+            dimension 'environment'
+            applicationIdSuffix = ".qa"
+            versionNameSuffix ".qa"
+        }
+        staging {
+            dimension 'environment'
+            applicationIdSuffix = ".staging"
+            versionNameSuffix ".staging"
+        }
+        production {
+            dimension 'environment'
+        }
     }
 }
 
 easylauncher {
-    iconNames "@mipmap/ic_launcher_foreground" // Traditional launcher icon
-    foregroundIconNames "@mipmap/ic_launcher_foreground" // Foreground of adaptive launcher icon
-
     defaultFlavorNaming = true // Use flavor name for default ribbon, instead of the type name
 
     productFlavors {
@@ -86,6 +97,17 @@ easylauncher {
     }
 }
 
+android.applicationVariants.configureEach { variant ->
+    variant.mergedFlavor.applicationIdSuffix = variant.name
+    variant.mergedFlavor.manifestPlaceholders = [appName: "a-$variant.flavorName-$variant.buildType.name"]
+}
+
+tasks.register("installAll") {
+    android.applicationVariants.configureEach { variant ->
+        dependsOn("install${variant.name.capitalize()}")
+    }
+}
+
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation "com.google.android.material:material:1.3.0-alpha02"
 }

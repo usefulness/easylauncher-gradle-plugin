@@ -17,10 +17,10 @@ open class EasyLauncherConfig(var name: String) : Serializable {
 
     var enabled = true
         private set
-    val filters = mutableListOf<EasyLauncherFilter>()
+    internal val filters = mutableListOf<EasyLauncherFilter>()
 
-    fun enable(enabled: Boolean?): EasyLauncherConfig {
-        this.enabled = enabled!!
+    fun enable(enabled: Boolean): EasyLauncherConfig {
+        this.enabled = enabled
         return this
     }
 
@@ -34,11 +34,10 @@ open class EasyLauncherConfig(var name: String) : Serializable {
         return this
     }
 
-    private fun filters(vararg filters: EasyLauncherFilter) {
+    fun filters(vararg filters: EasyLauncherFilter) {
         this.filters.addAll(filters)
     }
 
-    //region Filters
     fun customColorRibbonFilter(
         name: String?,
         ribbonColor: String?,
@@ -135,5 +134,5 @@ open class EasyLauncherConfig(var name: String) : Serializable {
 
     fun grayscaleFilter(): GrayscaleFilter {
         return GrayscaleFilter()
-    } //endregion
+    }
 }
