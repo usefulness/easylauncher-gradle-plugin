@@ -5,7 +5,7 @@ import groovy.util.XmlSlurper
 import groovy.util.slurpersupport.GPathResult
 import java.io.File
 
-internal fun File.getLauncherIcons(): String? {
+internal fun File.getLauncherIcon(): String? {
     val manifestXml = XmlSlurper().parse(this)
     val applicationNode = manifestXml.getProperty("application") as GPathResult
     val icon = applicationNode.getProperty("@android:icon")?.toString()
