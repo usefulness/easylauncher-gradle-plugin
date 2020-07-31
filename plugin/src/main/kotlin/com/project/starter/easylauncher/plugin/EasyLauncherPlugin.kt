@@ -2,7 +2,6 @@ package com.project.starter.easylauncher.plugin
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.ApplicationVariant
-import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
@@ -19,9 +18,8 @@ class EasyLauncherPlugin : Plugin<Project> {
         val ribbonProductFlavors = container(EasyLauncherConfig::class.java)
         extensions.add("productFlavors", ribbonProductFlavors)
 
-        afterEvaluate {
-            val android = extensions.findByType(AppExtension::class.java)
-                ?: throw GradleException("Not an Android application; did you forget `apply plugin: 'com.android.application`?")
+        pluginManager.withPlugin("com.android.application") {
+            val android = extensions.getByType(AppExtension::class.java)
 
             val easyLauncherTasks = mutableListOf<TaskProvider<EasyLauncherTask>>()
 
@@ -49,10 +47,8 @@ class EasyLauncherPlugin : Plugin<Project> {
 
                     val name = "${EasyLauncherTask.NAME}${variant.name.capitalize()}"
                     val task = tasks.register(name, EasyLauncherTask::class.java) {
-                        it.variant = variant
+                        it.variantName.set(variant.name)
                         it.outputDir.set(generatedResDir)
-                        it.iconNames.set(extension.iconNames.toSet())
-                        it.foregroundIconNames.set(extension.foregroundIconNames.toSet())
                         it.filters.set(filters)
                     }
                     easyLauncherTasks.add(task)

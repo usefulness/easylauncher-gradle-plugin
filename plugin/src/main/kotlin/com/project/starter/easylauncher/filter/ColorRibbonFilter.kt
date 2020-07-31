@@ -7,6 +7,8 @@ import java.awt.RenderingHints
 import java.awt.font.FontRenderContext
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 @Suppress("MagicNumber")
 class ColorRibbonFilter @JvmOverloads constructor(
@@ -19,18 +21,13 @@ class ColorRibbonFilter @JvmOverloads constructor(
 
     private val fontName = "DEFAULT"
     private val fontStyle = Font.PLAIN
-    private var largeRibbon = false
 
     enum class Gravity {
         TOP, BOTTOM, TOPLEFT, TOPRIGHT
     }
 
-    override fun setAdaptiveLauncherMode(enable: Boolean) {
-        largeRibbon = enable
-    }
-
     @Suppress("ComplexMethod")
-    override fun apply(image: BufferedImage) {
+    override fun apply(image: BufferedImage, adaptive: Boolean) {
         val graphics = image.graphics as Graphics2D
         when (gravity) {
             Gravity.TOP, Gravity.BOTTOM -> Unit
@@ -52,9 +49,9 @@ class ColorRibbonFilter @JvmOverloads constructor(
 
         // update y gravity after calculating font size
         val yGravity = when (gravity) {
-            Gravity.TOP -> if (largeRibbon) image.height / 4 else 0
-            Gravity.BOTTOM -> image.height - labelHeight - (if (largeRibbon) image.height / 4 else 0)
-            Gravity.TOPRIGHT, Gravity.TOPLEFT -> image.height / (if (largeRibbon) 2 else 4)
+            Gravity.TOP -> if (adaptive) image.height / 4 else 0
+            Gravity.BOTTOM -> image.height - labelHeight - (if (adaptive) image.height / 4 else 0)
+            Gravity.TOPRIGHT, Gravity.TOPLEFT -> image.height / (if (adaptive) 2 else 4)
         }
 
         // draw the ribbon
@@ -128,7 +125,7 @@ class ColorRibbonFilter @JvmOverloads constructor(
 
     companion object {
         private fun calculateMaxLabelWidth(y: Int): Int {
-            return Math.sqrt(Math.pow(y.toDouble(), 2.0) * 2).toInt()
+            return sqrt(y.toDouble().pow(2.0) * 2).toInt()
         }
     }
 }

@@ -1,2 +1,3 @@
 include ':example-simple'
 include ':example-custom'
+include ':example-vector'
