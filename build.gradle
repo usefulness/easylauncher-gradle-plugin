@@ -1,0 +1,11 @@
+buildscript {
+    repositories.google()
+}
+plugins {
+    id "com.starter.config"
+    id "com.starter.versioning"
+}
+
+commonConfig {
+    javaFilesAllowed false
+}
