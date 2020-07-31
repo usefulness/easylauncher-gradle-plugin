@@ -22,7 +22,7 @@ class PublishingPlugin : Plugin<Project> {
                     maven.setUrl("https://maven.pkg.github.com/mateuszkwiecinski/easylauncher-gradle-plugin")
                     with(maven.credentials) {
                         username = "mateuszkwiecinski"
-                        password = findConfig("GH_TOKEN")
+                        password = findConfig("GITHUB_TOKEN")
                     }
                 }
             }
