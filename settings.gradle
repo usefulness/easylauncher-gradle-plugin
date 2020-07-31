@@ -1,1 +1,2 @@
-include ':plugin'
+rootProject.name = "com.project.starter"
+include ':easylauncher'

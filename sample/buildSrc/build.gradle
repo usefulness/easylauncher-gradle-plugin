@@ -1,3 +1,11 @@
+buildscript {
+    repositories {
+        google()
+    }
+    dependencies {
+        classpath "com.project.starter:plugins:0.13.0"
+    }
+}
 plugins {
     id 'java-gradle-plugin'
     id "org.jmailen.kotlinter" version "2.3.2"

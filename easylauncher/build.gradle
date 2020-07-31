@@ -1,0 +1,33 @@
+plugins {
+    id "java-gradle-plugin"
+}
+
+apply plugin: "com.starter.library.kotlin"
+if (gradle.parent == null) {
+    apply plugin: "com.starter.publishing"
+}
+
+repositories {
+    google()
+    jcenter()
+    gradlePluginPortal()
+}
+
+java {
+    withSourcesJar()
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "skipped", "failed"
+    }
+}
+
+
+dependencies {
+    implementation "com.android.tools.build:gradle:4.0.1"
+
+    testImplementation "org.assertj:assertj-core:3.16.1"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.6.2"
+}
