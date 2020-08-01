@@ -1,5 +1,6 @@
 plugins {
     id "java-gradle-plugin"
+    id 'com.gradle.plugin-publish' version '0.12.0'
 }
 
 apply plugin: "com.starter.library.kotlin"
@@ -24,6 +25,22 @@ test {
     }
 }
 
+pluginBundle {
+    website = 'https://github.com/mateuszkwiecinski/easylauncher-gradle-plugin/'
+    vcsUrl = 'https://github.com/mateuszkwiecinski/easylauncher-gradle-plugin.git'
+    description = 'Set of plugins that might be useful for Multi-Module Android projects.'
+    tags = ['android', 'launcher', "flavor", "buildType"]
+}
+
+gradlePlugin {
+    plugins {
+        quality {
+            id = 'com.starter.easylauncher'
+            displayName = 'Automatically customizes Android laucher icon per each build variant'
+            implementationClass = 'com.project.starter.easylauncher.plugin.EasyLauncherPlugin'
+        }
+    }
+}
 
 dependencies {
     implementation "com.android.tools.build:gradle:4.0.1"
