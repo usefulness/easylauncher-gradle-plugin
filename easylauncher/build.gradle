@@ -1,6 +1,7 @@
 plugins {
     id "java-gradle-plugin"
     id 'com.gradle.plugin-publish' version '0.12.0'
+    id "pl.droidsonroids.jacoco.testkit" version "1.0.7"
 }
 
 apply plugin: "com.starter.library.kotlin"

@@ -42,18 +42,21 @@ class EasyLauncherPlugin : Plugin<Project> {
                         filters.add(EasyLauncherConfig(ribbonText).greenRibbonFilter())
                     }
 
-                    val generatedResDir = getGeneratedResDir(variant)
-                    android.sourceSets.getByName(variant.name).res.srcDir(generatedResDir)
+                    if (filters.isNotEmpty()) {
+                        val generatedResDir = getGeneratedResDir(variant)
+                        android.sourceSets.getByName(variant.name).res.srcDir(generatedResDir)
 
-                    val name = "${EasyLauncherTask.NAME}${variant.name.capitalize()}"
-                    val task = tasks.register(name, EasyLauncherTask::class.java) {
-                        it.variantName.set(variant.name)
-                        it.outputDir.set(generatedResDir)
-                        it.filters.set(filters)
+                        val name = "${EasyLauncherTask.NAME}${variant.name.capitalize()}"
+                        val task = tasks.register(name, EasyLauncherTask::class.java) {
+                            it.variantName.set(variant.name)
+                            it.outputDir.set(generatedResDir)
+                            it.filters.set(filters)
+                        }
+
+                        easyLauncherTasks.add(task)
+
+                        tasks.named("generate${variant.name.capitalize()}Resources") { it.dependsOn(task) }
                     }
-                    easyLauncherTasks.add(task)
-
-                    tasks.named("generate${variant.name.capitalize()}Resources") { it.dependsOn(task) }
                 }
             }
 
