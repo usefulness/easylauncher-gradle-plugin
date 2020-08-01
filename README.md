@@ -19,7 +19,7 @@ Modify the launcher icon of each of your app-variants using simple gradle rules.
 ```groovy
 // in app/build.gradle
 plugins {
-  id "com.starter.easylauncher" version "2.0.0"
+  id "com.starter.easylauncher" version "2.1.0"
 }
 ```
 
