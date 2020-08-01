@@ -106,7 +106,8 @@ easylauncher {
 
 | Command | Result |
 | - | - |
-| `grayscaleFilter()` | ![](icons/grayscale.png) | _Note: It doesn't work with vector images yet_
+| `grayscaleFilter()` | ![](icons/grayscale.png) |
+_Note: It doesn't work with vector images yet_
 
 
 ## Overlay filter

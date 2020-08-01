@@ -8,20 +8,17 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import java.io.File
+import kotlin.system.measureTimeMillis
 
-@Suppress("UnstableApiUsage")
 open class EasyLauncherTask : DefaultTask() {
 
-    companion object {
-        const val NAME = "easylauncher"
-    }
-
     @Input
-    val variantName = property<String>()
+    val variantName: Property<String> = property<String>()
 
     @OutputDirectory
     val outputDir: RegularFileProperty = project.objects.fileProperty()
@@ -35,27 +32,27 @@ open class EasyLauncherTask : DefaultTask() {
             return
         }
 
-        val startTime = System.currentTimeMillis()
+        val taskExecutionTime = measureTimeMillis {
+            val android = project.extensions.getByType(AppExtension::class.java)
+            val variant = android.applicationVariants.find { it.name == variantName.get() }
+                ?: throw GradleException("invalid variant name ${variantName.get()}")
+            val names = android.getLauncherIconNames(variant).toSet()
 
-        val android = project.extensions.getByType(AppExtension::class.java)
-        val variant = android.applicationVariants.find { it.name == variantName.get() }
-            ?: throw GradleException("invalid variant name ${variantName.get()}")
-        val names = android.getLauncherIconNames(variant).toSet()
-
-        variant.getAllSourceSets().forEach { resDir ->
-            names.flatMap { resDir.getIconFiles(it) }
-                .forEach { iconFile ->
-                    val adaptiveIcon = iconFile.asAdaptiveIcon()
-                    if (adaptiveIcon == null) {
-                        val outputFile = iconFile.createOutputFile()
-                        iconFile.transformPng(outputFile, filters.get(), false)
-                    } else {
-                        variant.processIcon(adaptiveIcon)
+            variant.getAllSourceSets().forEach { resDir ->
+                names.flatMap { resDir.getIconFiles(it) }
+                    .forEach { iconFile ->
+                        val adaptiveIcon = iconFile.asAdaptiveIcon()
+                        if (adaptiveIcon == null) {
+                            val outputFile = iconFile.createOutputFile()
+                            iconFile.transformPng(outputFile, filters.get(), false)
+                        } else {
+                            variant.processIcon(adaptiveIcon)
+                        }
                     }
-                }
+            }
         }
 
-        logger.info("task finished in ${System.currentTimeMillis() - startTime}ms")
+        logger.info("task finished in $taskExecutionTime ms")
     }
 
     private fun ApplicationVariant.getAllSourceSets() =
@@ -113,4 +110,8 @@ open class EasyLauncherTask : DefaultTask() {
 
     private fun File.createOutputFile(): File =
         File(outputDir.asFile.get(), "${parentFile.name}/$name")
+
+    companion object {
+        const val NAME = "easylauncher"
+    }
 }
