@@ -30,7 +30,14 @@ tasks.named("lintKotlinMain") {
     dependsOn("formatKotlin")
 }
 
+allprojects {
+    tasks.withType(Test).configureEach {
+        enabled(false)
+    }
+}
+
 dependencies {
     implementation "com.project.starter:plugins:0.14.0"
+    implementation "gradle.plugin.pl.droidsonroids.gradle.jacoco:jacoco-gradle-testkit-plugin:1.0.7"
     implementation project(":plugin")
 }
