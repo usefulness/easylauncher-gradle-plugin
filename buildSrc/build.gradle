@@ -17,7 +17,7 @@ tasks.named("lintKotlinMain") {
 dependencies {
     implementation "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
     implementation "org.jetbrains.kotlin:kotlin-gradle-plugin"
-    implementation "com.project.starter:plugins:0.13.0"
+    implementation "com.project.starter:plugins:0.14.0"
     implementation "org.jmailen.gradle:kotlinter-gradle:2.4.1"
 }
 

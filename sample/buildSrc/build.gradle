@@ -3,7 +3,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath "com.project.starter:plugins:0.13.0"
+        classpath "com.project.starter:plugins:0.14.0"
     }
 }
 plugins {
@@ -31,6 +31,6 @@ tasks.named("lintKotlinMain") {
 }
 
 dependencies {
-    implementation "com.project.starter:plugins:0.13.0"
+    implementation "com.project.starter:plugins:0.14.0"
     implementation project(":plugin")
 }
