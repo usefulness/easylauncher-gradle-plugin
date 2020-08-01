@@ -19,6 +19,8 @@ jobs:
           java-version: 1.8
       - name: Build app with Gradle
         run: ./gradlew build
+      - name: Publish to Gradle Plugin Portal
+        run: ./gradlew publishPlugins -Pgradle.publish.key=${{ secrets.gradle_publish_key }} -Pgradle.publish.secret=${{ secrets.gradle_publish_secret }}
       - name: Publish to Bintray repository
         run: ./gradlew bintrayUpload
       - name: Publish to Github Package Registry
