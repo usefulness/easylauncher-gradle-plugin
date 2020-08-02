@@ -1,12 +1,9 @@
 plugins {
     id "java-gradle-plugin"
     id 'com.gradle.plugin-publish' version '0.12.0'
-}
-
-apply plugin: "com.starter.library.kotlin"
-if (gradle.parent == null) {
-    apply plugin: "com.starter.publishing"
-    apply plugin: "pl.droidsonroids.jacoco.testkit"
+    id 'com.starter.library.kotlin'
+    id 'com.starter.publishing'
+    id 'pl.droidsonroids.jacoco.testkit' version '1.0.7'
 }
 
 repositories {
