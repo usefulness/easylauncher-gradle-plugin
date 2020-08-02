@@ -1,4 +1,29 @@
-apply plugin: 'com.starter.config'
+buildscript {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex "com\\.android.*"
+                includeGroupByRegex "androidx.*"
+                includeGroupByRegex "android.arch.*"
+                includeGroupByRegex "com\\.google.*"
+            }
+        }
+        if (project.hasProperty("useMavenLocal")) {
+            mavenLocal()
+        }
+    }
+    dependencies {
+        if (project.hasProperty("useMavenLocal")) {
+            classpath "com.project.starter.local:easylauncher:+"
+        } else {
+            classpath "com.project.starter:easylauncher"
+        }
+    }
+}
+
+plugins {
+    id 'com.starter.config' version "0.14.0"
+}
 
 commonConfig {
     javaFilesAllowed false

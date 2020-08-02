@@ -18,6 +18,8 @@ class EasyLauncherPlugin : Plugin<Project> {
         val ribbonProductFlavors = container(EasyLauncherConfig::class.java)
         extensions.add("productFlavors", ribbonProductFlavors)
 
+        logger.info("Running gradle version: ${gradle.gradleVersion}")
+
         pluginManager.withPlugin("com.android.application") {
             val android = extensions.getByType(AppExtension::class.java)
 
