@@ -77,7 +77,7 @@ open class EasyLauncherTask : DefaultTask() {
     private fun File.getIconFiles(iconName: String): Iterable<File> =
         project.fileTree(this) { it.include(resourceFilePattern(iconName)) }
 
-    internal fun resourceFilePattern(name: String): String {
+    private fun resourceFilePattern(name: String): String {
         return if (name.startsWith("@")) {
             val (baseResType, fileName) = name.substring(1).split("/".toRegex(), 2)
             "$baseResType*/$fileName.*"
