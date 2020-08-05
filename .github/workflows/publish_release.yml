@@ -2,8 +2,8 @@ name: Publish Project to Gradle Plugin Portal
 
 on:
   push:
-    branches:
-      - 'release/*'
+    tags:
+      - 'release-*'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
