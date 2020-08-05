@@ -23,37 +23,37 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
 
     outputFile.parentFile.mkdirs()
 
-    val layers = filters.map { filter ->
+    val layers = filters.mapIndexed { index, filter ->
         val overlay = BufferedImage(width.value, height.value, BufferedImage.TYPE_INT_ARGB)
         filter.apply(overlay, adaptive = true)
 
-        val overlayFile =
-            outputFile.parentFile.resolve("${filter::class.java.simpleName.toLowerCase()}_${outputFile.nameWithoutExtension}.png")
+        val filterId = "${filter::class.java.simpleName.toLowerCase()}_$index"
+        val overlayFile = outputFile.parentFile.resolve("${filterId}_${outputFile.nameWithoutExtension}.png")
         ImageIO.write(overlay, "png", overlayFile)
         overlayFile.nameWithoutExtension
     }
         .joinToString(separator = "\n") {
-            """<item
-                android:width="${width.androidSize}"
-                android:height="${height.androidSize}"
-                android:gravity="center"
-                android:drawable="@${outputFile.parentFile.name}/$it"
-                />
-            """.trimIndent()
+            """
+            |   <item
+            |       android:width="${width.androidSize}"
+            |       android:height="${height.androidSize}"
+            |       android:gravity="center"
+            |       android:drawable="@${outputFile.parentFile.name}/$it"
+            |       />
+            |""".trimMargin()
         }
     copyTo(outputFile.parentFile.resolve("easy_$name"), overwrite = true)
 
     outputFile.writeText(
         """
-        <?xml version="1.0" encoding="utf-8"?>
-        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-            <item android:drawable="@drawable/easy_$nameWithoutExtension" />
-            
-            $layers
-            
-        </layer-list>
-        """.trimIndent()
+        |<?xml version="1.0" encoding="utf-8"?>
+        |<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+        |
+        |   <item android:drawable="@drawable/easy_$nameWithoutExtension" />
+        |   
+        |$layers
+        |</layer-list>
+        |""".trimMargin()
     )
 }
 

@@ -39,6 +39,17 @@ jobs:
       - name: Unit tests
         run: ./gradlew projectCoverage
       - uses: codecov/codecov-action@v1
+      - name: Upload test results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: "${{ github.workspace }}/**/build/reports/tests"
+      - name: Upload jacoco report
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco-report
+          path: "${{ github.workspace }}/**/build/reports/jacoco"
 
   build-all-sample-apps:
     runs-on: ubuntu-latest

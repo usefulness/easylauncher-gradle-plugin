@@ -16,7 +16,10 @@ dependencies {
 easylauncher {
     buildTypes {
         debug {
-            filters = [grayRibbonFilter()]
+            filters = [
+                    grayRibbonFilter(),
+                    customColorRibbonFilter("second", "#556600CC", "#FFFFFF", "bottom")
+            ]
         }
     }
 }
