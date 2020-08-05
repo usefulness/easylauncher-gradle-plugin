@@ -7,6 +7,21 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    buildTypes {
+        named("release") {
+            debuggable false
+            signingConfig signingConfigs.debug
+        }
+    }
+    flavorDimensions "reportedBugs"
+    productFlavors {
+        twoVectors {
+            dimension "reportedBugs"
+        }
+        wrongLabelPosition {
+            dimension "reportedBugs"
+        }
+    }
 }
 
 dependencies {
@@ -15,10 +30,21 @@ dependencies {
 
 easylauncher {
     buildTypes {
-        debug {
+       release {
+           enable false
+       }
+    }
+    productFlavors {
+        twoVectors {
             filters = [
                     grayRibbonFilter(),
                     customColorRibbonFilter("second", "#556600CC", "#FFFFFF", "bottom")
+            ]
+        }
+        wrongLabelPosition {
+            filters = [
+                    customColorRibbonFilter("GE", "#cc0000", "#FFFFFF", "top", 0.1),
+                    customColorRibbonFilter("QA-WHI", "#0000cc", "#FFFFFF", "bottom", 0.1)
             ]
         }
     }

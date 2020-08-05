@@ -22,12 +22,28 @@ buildscript {
 }
 
 plugins {
-    id 'com.starter.config' version "0.14.0"
+    id 'com.starter.config' version "0.15.0"
 }
 
 commonConfig {
     javaFilesAllowed false
     versioningPlugin {
         enabled false
+    }
+}
+
+subprojects {
+
+    pluginManager.withPlugin("com.android.application") {
+        android.applicationVariants.configureEach { variant ->
+            variant.mergedFlavor.applicationIdSuffix = variant.name
+            variant.mergedFlavor.manifestPlaceholders = [appName: "a-$variant.flavorName-$variant.buildType.name"]
+        }
+
+        tasks.register("installAll") {
+            android.applicationVariants.configureEach { variant ->
+                dependsOn("install${variant.name.capitalize()}")
+            }
+        }
     }
 }

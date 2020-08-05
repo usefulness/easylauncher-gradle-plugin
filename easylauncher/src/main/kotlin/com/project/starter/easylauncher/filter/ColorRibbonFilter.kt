@@ -8,6 +8,7 @@ import java.awt.font.FontRenderContext
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
 import kotlin.math.pow
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 @Suppress("MagicNumber")
@@ -94,7 +95,7 @@ class ColorRibbonFilter @JvmOverloads constructor(
     private fun getFont(imageHeight: Int, maxLabelWidth: Int, frc: FontRenderContext): Font {
         // User-defined text size
         if (textSizeRatio != -1f) {
-            return Font(fontName, fontStyle, (imageHeight * textSizeRatio).toInt())
+            return Font(fontName, fontStyle, (imageHeight * textSizeRatio).roundToInt())
         }
         var max = imageHeight / 8
         var min = 0
@@ -125,7 +126,7 @@ class ColorRibbonFilter @JvmOverloads constructor(
 
     companion object {
         private fun calculateMaxLabelWidth(y: Int): Int {
-            return sqrt(y.toDouble().pow(2.0) * 2).toInt()
+            return sqrt(y.toDouble().pow(2.0) * 2).roundToInt()
         }
     }
 }
