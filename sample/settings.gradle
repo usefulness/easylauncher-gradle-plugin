@@ -1,6 +1,8 @@
 include ':example-simple'
 include ':example-custom'
 include ':example-vector'
+include ':adaptive-support'
+include ':screenshot-test-helpers'
 
 if (!hasProperty("useMavenLocal")) {
     includeBuild ".."

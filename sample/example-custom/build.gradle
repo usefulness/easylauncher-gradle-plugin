@@ -5,8 +5,6 @@ android {
 
     defaultConfig {
         minSdkVersion 15
-        versionCode 1
-        versionName "1.0"
     }
 
     buildTypes {
@@ -16,18 +14,21 @@ android {
             //Debuggable, will get a default ribbon in the launcher icon
         }
         beta {
+            matchingFallbacks = ["debug"]
             signingConfig signingConfigs.debug
 
             //Debuggable, will get a default ribbon in the launcher icon
             debuggable true
         }
         canary {
+            matchingFallbacks = ["debug"]
             signingConfig signingConfigs.debug
 
             //Non-debuggable, will not get any default ribbon
             debuggable false
         }
         release {
+            matchingFallbacks = ["debug"]
             signingConfig signingConfigs.debug
 
             //Non-debuggable, will not get any default ribbon
@@ -57,6 +58,10 @@ android {
     }
 }
 
+dependencies {
+    implementation project(":adaptive-support")
+}
+
 easylauncher {
     defaultFlavorNaming = true // Use flavor name for default ribbon, instead of the type name
 
@@ -68,7 +73,7 @@ easylauncher {
         }
         staging {
             filters = [
-                    customColorRibbonFilter("custom", "#556600CC", "#FFFFFF", "bottom", 0.2)
+                    customColorRibbonFilter("custom", "#556600CC", "#FFFFFF", "bottom", 0.17)
             ]
         }
         production {}
@@ -95,8 +100,4 @@ easylauncher {
             filters = orangeRibbonFilter("custom")
         }
     }
-}
-
-dependencies {
-    implementation "com.google.android.material:material:1.3.0-alpha02"
 }
