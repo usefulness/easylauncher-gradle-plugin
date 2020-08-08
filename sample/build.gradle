@@ -13,6 +13,7 @@ buildscript {
         }
     }
     dependencies {
+        classpath 'com.facebook.testing.screenshot:plugin:0.13.0'
         if (project.hasProperty("useMavenLocal")) {
             classpath "com.project.starter.local:easylauncher:+"
         } else {
@@ -33,17 +34,58 @@ commonConfig {
 }
 
 subprojects {
-
+    pluginManager.withPlugin("com.starter.application.android") {
+        android {
+            defaultConfig {
+                testInstrumentationRunner "com.starter.easylauncher.ScreenshotsRunner"
+            }
+        }
+    }
     pluginManager.withPlugin("com.android.application") {
-        android.applicationVariants.configureEach { variant ->
-            variant.mergedFlavor.applicationIdSuffix = variant.name
-            variant.mergedFlavor.manifestPlaceholders = [appName: "a-$variant.flavorName-$variant.buildType.name"]
+        pluginManager.apply("com.facebook.testing.screenshot")
+
+        android {
+            testOptions.unitTests.includeAndroidResources true
+
+            packagingOptions {
+                exclude 'META-INF/LICENSE*'
+            }
+
+            applicationVariants.configureEach { variant ->
+                variant.mergedFlavor.applicationIdSuffix = variant.name
+                if (variant.flavorName == "") {
+                    variant.mergedFlavor.manifestPlaceholders = [appName: "$project.name"]
+                } else {
+                    variant.mergedFlavor.manifestPlaceholders = [appName: "$variant.flavorName"]
+                }
+            }
+        }
+        tasks.register("verifyAll") {
+            android.applicationVariants.configureEach { variant ->
+                dependsOn("verify${variant.flavorName.capitalize()}DebugAndroidTestScreenshotTest")
+            }
+        }
+        tasks.register("recordAll") {
+            android.applicationVariants.configureEach { variant ->
+                dependsOn("record${variant.flavorName.capitalize()}DebugAndroidTestScreenshotTest")
+            }
         }
 
         tasks.register("installAll") {
             android.applicationVariants.configureEach { variant ->
                 dependsOn("install${variant.name.capitalize()}")
             }
+        }
+
+        tasks.withType(Test).configureEach {
+            useJUnitPlatform()
+        }
+        screenshots {
+            failureDir = "${buildDir}/failedScreenshots"
+        }
+
+        dependencies {
+            androidTestImplementation project(":screenshot-test-helpers")
         }
     }
 }

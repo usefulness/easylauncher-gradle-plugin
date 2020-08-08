@@ -13,7 +13,6 @@ jobs:
     env:
       github_token: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
         with:
@@ -22,16 +21,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - uses: actions/cache@v2
+      - name: Cache .gradle
+        uses: burrunan/gradle-cache-action@v1
         with:
-          path: ~/.gradle/caches
-          key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('buildSrc/*.kt') }}
-          restore-keys: |
-            gradle-
-      - uses: actions/cache@v2
-        with:
-          path: ~/.gradle/wrapper
-          key: wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          job-id: build-plugin
       - name: Code style check
         run: ./gradlew projectCodestyle
       - name: Assemble
@@ -65,20 +58,54 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - uses: actions/cache@v2
+      - name: Cache .gradle
+        uses: burrunan/gradle-cache-action@v1
         with:
-          path: ~/.gradle/caches
-          key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('buildSrc/*.kt') }}
-          restore-keys: |
-            gradle-
+          gradle-version: ${{ matrix.gradle }}
+          job-id: build-all-sample-apps
       - name: Pre-compile plugin
-        run: ./gradlew publishToMavenLocal -PuseMavenLocal
+        run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
       - uses: eskatos/gradle-command-action@v1
         with:
           build-root-directory: sample
-          arguments: projectCode
+          arguments: projectCode -PuseMavenLocal
       - uses: eskatos/gradle-command-action@v1
         with:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
-          arguments: assemble
+          arguments: assemble -PuseMavenLocal
+
+  icons-test:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        apiVersion: [ 28 ]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Cache .gradle
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          job-id: icons
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install --upgrade Pillow
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.apiVersion }}
+          profile: pixel_xl
+          script: cd sample && ./icon_check.sh
+      - name: Upload failed screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: failedScreenshots
+          path: "${{ github.workspace }}/**/build/failedScreenshots"
