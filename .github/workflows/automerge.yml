@@ -24,4 +24,10 @@ jobs:
       - name: automerge
         uses: "pascalgn/automerge-action@v0.9.0"
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"          
+          MERGE_LABELS: "automerge"
+          MERGE_REMOVE_LABELS: "automerge"
+          MERGE_METHOD: "merge"
+          MERGE_FORKS: "false"
+          UPDATE_LABELS: "automerge"
+          UPDATE_METHOD: "rebase"
