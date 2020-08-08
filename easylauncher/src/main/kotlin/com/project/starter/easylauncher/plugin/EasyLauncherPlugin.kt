@@ -59,6 +59,8 @@ class EasyLauncherPlugin : Plugin<Project> {
 
                         tasks.named("generate${variant.name.capitalize()}Resources") { it.dependsOn(task) }
                     }
+                } else {
+                    logger.info("disabled for ${variant.name}")
                 }
             }
 
@@ -71,7 +73,7 @@ class EasyLauncherPlugin : Plugin<Project> {
         ribbonProductFlavors: Iterable<EasyLauncherConfig>,
         ribbonBuildTypes: Iterable<EasyLauncherConfig>
     ): List<EasyLauncherConfig> =
-        ribbonProductFlavors.filter { it.name == variant.flavorName } +
+        ribbonProductFlavors.filter { config -> variant.productFlavors.any { config.name == it.name } } +
             ribbonBuildTypes.filter { it.name == variant.buildType.name }
 
     private fun Project.getGeneratedResDir(variant: ApplicationVariant) =

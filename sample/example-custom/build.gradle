@@ -35,25 +35,26 @@ android {
         }
     }
 
-    flavorDimensions 'environment'
+    flavorDimensions "environment", "different"
     productFlavors {
         local {
-            dimension 'environment'
-            applicationIdSuffix = ".local"
-            versionNameSuffix ".local"
+            dimension "environment"
         }
         qa {
-            dimension 'environment'
-            applicationIdSuffix = ".qa"
-            versionNameSuffix ".qa"
+            dimension "environment"
         }
         staging {
-            dimension 'environment'
-            applicationIdSuffix = ".staging"
-            versionNameSuffix ".staging"
+            dimension "environment"
         }
         production {
-            dimension 'environment'
+            dimension "environment"
+        }
+
+        aaa {
+            dimension "different"
+        }
+        bbb {
+            dimension "different"
         }
     }
 }
@@ -77,6 +78,13 @@ easylauncher {
             ]
         }
         production {}
+
+        aaa {
+            filters = customColorRibbonFilter("aaa", "#556600CC", "#FFFFFF", "topright")
+        }
+        bbb {
+            filters = customColorRibbonFilter("bbb", "#EEEEEE", "#FF00FF", "bottom")
+        }
     }
 
     buildTypes {
@@ -95,8 +103,8 @@ easylauncher {
     }
 
     variants {
-        productionDebug {
-            // OVERRIDE all previous filters defined for `productionDebug` variant
+        productionAaaDebug {
+            // OVERRIDE all previous filters defined for `productionAADebug` variant
             filters = orangeRibbonFilter("custom")
         }
     }
