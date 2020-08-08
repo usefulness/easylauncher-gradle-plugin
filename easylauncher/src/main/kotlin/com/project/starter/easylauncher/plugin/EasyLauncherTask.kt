@@ -24,7 +24,6 @@ open class EasyLauncherTask : DefaultTask() {
     @OutputDirectory
     val outputDir: RegularFileProperty = project.objects.fileProperty()
 
-    @Input
     @Nested
     val filters: ListProperty<EasyLauncherFilter> = listProperty<EasyLauncherFilter>()
 

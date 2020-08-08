@@ -29,6 +29,8 @@ jobs:
         run: ./gradlew projectCodestyle
       - name: Assemble
         run: ./gradlew assemble
+      - name: Assemble
+        run: ./gradlew validatePlugins validateTaskProperties
       - name: Unit tests
         run: ./gradlew projectCoverage
       - uses: codecov/codecov-action@v1
