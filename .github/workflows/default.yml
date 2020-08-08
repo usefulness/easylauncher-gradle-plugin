@@ -29,7 +29,7 @@ jobs:
         run: ./gradlew projectCodestyle
       - name: Assemble
         run: ./gradlew assemble
-      - name: Assemble
+      - name: Validate Plugins
         run: ./gradlew validatePlugins validateTaskProperties
       - name: Unit tests
         run: ./gradlew projectCoverage

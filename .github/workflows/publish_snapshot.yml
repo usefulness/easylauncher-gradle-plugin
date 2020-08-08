@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - 'master'
-    tags:
-      - 'release-*'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
