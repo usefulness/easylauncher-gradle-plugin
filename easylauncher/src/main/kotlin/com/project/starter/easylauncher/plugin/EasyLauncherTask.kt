@@ -10,7 +10,6 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import java.io.File
@@ -24,7 +23,7 @@ open class EasyLauncherTask : DefaultTask() {
     @OutputDirectory
     val outputDir: RegularFileProperty = project.objects.fileProperty()
 
-    @Nested
+    @Input
     val filters: ListProperty<EasyLauncherFilter> = listProperty<EasyLauncherFilter>()
 
     @TaskAction

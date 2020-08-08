@@ -10,13 +10,21 @@ echo "Record Start"
 ./../gradlew :example-simple:recordDebugAndroidTestScreenshotTest
 addToIndex
 echo "Simple completed"
-./../gradlew :example-custom:recordLocalDebugAndroidTestScreenshotTest
+./../gradlew :example-custom:recordLocalAaaDebugAndroidTestScreenshotTest
 addToIndex
-./../gradlew :example-custom:recordProductionDebugAndroidTestScreenshotTest
+./../gradlew :example-custom:recordProductionAaaDebugAndroidTestScreenshotTest
 addToIndex
-./../gradlew :example-custom:recordQaDebugAndroidTestScreenshotTest
+./../gradlew :example-custom:recordQaAaaDebugAndroidTestScreenshotTest
 addToIndex
-./../gradlew :example-custom:recordStagingDebugAndroidTestScreenshotTest
+./../gradlew :example-custom:recordStagingAaaDebugAndroidTestScreenshotTest
+addToIndex
+./../gradlew :example-custom:recordLocalBbbDebugAndroidTestScreenshotTest
+addToIndex
+./../gradlew :example-custom:recordProductionBbbDebugAndroidTestScreenshotTest
+addToIndex
+./../gradlew :example-custom:recordQaBbbDebugAndroidTestScreenshotTest
+addToIndex
+./../gradlew :example-custom:recordStagingBbbDebugAndroidTestScreenshotTest
 addToIndex
 echo "Custom completed"
 ./../gradlew :example-vector:recordTwoVectorsDebugAndroidTestScreenshotTest

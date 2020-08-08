@@ -4,6 +4,7 @@ import com.project.starter.easylauncher.filter.ColorRibbonFilter
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import com.project.starter.easylauncher.filter.GrayscaleFilter
 import com.project.starter.easylauncher.filter.OverlayFilter
+import org.gradle.api.tasks.Nested
 import java.awt.Color
 import java.io.File
 import java.io.Serializable
@@ -17,6 +18,7 @@ open class EasyLauncherConfig(var name: String) : Serializable {
 
     var enabled = true
         private set
+    @Nested
     internal val filters = mutableListOf<EasyLauncherFilter>()
 
     fun enable(enabled: Boolean): EasyLauncherConfig {
