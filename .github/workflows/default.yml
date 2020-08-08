@@ -29,7 +29,7 @@ jobs:
         run: ./gradlew projectCodestyle
       - name: Assemble
         run: ./gradlew assemble
-      - name: Assemble
+      - name: Validate Plugins
         run: ./gradlew validatePlugins validateTaskProperties
       - name: Unit tests
         run: ./gradlew projectCoverage
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        gradle: [ 6.1.1, 6.5.1, 6.6-rc-5 ]
+        gradle: [ 6.1.1, 6.5.1, 6.6-rc-6 ]
     name: Run with Gradle ${{ matrix.gradle }}
     steps:
       - uses: actions/checkout@v2
