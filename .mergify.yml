@@ -1,0 +1,9 @@
+pull_request_rules:
+  - name: automatic merge when GitHub branch protection passes
+    conditions: 
+      - label=automerge
+    actions:
+      merge:
+        strict: true
+        strict_method: rebase
+        method: merge
