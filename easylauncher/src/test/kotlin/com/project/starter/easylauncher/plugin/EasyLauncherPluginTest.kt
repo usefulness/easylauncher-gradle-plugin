@@ -79,6 +79,39 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
     }
 
     @Test
+    fun `does not add task for non debuggable variants by default`() {
+        moduleRoot.resolve("build.gradle").buildScript(
+            androidBlock = {
+                """
+            buildTypes {
+                debug { }
+                superType { debuggable false }
+                release { }
+            }
+                """.trimIndent()
+            },
+            easylauncherBlock = {
+                """
+                    buildTypes {
+                        superType {
+                            filters = customRibbon(
+                                name: "Custom name",
+                                ribbonColor: "#00ff00",
+                                position: "top",
+                                labelColor: "#ff00ff",
+                                textSizeRatio: "0.7"
+                            )              
+                        }
+                    }
+                """.trimIndent()
+            }
+        )
+        val result = runTask("assembleSuperType")
+
+        assertThat(result.task(":app:easylauncherSuperType")).isNotNull()
+    }
+
+    @Test
     fun `generates proper tasks`() {
         moduleRoot.resolve("build.gradle").buildScript(
             androidBlock = {

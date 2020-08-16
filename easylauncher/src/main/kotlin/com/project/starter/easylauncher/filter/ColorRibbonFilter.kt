@@ -13,11 +13,11 @@ import kotlin.math.sqrt
 
 @Suppress("MagicNumber")
 class ColorRibbonFilter @JvmOverloads constructor(
-    private val label: String?,
+    private val label: String,
     private val ribbonColor: Color,
     private val labelColor: Color = Color.WHITE,
     private val gravity: Gravity = Gravity.TOPLEFT,
-    private val textSizeRatio: Float = -1f
+    private val textSizeRatio: Float? = null
 ) : EasyLauncherFilter {
 
     private val fontName = "DEFAULT"
@@ -43,7 +43,7 @@ class ColorRibbonFilter @JvmOverloads constructor(
         // calculate the rectangle where the label is rendered
         val maxLabelWidth = calculateMaxLabelWidth(image.height / 2)
         graphics.font = getFont(image.height, maxLabelWidth, frc)
-        val textBounds = graphics.font.getStringBounds(label ?: "", frc)
+        val textBounds = graphics.font.getStringBounds(label, frc)
         val textHeight = textBounds.height.toInt()
         val textPadding = textHeight / 10
         val labelHeight = textHeight + textPadding * 2
@@ -64,46 +64,39 @@ class ColorRibbonFilter @JvmOverloads constructor(
         } else {
             graphics.fillRect(-image.width, yGravity, image.width * 2, labelHeight)
         }
-        if (label != null) {
-            // draw the label
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-            graphics.color = labelColor
-            val fm = graphics.fontMetrics
-            if (gravity == Gravity.TOP || gravity == Gravity.BOTTOM) {
-                graphics.drawString(
-                    label,
-                    image.width / 2 - textBounds.width.toInt() / 2,
-                    yGravity + fm.ascent
-                )
-            } else if (gravity == Gravity.TOPRIGHT) {
-                graphics.drawString(
-                    label,
-                    image.width - textBounds.width.toInt() / 2,
-                    yGravity + fm.ascent
-                )
-            } else {
-                graphics.drawString(
-                    label,
-                    (-textBounds.width).toInt() / 2,
-                    yGravity + fm.ascent
-                )
-            }
+        // draw the label
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+        graphics.color = labelColor
+        val fm = graphics.fontMetrics
+        if (gravity == Gravity.TOP || gravity == Gravity.BOTTOM) {
+            graphics.drawString(
+                label,
+                image.width / 2 - textBounds.width.toInt() / 2,
+                yGravity + fm.ascent
+            )
+        } else if (gravity == Gravity.TOPRIGHT) {
+            graphics.drawString(
+                label,
+                image.width - textBounds.width.toInt() / 2,
+                yGravity + fm.ascent
+            )
+        } else {
+            graphics.drawString(
+                label,
+                (-textBounds.width).toInt() / 2,
+                yGravity + fm.ascent
+            )
         }
         graphics.dispose()
     }
 
     private fun getFont(imageHeight: Int, maxLabelWidth: Int, frc: FontRenderContext): Font {
         // User-defined text size
-        if (textSizeRatio != -1f) {
+        if (textSizeRatio != null) {
             return Font(fontName, fontStyle, (imageHeight * textSizeRatio).roundToInt())
         }
         var max = imageHeight / 8
         var min = 0
-
-        // Label not set
-        if (label == null) {
-            return Font(fontName, fontStyle, max / 2)
-        }
 
         // Automatic calculation: as big as possible
         var size = max

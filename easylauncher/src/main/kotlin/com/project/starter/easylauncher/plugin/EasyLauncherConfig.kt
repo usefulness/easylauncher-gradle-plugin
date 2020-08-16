@@ -4,51 +4,55 @@ import com.project.starter.easylauncher.filter.ColorRibbonFilter
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import com.project.starter.easylauncher.filter.GrayscaleFilter
 import com.project.starter.easylauncher.filter.OverlayFilter
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Nested
 import java.awt.Color
 import java.io.File
 import java.io.Serializable
+import javax.inject.Inject
 
-@Suppress("MagicNumber", "TooManyFunctions")
-open class EasyLauncherConfig(var name: String) : Serializable {
+@Suppress("TooManyFunctions", "DefaultLocale")
+open class EasyLauncherConfig @Inject constructor(
+    val name: String,
+    objectFactory: ObjectFactory
+) : Serializable {
 
-    companion object {
-        private const val serialVersionUID = 1L
+    val enabled = objectFactory.property(Boolean::class.java).apply {
+        set(true)
     }
 
-    var enabled = true
-        private set
     @Nested
-    internal val filters = mutableListOf<EasyLauncherFilter>()
-
-    fun enable(enabled: Boolean): EasyLauncherConfig {
-        this.enabled = enabled
-        return this
+    internal val filters = objectFactory.setProperty(EasyLauncherFilter::class.java).apply {
+        set(emptyList())
     }
 
-    fun setFilters(filters: Iterable<EasyLauncherFilter>): EasyLauncherConfig {
+    fun enable(enabled: Boolean) {
+        this.enabled.value(enabled)
+    }
+
+    fun setFilters(filters: Iterable<EasyLauncherFilter>) {
         this.filters.addAll(filters)
-        return this
     }
 
-    fun setFilters(filter: EasyLauncherFilter): EasyLauncherConfig {
-        filters.add(filter)
-        return this
+    fun setFilters(filter: EasyLauncherFilter) {
+        this.filters.value(this.filters.get() + filter)
     }
 
     fun filters(vararg filters: EasyLauncherFilter) {
-        this.filters.addAll(filters)
+        this.filters.value(this.filters.get() + filters)
     }
 
+    @JvmOverloads
+    @Deprecated("use customRibbon method instead")
     fun customColorRibbonFilter(
-        name: String?,
+        name: String? = null,
         ribbonColor: String?,
-        labelColor: String?,
-        position: String,
-        textSizeRatio: Float
+        labelColor: String = "#FFFFFF",
+        position: String = "topleft",
+        textSizeRatio: Float? = null
     ): ColorRibbonFilter {
         return ColorRibbonFilter(
-            name,
+            name ?: this.name,
             Color.decode(ribbonColor),
             Color.decode(labelColor),
             ColorRibbonFilter.Gravity.valueOf(position.toUpperCase()),
@@ -56,78 +60,51 @@ open class EasyLauncherConfig(var name: String) : Serializable {
         )
     }
 
-    fun customColorRibbonFilter(
-        name: String?,
-        ribbonColor: String?,
-        labelColor: String?,
-        gravity: String
-    ): ColorRibbonFilter {
+    fun customRibbon(properties: Map<String, String>): ColorRibbonFilter {
+        val ribbonText = properties["name"] ?: name
+        val background = properties["ribbonColor"]?.let { Color.decode(it) } ?: Color.GRAY
+        val labelColor = properties["labelColor"]?.let { Color.decode(it) } ?: Color.WHITE
+        val position = properties["position"]?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }
+            ?: ColorRibbonFilter.Gravity.TOPLEFT
+        val textSizeRatio = properties["textSizeRatio"]?.toFloatOrNull()
+
         return ColorRibbonFilter(
-            name,
-            Color.decode(ribbonColor),
-            Color.decode(labelColor),
-            ColorRibbonFilter.Gravity.valueOf(gravity.toUpperCase())
+            label = ribbonText,
+            ribbonColor = background,
+            labelColor = labelColor,
+            gravity = position,
+            textSizeRatio = textSizeRatio
         )
     }
 
-    fun customColorRibbonFilter(name: String?, ribbonColor: String?, labelColor: String?): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color.decode(ribbonColor), Color.decode(labelColor))
+    @JvmOverloads
+    fun grayRibbonFilter(name: String? = null): ColorRibbonFilter {
+        return ColorRibbonFilter(name ?: this.name, Color.GRAY)
     }
 
-    fun customColorRibbonFilter(name: String?, ribbonColor: String?): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color.decode(ribbonColor))
+    @JvmOverloads
+    fun greenRibbonFilter(name: String? = null): ColorRibbonFilter {
+        return ColorRibbonFilter(name ?: this.name, Color.GREEN)
     }
 
-    fun customColorRibbonFilter(ribbonColor: String?): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color.decode(ribbonColor))
+    @JvmOverloads
+    fun orangeRibbonFilter(name: String? = null): ColorRibbonFilter {
+        return ColorRibbonFilter(name ?: this.name, Color.ORANGE)
     }
 
-    fun grayRibbonFilter(name: String?): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0x60, 0x60, 0x60, 0x99))
+    @JvmOverloads
+    fun yellowRibbonFilter(name: String? = null): ColorRibbonFilter {
+        return ColorRibbonFilter(name ?: this.name, Color.YELLOW)
     }
 
-    fun grayRibbonFilter(): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0x60, 0x60, 0x60, 0x99))
+    @JvmOverloads
+    fun redRibbonFilter(name: String? = null): ColorRibbonFilter {
+        return ColorRibbonFilter(name ?: this.name, Color.RED)
     }
 
-    fun greenRibbonFilter(name: String?): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0, 0x72, 0, 0x99))
-    }
-
-    fun greenRibbonFilter(): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0, 0x72, 0, 0x99))
-    }
-
-    fun orangeRibbonFilter(name: String?): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0xff, 0x76, 0, 0x99))
-    }
-
-    fun orangeRibbonFilter(): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0xff, 0x76, 0, 0x99))
-    }
-
-    fun yellowRibbonFilter(name: String?): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0xff, 251, 0, 0x99))
-    }
-
-    fun yellowRibbonFilter(): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0xff, 251, 0, 0x99))
-    }
-
-    fun redRibbonFilter(name: String?): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0xff, 0, 0, 0x99))
-    }
-
-    fun redRibbonFilter(): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0xff, 0, 0, 0x99))
-    }
-
-    fun blueRibbonFilter(name: String?): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0, 0, 255, 0x99))
-    }
-
-    fun blueRibbonFilter(): ColorRibbonFilter {
-        return ColorRibbonFilter(name, Color(0, 0, 255, 0x99))
+    @JvmOverloads
+    fun blueRibbonFilter(name: String? = null): ColorRibbonFilter {
+        return ColorRibbonFilter(name ?: this.name, Color.BLUE)
     }
 
     fun overlayFilter(fgFile: File): OverlayFilter {
@@ -136,5 +113,9 @@ open class EasyLauncherConfig(var name: String) : Serializable {
 
     fun grayscaleFilter(): GrayscaleFilter {
         return GrayscaleFilter()
+    }
+
+    companion object {
+        private const val serialVersionUID = 1L
     }
 }
