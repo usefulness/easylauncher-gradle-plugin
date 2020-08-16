@@ -30,10 +30,15 @@ class EasyLauncherPlugin : Plugin<Project> {
 
                     // set default ribbon
                     if (filters.isEmpty() && variant.buildType.isDebuggable) {
-                        val ribbonText = if (extension.isDefaultFlavorNaming.get()) {
-                            variant.flavorName
-                        } else {
-                            variant.buildType.name
+                        val ribbonText = when (extension.isDefaultFlavorNaming.orNull) {
+                            true -> variant.flavorName
+                            false -> variant.buildType.name
+                            null ->
+                                if (variant.productFlavors.isEmpty()) {
+                                    variant.buildType.name
+                                } else {
+                                    variant.flavorName
+                                }
                         }
                         filters.add(EasyLauncherConfig(ribbonText, project.objects).greenRibbonFilter())
                     }

@@ -11,7 +11,7 @@ import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions", "DefaultLocale")
+@Suppress("TooManyFunctions", "DefaultLocale", "MagicNumber")
 open class EasyLauncherConfig @Inject constructor(
     val name: String,
     objectFactory: ObjectFactory
@@ -62,7 +62,7 @@ open class EasyLauncherConfig @Inject constructor(
 
     fun customRibbon(properties: Map<String, String>): ColorRibbonFilter {
         val ribbonText = properties["name"] ?: name
-        val background = properties["ribbonColor"]?.let { Color.decode(it) } ?: Color.GRAY
+        val background = properties["ribbonColor"]?.let { Color.decode(it) } ?: Color(0, 0x72, 0, 0x99)
         val labelColor = properties["labelColor"]?.let { Color.decode(it) } ?: Color.WHITE
         val position = properties["position"]?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }
             ?: ColorRibbonFilter.Gravity.TOPLEFT
@@ -79,32 +79,32 @@ open class EasyLauncherConfig @Inject constructor(
 
     @JvmOverloads
     fun grayRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color.GRAY)
+        return ColorRibbonFilter(name ?: this.name, Color(0x60, 0x60, 0x60, 0x99))
     }
 
     @JvmOverloads
     fun greenRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color.GREEN)
+        return ColorRibbonFilter(name ?: this.name, Color(0, 0x72, 0, 0x99))
     }
 
     @JvmOverloads
     fun orangeRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color.ORANGE)
+        return ColorRibbonFilter(name ?: this.name, Color(0xff, 0x76, 0, 0x99))
     }
 
     @JvmOverloads
     fun yellowRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color.YELLOW)
+        return ColorRibbonFilter(name ?: this.name, Color(0xff, 251, 0, 0x99))
     }
 
     @JvmOverloads
     fun redRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color.RED)
+        return ColorRibbonFilter(name ?: this.name, Color(0xff, 0, 0, 0x99))
     }
 
     @JvmOverloads
     fun blueRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color.BLUE)
+        return ColorRibbonFilter(name ?: this.name, Color(0, 0, 255, 0x99))
     }
 
     fun overlayFilter(fgFile: File): OverlayFilter {
