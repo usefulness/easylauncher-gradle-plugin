@@ -11,12 +11,6 @@ class EasyLauncherPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
         val extension = extensions.create(EasyLauncherExtension.NAME, EasyLauncherExtension::class.java)
-        val ribbonVariants = container(EasyLauncherConfig::class.java)
-        extensions.add("variants", ribbonVariants)
-        val ribbonBuildTypes = container(EasyLauncherConfig::class.java)
-        extensions.add("buildTypes", ribbonBuildTypes)
-        val ribbonProductFlavors = container(EasyLauncherConfig::class.java)
-        extensions.add("productFlavors", ribbonProductFlavors)
 
         logger.info("Running gradle version: ${gradle.gradleVersion}")
 
@@ -26,22 +20,27 @@ class EasyLauncherPlugin : Plugin<Project> {
             val easyLauncherTasks = mutableListOf<TaskProvider<EasyLauncherTask>>()
 
             android.applicationVariants.configureEach { variant ->
-                val configs = ribbonVariants.filter { it.name == variant.name }.takeIf { it.isNotEmpty() }
-                    ?: findConfigs(variant, ribbonProductFlavors, ribbonBuildTypes)
+                val configs = extension.variants.filter { it.name == variant.name }.takeIf { it.isNotEmpty() }
+                    ?: findConfigs(variant, extension.productFlavors, extension.buildTypes)
 
-                val enabled = configs.all { it.enabled }
+                val enabled = configs.all { it.enabled.get() }
 
                 if (enabled) {
-                    val filters = configs.flatMap { it.filters }.toMutableSet()
+                    val filters = configs.flatMap { it.filters.get() }.toMutableSet()
 
                     // set default ribbon
                     if (filters.isEmpty() && variant.buildType.isDebuggable) {
-                        val ribbonText = if (extension.isDefaultFlavorNaming) {
-                            variant.flavorName
-                        } else {
-                            variant.buildType.name
+                        val ribbonText = when (extension.isDefaultFlavorNaming.orNull) {
+                            true -> variant.flavorName
+                            false -> variant.buildType.name
+                            null ->
+                                if (variant.productFlavors.isEmpty()) {
+                                    variant.buildType.name
+                                } else {
+                                    variant.flavorName
+                                }
                         }
-                        filters.add(EasyLauncherConfig(ribbonText).greenRibbonFilter())
+                        filters.add(EasyLauncherConfig(ribbonText, project.objects).greenRibbonFilter())
                     }
 
                     if (filters.isNotEmpty()) {

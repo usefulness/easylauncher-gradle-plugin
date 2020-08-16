@@ -5,6 +5,11 @@ android {
     defaultConfig {
         minSdkVersion 15
     }
+    buildTypes {
+        named("release") {
+            signingConfig signingConfigs.debug
+        }
+    }
 }
 
 dependencies {

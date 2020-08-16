@@ -41,7 +41,12 @@ easylauncher {
         }
         wrongLabelPosition {
             filters = [
-                    customColorRibbonFilter("GE", "#cc0000", "#FFFFFF", "top", 0.1),
+                    customRibbon(
+                            name: "GE",
+                            ribbonColor: "#cc0000",
+                            position: "top",
+                            textSizeRatio: "0.1"
+                    ),
                     customColorRibbonFilter("QA-WHI", "#0000cc", "#FFFFFF", "bottom", 0.1)
             ]
         }
