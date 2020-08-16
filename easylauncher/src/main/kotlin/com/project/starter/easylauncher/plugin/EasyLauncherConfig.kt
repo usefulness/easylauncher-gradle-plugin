@@ -61,7 +61,7 @@ open class EasyLauncherConfig @Inject constructor(
     }
 
     fun customRibbon(properties: Map<String, String>): ColorRibbonFilter {
-        val ribbonText = properties["name"] ?: name
+        val ribbonText = properties["label"] ?: name
         val background = properties["ribbonColor"]?.let { Color.decode(it) } ?: Color(0, 0x72, 0, 0x99)
         val labelColor = properties["labelColor"]?.let { Color.decode(it) } ?: Color.WHITE
         val position = properties["position"]?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }

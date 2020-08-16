@@ -95,10 +95,10 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                     buildTypes {
                         superType {
                             filters = customRibbon(
-                                name: "Custom name",
+                                label: "Custom name",
                                 ribbonColor: "#00ff00",
-                                position: "top",
                                 labelColor: "#ff00ff",
+                                position: "top",
                                 textSizeRatio: "0.7"
                             )              
                         }

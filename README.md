@@ -82,7 +82,7 @@ easylauncher {
         beta {
             // Add two more filters to all `beta` variants
             filters = [
-                    customColorRibbonFilter("#0000FF"),
+                    customRibbon(ribbonColor: "#0000FF"),
                     overlayFilter(new File("example-custom/launcherOverlay/beta.png"))
             ]
         }
@@ -134,14 +134,14 @@ _Note: It doesn't work with vector images yet_
 
 | Description | Command | Result |
 | - | - | - |
-| Custom background color  | `customColorRibbonFilter("#6600CC")` | ![](icons/customColorRibbon.png) |
-| Custom label | `customColorRibbonFilter("label", "#DCDCDC")` | ![](icons/customColorRibbon2.png) |
-| Custom text color | `customColorRibbonFilter("label", "#DCDCDC", "#000000")` | ![](icons/customColorRibbon3.png) |
-| Custom gravity - Top | `customColorRibbonFilter("custom", "#556600CC", "#FFFFFF", "top")` | ![](icons/customColorRibbonTop.png) |
-| Custom gravity - Bottom | `customColorRibbonFilter("custom", "#556600CC", "#FFFFFF", "bottom")` | ![](icons/customColorRibbonBottom.png) |
-| Custom gravity - TopLeft | `customColorRibbonFilter("custom", "#556600CC", "#FFFFFF", "topLeft")` | ![](icons/customColorRibbonTopLeft.png) |
-| Custom gravity - TopRight | `customColorRibbonFilter("custom", "#556600CC", "#FFFFFF", "topRight")` | ![](icons/customColorRibbonTopRight.png) |
-| Custom text size (relative to the icon size) | `customColorRibbonFilter("custom", "#556600CC", "#FFFFFF", "bottom", 0.2)` | ![](icons/customColorRibbonBottomSize.png) |
+| Custom background color  | `customRibbon(ribbonColor: "#6600CC")` | ![](icons/customColorRibbon.png) |
+| Custom label | `customRibbon(label: "label", ribbonColor: "#DCDCDC")` | ![](icons/customColorRibbon2.png) |
+| Custom text color | `customRibbon(label: "label", ribbonColor: "#DCDCDC", labelColor: "#000000")` | ![](icons/customColorRibbon3.png) |
+| Custom gravity - Top | `customRibbon(label: "custom", position: "top")` | ![](icons/customColorRibbonTop.png) |
+| Custom gravity - Bottom | `customRibbon(position: "bottom")` | ![](icons/customColorRibbonBottom.png) |
+| Custom gravity - TopLeft | `customRibbon(position: "topLeft")` | ![](icons/customColorRibbonTopLeft.png) |
+| Custom gravity - TopRight | `customRibbon(position: "topRight")` | ![](icons/customColorRibbonTopRight.png) |
+| Custom text size (relative to the icon size) | `customRibbon(position: "bottom", textSizeRatio: 0.2)` | ![](icons/customColorRibbonBottomSize.png) |
 
 ## Available options
 
