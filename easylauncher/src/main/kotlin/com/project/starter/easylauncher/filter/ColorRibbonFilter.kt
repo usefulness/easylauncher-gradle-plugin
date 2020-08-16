@@ -12,7 +12,7 @@ import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 @Suppress("MagicNumber")
-class ColorRibbonFilter @JvmOverloads constructor(
+class ColorRibbonFilter(
     private val label: String,
     private val ribbonColor: Color,
     private val labelColor: Color = Color.WHITE,

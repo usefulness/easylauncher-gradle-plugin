@@ -17,10 +17,10 @@ class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
             e.printStackTrace()
         }
         if (fgImage != null) {
-            val width = image.width
-            val height = image.width
+            val width = image.width.toFloat()
+            val height = image.width.toFloat()
             var scale =
-                Math.min(width / fgImage.getWidth(null).toFloat(), height / fgImage.getHeight(null).toFloat())
+                (width / fgImage.getWidth(null).toFloat()).coerceAtMost(height / fgImage.getHeight(null))
             if (adaptive) {
                 scale *= (72f / 108)
             }
