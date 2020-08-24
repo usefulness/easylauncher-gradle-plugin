@@ -12,6 +12,12 @@ updates:
       interval: "daily"
     assignees:
       - "usefulness"
+  - package-ecosystem: "gradle"
+    directory: "sample"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "usefulness"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
