@@ -5,22 +5,22 @@ updates:
     schedule:
       interval: "daily"
     assignees:
-      - "usefulness/review"
+      - "mateuszkwiecinski"
   - package-ecosystem: "gradle"
     directory: "buildSrc"
     schedule:
       interval: "daily"
     assignees:
-      - "usefulness/review"
+      - "mateuszkwiecinski"
   - package-ecosystem: "gradle"
     directory: "sample"
     schedule:
       interval: "daily"
     assignees:
-      - "usefulness/review"
+      - "mateuszkwiecinski"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
     assignees:
-      - "usefulness/review"
+      - "mateuszkwiecinski"
