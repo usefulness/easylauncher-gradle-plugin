@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        gradle: [ 6.1.1, 6.5.1, 6.6]
+        gradle: [ 6.1.1, current, rc ]
     name: Run with Gradle ${{ matrix.gradle }}
     steps:
       - uses: actions/checkout@v2
@@ -63,18 +63,20 @@ jobs:
       - name: Cache .gradle
         uses: burrunan/gradle-cache-action@v1
         with:
-          gradle-version: ${{ matrix.gradle }}
           job-id: build-all-sample-apps
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
       - uses: eskatos/gradle-command-action@v1
         with:
           build-root-directory: sample
+          gradle-version: ${{ matrix.gradle }}
+          dependencies-cache-enabled: true
           arguments: projectCode -PuseMavenLocal
       - uses: eskatos/gradle-command-action@v1
         with:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
+          dependencies-cache-enabled: true
           arguments: assemble -PuseMavenLocal
 
   icons-test:
