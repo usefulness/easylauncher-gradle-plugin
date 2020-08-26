@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        gradle: [ 6.1.1, current, rc, nightly, release-nightly ]
+        gradle: [ 6.1.1, current, nightly ]
     name: Run with Gradle ${{ matrix.gradle }}
     steps:
       - uses: actions/checkout@v2
