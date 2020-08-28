@@ -20,6 +20,9 @@ jobs:
     - id: dependency-diff
       name: Generate dependency diff
       uses: usefulness/dependency-tree-diff-action@master
+      with:
+        configuration: 'runtimeClasspath'
+        project: 'easylauncher'
     - uses: peter-evans/find-comment@v1
       id: find_comment
       with:
