@@ -20,7 +20,7 @@ jobs:
         with:
           java-version: 8
       - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v1.3
       - name: Build app with Gradle
         run: ./gradlew assemble
       - name: Publish to Github Package Registry
