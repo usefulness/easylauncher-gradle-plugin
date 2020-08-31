@@ -2,7 +2,6 @@ package com.project.starter.easylauncher.plugin
 
 import com.project.starter.easylauncher.filter.ColorRibbonFilter
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
-import com.project.starter.easylauncher.filter.GrayscaleFilter
 import com.project.starter.easylauncher.filter.OverlayFilter
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Nested
@@ -11,7 +10,7 @@ import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions", "DefaultLocale", "MagicNumber")
+@Suppress("TooManyFunctions", "MagicNumber")
 open class EasyLauncherConfig @Inject constructor(
     val name: String,
     objectFactory: ObjectFactory
@@ -60,13 +59,12 @@ open class EasyLauncherConfig @Inject constructor(
         )
     }
 
-    fun customRibbon(properties: Map<String, String>): ColorRibbonFilter {
-        val ribbonText = properties["label"] ?: name
-        val background = properties["ribbonColor"]?.let { Color.decode(it) } ?: Color(0, 0x72, 0, 0x99)
-        val labelColor = properties["labelColor"]?.let { Color.decode(it) } ?: Color.WHITE
-        val position = properties["position"]?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }
-            ?: ColorRibbonFilter.Gravity.TOPLEFT
-        val textSizeRatio = properties["textSizeRatio"]?.toFloatOrNull()
+    fun customRibbon(properties: Map<String, Any>): ColorRibbonFilter {
+        val ribbonText = properties["label"]?.toString() ?: name
+        val background = properties["ribbonColor"]?.toString()?.let { Color.decode(it) }
+        val labelColor = properties["labelColor"]?.toString()?.let { Color.decode(it) }
+        val position = properties["position"]?.toString()?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }
+        val textSizeRatio = properties["textSizeRatio"]?.toString()?.toFloatOrNull()
 
         return ColorRibbonFilter(
             label = ribbonText,
@@ -109,10 +107,6 @@ open class EasyLauncherConfig @Inject constructor(
 
     fun overlayFilter(fgFile: File): OverlayFilter {
         return OverlayFilter(fgFile)
-    }
-
-    fun grayscaleFilter(): GrayscaleFilter {
-        return GrayscaleFilter()
     }
 
     companion object {

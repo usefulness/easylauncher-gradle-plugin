@@ -34,21 +34,28 @@ easylauncher {
     }
     productFlavors {
         twoVectors {
-            filters = [
-                    grayRibbonFilter(),
-                    customColorRibbonFilter("second", "#556600CC", "#FFFFFF", "bottom")
-            ]
+            filters grayRibbonFilter(),
+                    customRibbon(
+                            label: "second",
+                            ribbonColor: "#556600CC",
+                            labelColor: "#FFFFFF",
+                            position: "bottom"
+                    )
         }
         wrongLabelPosition {
-            filters = [
+            filters customRibbon(
+                    label: "GE",
+                    ribbonColor: "#cc0000",
+                    position: "top",
+                    textSizeRatio: 0.1f
+            ),
                     customRibbon(
-                            name: "GE",
-                            ribbonColor: "#cc0000",
-                            position: "top",
-                            textSizeRatio: "0.1"
-                    ),
-                    customColorRibbonFilter("QA-WHI", "#0000cc", "#FFFFFF", "bottom", 0.1)
-            ]
+                            label: "QA-WHI",
+                            ribbonColor: "#0000cc",
+                            labelColor: "#FFFFFF",
+                            position: "bottom",
+                            textSizeRatio: 0.1f
+                    )
         }
     }
 }
