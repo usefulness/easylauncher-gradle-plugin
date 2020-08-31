@@ -14,18 +14,22 @@ import kotlin.math.sqrt
 @Suppress("MagicNumber")
 class ColorRibbonFilter(
     private val label: String,
-    private val ribbonColor: Color,
-    private val labelColor: Color = Color.WHITE,
-    private val gravity: Gravity = Gravity.TOPLEFT,
+    ribbonColor: Color? = null,
+    labelColor: Color? = null,
+    gravity: Gravity? = null,
     private val textSizeRatio: Float? = null
 ) : EasyLauncherFilter {
-
-    private val fontName = "DEFAULT"
-    private val fontStyle = Font.PLAIN
 
     enum class Gravity {
         TOP, BOTTOM, TOPLEFT, TOPRIGHT
     }
+
+    private val ribbonColor = ribbonColor ?: Color(0, 0x72, 0, 0x99)
+    private val labelColor = labelColor ?: Color.white
+    private val gravity = gravity ?: Gravity.TOPLEFT
+
+    private val fontName = "DEFAULT"
+    private val fontStyle = Font.PLAIN
 
     @Suppress("ComplexMethod")
     override fun apply(image: BufferedImage, adaptive: Boolean) {

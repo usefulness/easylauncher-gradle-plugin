@@ -112,6 +112,34 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
     }
 
     @Test
+    fun `applies each filter type`() {
+        moduleRoot.resolve("build.gradle").buildScript(
+            androidBlock = { "" },
+            easylauncherBlock = {
+                """
+                    productFlavors {
+                        debug {
+                            filters(
+                                grayRibbonFilter(),
+                                greenRibbonFilter(),
+                                orangeRibbonFilter(),
+                                yellowRibbonFilter(),
+                                redRibbonFilter(),
+                                blueRibbonFilter(),
+                                chromeLike()
+                            )
+                        }
+                    }
+                """.trimIndent()
+            }
+        )
+
+        val result = runTask("assembleDebug")
+
+        assertThat(result.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.SUCCESS)
+    }
+
+    @Test
     fun `generates proper tasks`() {
         moduleRoot.resolve("build.gradle").buildScript(
             androidBlock = {

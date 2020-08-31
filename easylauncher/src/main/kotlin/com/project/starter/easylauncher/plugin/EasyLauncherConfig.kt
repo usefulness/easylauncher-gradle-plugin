@@ -1,8 +1,8 @@
 package com.project.starter.easylauncher.plugin
 
+import com.project.starter.easylauncher.filter.ChromeLikeFilter
 import com.project.starter.easylauncher.filter.ColorRibbonFilter
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
-import com.project.starter.easylauncher.filter.GrayscaleFilter
 import com.project.starter.easylauncher.filter.OverlayFilter
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Nested
@@ -11,7 +11,7 @@ import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions", "DefaultLocale", "MagicNumber")
+@Suppress("TooManyFunctions", "MagicNumber")
 open class EasyLauncherConfig @Inject constructor(
     val name: String,
     objectFactory: ObjectFactory
@@ -60,13 +60,12 @@ open class EasyLauncherConfig @Inject constructor(
         )
     }
 
-    fun customRibbon(properties: Map<String, String>): ColorRibbonFilter {
-        val ribbonText = properties["label"] ?: name
-        val background = properties["ribbonColor"]?.let { Color.decode(it) } ?: Color(0, 0x72, 0, 0x99)
-        val labelColor = properties["labelColor"]?.let { Color.decode(it) } ?: Color.WHITE
-        val position = properties["position"]?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }
-            ?: ColorRibbonFilter.Gravity.TOPLEFT
-        val textSizeRatio = properties["textSizeRatio"]?.toFloatOrNull()
+    fun customRibbon(properties: Map<String, Any>): ColorRibbonFilter {
+        val ribbonText = properties["label"]?.toString() ?: name
+        val background = properties["ribbonColor"]?.toString()?.let { Color.decode(it) }
+        val labelColor = properties["labelColor"]?.toString()?.let { Color.decode(it) }
+        val position = properties["position"]?.toString()?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }
+        val textSizeRatio = properties["textSizeRatio"]?.toString()?.toFloatOrNull()
 
         return ColorRibbonFilter(
             label = ribbonText,
@@ -78,41 +77,50 @@ open class EasyLauncherConfig @Inject constructor(
     }
 
     @JvmOverloads
-    fun grayRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color(0x60, 0x60, 0x60, 0x99))
-    }
+    fun grayRibbonFilter(label: String? = null) =
+        ColorRibbonFilter(label ?: this.name, Color(0x60, 0x60, 0x60, 0x99))
 
     @JvmOverloads
-    fun greenRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color(0, 0x72, 0, 0x99))
-    }
+    fun greenRibbonFilter(label: String? = null) =
+        ColorRibbonFilter(label ?: this.name, Color(0, 0x72, 0, 0x99))
 
     @JvmOverloads
-    fun orangeRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color(0xff, 0x76, 0, 0x99))
-    }
+    fun orangeRibbonFilter(label: String? = null) =
+        ColorRibbonFilter(label ?: this.name, Color(0xff, 0x76, 0, 0x99))
 
     @JvmOverloads
-    fun yellowRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color(0xff, 251, 0, 0x99))
-    }
+    fun yellowRibbonFilter(label: String? = null) =
+        ColorRibbonFilter(label ?: this.name, Color(0xff, 251, 0, 0x99))
 
     @JvmOverloads
-    fun redRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color(0xff, 0, 0, 0x99))
-    }
+    fun redRibbonFilter(label: String? = null) =
+        ColorRibbonFilter(label ?: this.name, Color(0xff, 0, 0, 0x99))
 
     @JvmOverloads
-    fun blueRibbonFilter(name: String? = null): ColorRibbonFilter {
-        return ColorRibbonFilter(name ?: this.name, Color(0, 0, 255, 0x99))
-    }
+    fun blueRibbonFilter(label: String? = null) =
+        ColorRibbonFilter(label ?: this.name, Color(0, 0, 255, 0x99))
 
-    fun overlayFilter(fgFile: File): OverlayFilter {
-        return OverlayFilter(fgFile)
-    }
+    fun overlayFilter(fgFile: File) =
+        OverlayFilter(fgFile)
 
-    fun grayscaleFilter(): GrayscaleFilter {
-        return GrayscaleFilter()
+    @JvmOverloads
+    fun chromeLike(
+        label: String? = null,
+        ribbonColor: String? = null,
+        labelColor: String? = null,
+    ) =
+        ChromeLikeFilter(
+            label ?: this.name,
+            ribbonColor = ribbonColor?.let { Color.decode(it) },
+            labelColor = labelColor?.let { Color.decode(it) }
+        )
+
+    fun chromeLike(properties: Map<String, Any>): ChromeLikeFilter {
+        val ribbonText = properties["label"]?.toString()
+        val background = properties["ribbonColor"]?.toString()
+        val labelColor = properties["labelColor"]?.toString()
+
+        return chromeLike(label = ribbonText, ribbonColor = background, labelColor = labelColor)
     }
 
     companion object {
