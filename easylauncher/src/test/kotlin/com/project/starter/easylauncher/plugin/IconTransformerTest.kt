@@ -47,15 +47,15 @@ internal class IconTransformerTest {
             |   <item
             |       android:width="18dp"
             |       android:height="18dp"
-            |       android:gravity="center"
             |       android:drawable="@drawable/colorribbonfilter_0_output"
+            |       android:gravity="center"
             |       />
             |
             |   <item
             |       android:width="18dp"
             |       android:height="18dp"
-            |       android:gravity="center"
             |       android:drawable="@drawable/colorribbonfilter_1_output"
+            |       android:gravity="center"
             |       />
             |
             |</layer-list>

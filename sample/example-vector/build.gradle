@@ -19,6 +19,9 @@ android {
         register("wrongLabelPosition") {
             dimension "reportedBugs"
         }
+        register("chromeLike") {
+            dimension "reportedBugs"
+        }
     }
 }
 
@@ -33,29 +36,16 @@ easylauncher {
         }
     }
     productFlavors {
+        chromeLike {
+            filters chromeLike("Beta")
+        }
         twoVectors {
             filters grayRibbonFilter(),
-                    customRibbon(
-                            label: "second",
-                            ribbonColor: "#556600CC",
-                            labelColor: "#FFFFFF",
-                            position: "bottom"
-                    )
+                    customRibbon(label: "second", ribbonColor: "#556600CC", labelColor: "#FFFFFF", position: "bottom")
         }
         wrongLabelPosition {
-            filters customRibbon(
-                    label: "GE",
-                    ribbonColor: "#cc0000",
-                    position: "top",
-                    textSizeRatio: 0.1f
-            ),
-                    customRibbon(
-                            label: "QA-WHI",
-                            ribbonColor: "#0000cc",
-                            labelColor: "#FFFFFF",
-                            position: "bottom",
-                            textSizeRatio: 0.1f
-                    )
+            filters customRibbon(label: "GE", ribbonColor: "#cc0000", position: "top", textSizeRatio: 0.1f),
+                    customRibbon(label: "QA-WHI", ribbonColor: "#0000cc", labelColor: "#FFFFFF", position: "bottom", textSizeRatio: 0.1f)
         }
     }
 }

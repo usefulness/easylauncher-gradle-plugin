@@ -37,8 +37,8 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
             |   <item
             |       android:width="${width.androidSize}"
             |       android:height="${height.androidSize}"
-            |       android:gravity="center"
             |       android:drawable="@${outputFile.parentFile.name}/$it"
+            |       android:gravity="center"
             |       />
             |""".trimMargin()
         }
