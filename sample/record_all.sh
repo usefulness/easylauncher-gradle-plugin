@@ -31,4 +31,6 @@ echo "Custom completed"
 ./../gradlew :example-vector:recordTwoVectorsDebugAndroidTestScreenshotTest
 addToIndex
 ./../gradlew :example-vector:recordWrongLabelPositionDebugAndroidTestScreenshotTest
+addToIndex
+./../gradlew :example-vector:recordChromelikeDebugAndroidTestScreenshotTest
 
