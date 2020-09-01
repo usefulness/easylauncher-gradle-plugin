@@ -1,5 +1,6 @@
 package com.project.starter.easylauncher.filter
 
+import com.project.starter.easylauncher.plugin.ADAPTIVE_CONTENT_SCALE
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics2D
@@ -26,16 +27,21 @@ class ChromeLikeFilter(
 
         val frc = FontRenderContext(graphics.transform, true, true)
         // calculate the rectangle where the label is rendered
-        val maxLabelWidth = (image.height * 0.4).roundToInt()
-        graphics.font = getFont(image.height, maxLabelWidth, frc)
+        val backgroundHeight = (image.height * 0.4).roundToInt()
+        graphics.font = getFont(
+            imageHeight = image.height,
+            maxLabelWidth = (image.width * ADAPTIVE_CONTENT_SCALE).roundToInt(),
+            maxLabelHeight = (backgroundHeight * ADAPTIVE_CONTENT_SCALE).roundToInt(),
+            frc = frc
+        )
         val textBounds = graphics.font.getStringBounds(label, frc)
 
         // update y gravity after calculating font size
-        val yGravity = image.height - maxLabelWidth
+        val yGravity = image.height - backgroundHeight
 
         // draw the ribbon
         graphics.color = ribbonColor
-        graphics.fillRect(0, yGravity, image.width, maxLabelWidth)
+        graphics.fillRect(0, yGravity, image.width, backgroundHeight)
         // draw the label
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         graphics.color = labelColor
@@ -48,26 +54,13 @@ class ChromeLikeFilter(
         graphics.dispose()
     }
 
-    private fun getFont(imageHeight: Int, maxLabelWidth: Int, frc: FontRenderContext): Font {
-        var max = imageHeight / 4
-        var min = 0
-
-        // Automatic calculation: as big as possible
-        var size = max
-        for (i in 0..9) {
-            val mid = (max + min) / 2
-            if (mid == size) {
-                break
+    private fun getFont(imageHeight: Int, maxLabelWidth: Int, maxLabelHeight: Int, frc: FontRenderContext) =
+        (imageHeight downTo 0).asSequence()
+            .map { size -> Font(fontName, fontStyle, size) }
+            .first { font ->
+                val bounds = font.getStringBounds(label, frc)
+                bounds.width < maxLabelWidth && bounds.height < maxLabelHeight
+            }.also {
+                println("$label -> ${it.size}")
             }
-            val font = Font(fontName, fontStyle, mid)
-            val labelBounds = font.getStringBounds(label, frc)
-            if (labelBounds.width > maxLabelWidth * 0.67) {
-                max = mid
-            } else {
-                min = mid
-            }
-            size = mid
-        }
-        return Font(fontName, fontStyle, size)
-    }
 }

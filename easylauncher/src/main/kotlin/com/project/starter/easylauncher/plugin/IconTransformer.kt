@@ -58,6 +58,7 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
 }
 
 private val Size.androidSize: String
-    get() = "${(value * FOREGROUND_LAYER_MULTIPLIER).roundToInt()}$unit"
+    get() = "${(value * ADAPTIVE_SCALE).roundToInt()}$unit"
 
-private const val FOREGROUND_LAYER_MULTIPLIER = 0.75
+internal const val ADAPTIVE_SCALE = 72 / 108f
+internal const val ADAPTIVE_CONTENT_SCALE = 56 / 108f

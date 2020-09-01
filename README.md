@@ -6,13 +6,13 @@
 
 [![version](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/com/project/starter/easylauncher/maven-metadata.xml?label=gradle)](https://plugins.gradle.org/search?term=com.starter)
 
-Modify the launcher icon of each of your app-variants using simple gradle rules. Add ribbons of any color, overlay your own images, change the colors of the icon, ...
+Modify the launcher icon of each of your app-variants using simple Gradle rules. Add ribbons of any color, overlay your own images, customize it according to your needs!
 
-This is a rework of original _Easylauncher_ library, which supports modern build tools and **Vector icons**
+| Circle | Square | Teardrop |
+| --- | --- | --- |
+| ![](icons/launcher_circle.png) | ![](icons/launcher_square.png) | ![](icons/launcher_teardrop.png) |
 
-![](icons/ic_launcher_debug.png) ![](icons/ic_launcher_staging.png) ![](icons/ic_launcher_variant.png) ![](icons/ic_launcher_beta.png)
- 
-![](icons/ic_launcher_grayscale.png) ![](icons/customColorRibbonTopRight.png) ![](icons/customColorRibbonTop.png) ![](icons/customColorRibbonBottom.png)
+This library heavily relies on the original [Akaita's easylauncher](https://github.com/akaita/easylauncher-gradle-plugin) plugin, but introduces supports for modern build tools and **Vector icons**
 
 ## Usage
 
@@ -72,7 +72,7 @@ easylauncher {
         local {}
         qa {
             // Add one more filter to all `qa` variants
-            filters = redRibbonFilter()
+            filters redRibbonFilter()
         }
         staging {}
         production {}
@@ -105,43 +105,42 @@ easylauncher {
 
 ## Available filters
 
-## Grayscale filter
-
-| Command | Result |
-| - | - |
-| `grayscaleFilter()` | ![](icons/grayscale.png) |
-_Note: It doesn't work with vector images yet_
-
-
 ## Overlay filter
 
 | Command | Result |
-| - | - |
+| --- | --- |
 | `overlayFilter(new File("example-custom/launcherOverlay/beta.png"))` | ![](icons/overlay.png) |
 
 ## Ribbon filters
 
 | Filter | Command | Result |
-| - | - | - |
-| Gray ribbon | `grayRibbonFilter()` | ![](icons/grayRibbon.png) |
-| Green ribbon | `greenRibbonFilter()` | ![](icons/greenRibbon.png) |
-| Yellow ribbon | `yellowRibbonFilter()` | ![](icons/yellowRibbon.png) |
-| Orange ribbon | `orangeRibbonFilter()` | ![](icons/orangeRibbon.png) |
-| Red ribbon | `redRibbonFilter()` | ![](icons/redRibbon.png) |
-| Blue ribbon | `blueRibbonFilter()` | ![](icons/blueRibbon.png) |
+| --- | --- | --- |
+| Gray ribbon | `grayRibbonFilter()` | ![](icons/ribbon_grey.png) |
+| Green ribbon | `greenRibbonFilter()` | ![](icons/ribbon_green.png) |
+| Yellow ribbon | `yellowRibbonFilter()` | ![](icons/ribbon_yellow.png) |
+| Orange ribbon | `orangeRibbonFilter()` | ![](icons/ribbon_orange.png) |
+| Red ribbon | `redRibbonFilter()` | ![](icons/ribbon_red.png) |
+| Blue ribbon | `blueRibbonFilter()` | ![](icons/ribbon_blue.png) |
 
 ## Advanced Ribbon filter
 
 | Description | Command | Result |
-| - | - | - |
-| Custom background color  | `customRibbon(ribbonColor: "#6600CC")` | ![](icons/customColorRibbon.png) |
-| Custom label | `customRibbon(label: "label", ribbonColor: "#DCDCDC")` | ![](icons/customColorRibbon2.png) |
-| Custom text color | `customRibbon(label: "label", ribbonColor: "#DCDCDC", labelColor: "#000000")` | ![](icons/customColorRibbon3.png) |
-| Custom gravity - Top | `customRibbon(label: "custom", position: "top")` | ![](icons/customColorRibbonTop.png) |
-| Custom gravity - Bottom | `customRibbon(position: "bottom")` | ![](icons/customColorRibbonBottom.png) |
-| Custom gravity - TopLeft | `customRibbon(position: "topLeft")` | ![](icons/customColorRibbonTopLeft.png) |
-| Custom gravity - TopRight | `customRibbon(position: "topRight")` | ![](icons/customColorRibbonTopRight.png) |
-| Custom text size (relative to the icon size) | `customRibbon(position: "bottom", textSizeRatio: 0.2)` | ![](icons/customColorRibbonBottomSize.png) |
+| --- | --- | --- |
+| Custom background color  | `customRibbon(ribbonColor: "#6600CC")` | ![](icons/ribbon_custom_background.png) |
+| Custom label | `customRibbon(label: "label", ribbonColor: "#DCDCDC")` | ![](icons/ribbon_custom_label.png) |
+| Custom text color | `customRibbon(label: "label", ribbonColor: "#DCDCDC", labelColor: "#000000")` | ![](icons/ribbon_custom_textcolor.png) |
+| Custom gravity - Top | `customRibbon(label: "custom", position: "top")` | ![](icons/ribbon_custom_top.png) |
+| Custom gravity - Bottom | `customRibbon(position: "bottom")` | ![](icons/ribbon_custom_bottom.png) |
+| Custom gravity - TopLeft | `customRibbon(position: "topLeft")` | ![](icons/ribbon_custom_topleft.png) |
+| Custom gravity - TopRight | `customRibbon(position: "topRight")` | ![](icons/ribbon_custom_topright.png) |
+| Custom text size (relative to the icon size) | `customRibbon(position: "bottom", textSizeRatio: 0.2)` | ![](icons/ribbon_custom_textsizeratio.png) |
+
+## Chrome-like filters
+
+| Filter | Command | Result |
+| --- | --- | --- |
+| Default | `chromeLike()` | ![](icons/chromelike_default.png) |
+| Custom | `chromeLike(label: "Custom", ribbonColor: "#FF00FF", labelColor: "#FFFFFF")` | ![](icons/chromelike_custom.png) |
 
 ## Available options
 
@@ -151,11 +150,16 @@ _Note: It doesn't work with vector images yet_
  - `buildTypes`: define filters for types (will be **added** to filter defined for flavors)
  - `variants`: define filters for variants (will **override** any other filters)
 
+## Requirements
+Minimal requirements for the plugin are: 
+- Gradle: **6.1.1** 
+- Android Gradle Plugin: **4.0.0**
+- minSdkVersion: **21** _(theoretically there should be no lower boundary - it just hasn't been tested)_
 
 ## Project Structure
 
 ```
-easylauncher/   - Gradle plugin
+easylauncher/   - source code of Gradle plugin
 sample/         - root directory of supported Android applications which serve as test projects
 ```
 
