@@ -24,13 +24,25 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
     outputFile.parentFile.mkdirs()
 
     val layers = filters.mapIndexed { index, filter ->
-        val overlay = BufferedImage(width.value, height.value, BufferedImage.TYPE_INT_ARGB)
-        filter.apply(overlay, adaptive = true)
+        val drawableRoot = outputFile.parentFile
 
         val filterId = "${filter::class.java.simpleName.toLowerCase()}_$index"
-        val overlayFile = outputFile.parentFile.resolve("${filterId}_${outputFile.nameWithoutExtension}.png")
-        ImageIO.write(overlay, "png", overlayFile)
-        overlayFile.nameWithoutExtension
+        val resourceName = "${filterId}_${outputFile.nameWithoutExtension}"
+
+        densities.forEach { (qualifier, multiplier) ->
+            val overlay = BufferedImage(
+                (width.value * multiplier).roundToInt(),
+                (height.value * multiplier).roundToInt(),
+                BufferedImage.TYPE_INT_ARGB
+            )
+            filter.apply(overlay, adaptive = true)
+
+            val qualifiedRoot = drawableRoot.parentFile.resolve("${drawableRoot.name}-$qualifier")
+            val qualifiedOverlayFile = qualifiedRoot.resolve("$resourceName.png").also { it.mkdirs() }
+            ImageIO.write(overlay, "png", qualifiedOverlayFile)
+        }
+
+        resourceName
     }
         .joinToString(separator = "\n") {
             """
@@ -62,3 +74,13 @@ private val Size.androidSize: String
 
 internal const val ADAPTIVE_SCALE = 72 / 108f
 internal const val ADAPTIVE_CONTENT_SCALE = 56 / 108f
+
+@Suppress("MagicNumber")
+private val densities = mapOf(
+    "ldpi" to 0.75,
+    "mdpi" to 1.00,
+    "hdpi" to 1.5,
+    "xhdpi" to 2.00,
+    "xxhdpi" to 3.00,
+    "xxxhdpi" to 4.00
+)

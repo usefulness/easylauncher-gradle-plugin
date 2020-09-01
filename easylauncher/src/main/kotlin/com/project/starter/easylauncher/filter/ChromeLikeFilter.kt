@@ -60,7 +60,5 @@ class ChromeLikeFilter(
             .first { font ->
                 val bounds = font.getStringBounds(label, frc)
                 bounds.width < maxLabelWidth && bounds.height < maxLabelHeight
-            }.also {
-                println("$label -> ${it.size}")
             }
 }

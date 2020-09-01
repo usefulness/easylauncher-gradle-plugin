@@ -43,8 +43,8 @@ open class EasyLauncherTask : DefaultTask() {
                     .forEach { iconFile ->
                         val adaptiveIcon = iconFile.asAdaptiveIcon()
                         if (adaptiveIcon == null) {
-                            val outputFile = iconFile.createOutputFile()
-                            iconFile.transformPng(outputFile, filters.get(), false)
+                            val outputFile = iconFile.getOutputFile()
+                            iconFile.transformPng(outputFile, filters.get(), adaptive = false)
                         } else {
                             variant.processIcon(adaptiveIcon)
                         }
@@ -63,12 +63,12 @@ open class EasyLauncherTask : DefaultTask() {
         getAllSourceSets().forEach { resDir ->
             val icons = resDir.getIconFiles(adaptiveIcon.foreground)
             icons.forEach { iconFile ->
-                logger.info("found foreground ${project.relativePath(iconFile.path)}")
-                val outputFile = iconFile.createOutputFile()
+                logger.info("found foreground at: ${project.relativePath(iconFile.path)}")
+                val outputFile = iconFile.getOutputFile()
                 if (iconFile.extension == "xml") {
                     iconFile.transformXml(outputFile, filters.get())
                 } else {
-                    iconFile.transformPng(outputFile, filters.get(), true)
+                    iconFile.transformPng(outputFile, filters.get(), adaptive = true)
                 }
             }
         }
@@ -108,7 +108,7 @@ open class EasyLauncherTask : DefaultTask() {
             set(default)
         }
 
-    private fun File.createOutputFile(): File =
+    private fun File.getOutputFile(): File =
         File(outputDir.asFile.get(), "${parentFile.name}/$name")
 
     companion object {
