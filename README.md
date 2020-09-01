@@ -8,9 +8,9 @@
 
 Modify the launcher icon of each of your app-variants using simple Gradle rules. Add ribbons of any color, overlay your own images, customize it according to your needs!
 
-| Circle | Square | Teardrop |
+| Circle | RoundedRectangle | Teardrop |
 | --- | --- | --- |
-| ![](icons/launcher_circle.png) | ![](icons/launcher_square.png) | ![](icons/launcher_teardrop.png) |
+| ![](icons/launcher_circle.png) | ![](icons/launcher_rectangle.png) | ![](icons/launcher_teardrop.png) |
 
 This library heavily relies on the original [Akaita's easylauncher](https://github.com/akaita/easylauncher-gradle-plugin) plugin, but introduces supports for modern build tools and **Vector icons**
 
