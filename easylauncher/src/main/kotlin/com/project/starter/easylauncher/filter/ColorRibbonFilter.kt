@@ -25,7 +25,7 @@ class ColorRibbonFilter(
     }
 
     private val ribbonColor = ribbonColor ?: Color(0, 0x72, 0, 0x99)
-    private val labelColor = labelColor ?: Color.white
+    private val labelColor = labelColor ?: Color.WHITE
     private val gravity = gravity ?: Gravity.TOPLEFT
 
     private val fontName = "DEFAULT"
