@@ -52,29 +52,43 @@ open class EasyLauncherConfig @Inject constructor(
         textSizeRatio: Float? = null
     ): ColorRibbonFilter {
         return ColorRibbonFilter(
-            name ?: this.name,
-            Color.decode(ribbonColor),
-            Color.decode(labelColor),
-            ColorRibbonFilter.Gravity.valueOf(position.toUpperCase()),
-            textSizeRatio
+            label = name ?: this.name,
+            ribbonColor = ribbonColor?.toColor(),
+            labelColor = labelColor.toColor(),
+            gravity = ColorRibbonFilter.Gravity.valueOf(position.toUpperCase()),
+            textSizeRatio = textSizeRatio
         )
     }
 
     fun customRibbon(properties: Map<String, Any>): ColorRibbonFilter {
-        val ribbonText = properties["label"]?.toString() ?: name
-        val background = properties["ribbonColor"]?.toString()?.let { Color.decode(it) }
-        val labelColor = properties["labelColor"]?.toString()?.let { Color.decode(it) }
+        val label = properties["label"]?.toString()
+        val ribbonColor = properties["ribbonColor"]?.toString()
+        val labelColor = properties["labelColor"]?.toString()
         val position = properties["position"]?.toString()?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }
         val textSizeRatio = properties["textSizeRatio"]?.toString()?.toFloatOrNull()
 
-        return ColorRibbonFilter(
-            label = ribbonText,
-            ribbonColor = background,
+        return customRibbon(
+            label = label,
+            ribbonColor = ribbonColor,
             labelColor = labelColor,
             gravity = position,
             textSizeRatio = textSizeRatio
         )
     }
+
+    fun customRibbon(
+        label: String? = null,
+        ribbonColor: String? = null,
+        labelColor: String? = null,
+        gravity: ColorRibbonFilter.Gravity? = null,
+        textSizeRatio: Float? = null
+    ) = ColorRibbonFilter(
+        label = label ?: name,
+        ribbonColor = ribbonColor?.toColor(),
+        labelColor = labelColor?.toColor(),
+        gravity = gravity,
+        textSizeRatio = textSizeRatio
+    )
 
     @JvmOverloads
     fun grayRibbonFilter(label: String? = null) =
@@ -111,8 +125,8 @@ open class EasyLauncherConfig @Inject constructor(
     ) =
         ChromeLikeFilter(
             label ?: this.name,
-            ribbonColor = ribbonColor?.let { Color.decode(it) },
-            labelColor = labelColor?.let { Color.decode(it) }
+            ribbonColor = ribbonColor?.toColor(),
+            labelColor = labelColor?.toColor()
         )
 
     fun chromeLike(properties: Map<String, Any>): ChromeLikeFilter {
@@ -121,6 +135,16 @@ open class EasyLauncherConfig @Inject constructor(
         val labelColor = properties["labelColor"]?.toString()
 
         return chromeLike(label = ribbonText, ribbonColor = background, labelColor = labelColor)
+    }
+
+    private fun String.toColor(): Color {
+        val value = java.lang.Long.decode(this)
+        return Color(
+            (value shr 16 and 0xFF).toInt(),
+            (value shr 8 and 0xFF).toInt(),
+            (value and 0xFF).toInt(),
+            (value shr 32 and 0xFF).toInt()
+        )
     }
 
     companion object {
