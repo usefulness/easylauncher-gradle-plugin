@@ -21,7 +21,7 @@ internal class IconTransformerTest {
         val drawable = tempDir.resolve("drawable").apply {
             mkdir()
         }
-        sourceIcon = drawable.resolve("icon_resource.xml").also { }
+        sourceIcon = drawable.resolve("icon_resource.xml")
         sourceIcon.writeText(vectorFile())
 
         output = drawable.resolve("output.xml")
