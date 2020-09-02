@@ -34,7 +34,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                 """
                     buildTypes {
                         debug {
-                            filters customRibbon(label: "bitcoin", ribbonColor: "#8A000000", labelColor: "#FFFFFF")
+                            filters customRibbon(label: "bitcoin", ribbonColor: "#8A123456", labelColor: "#654321")
                         }
                     }
                 """.trimIndent()
@@ -59,7 +59,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                 """
                     buildTypes {
                         debug {
-                            filters chromeLike(label: "bitcoin", ribbonColor: "#8A000000", labelColor: "#FFFFFF")
+                            filters chromeLike(label: "bitcoin", ribbonColor: "#8A123456", labelColor: "#654321")
                         }
                     }
                 """.trimIndent()

@@ -74,13 +74,13 @@ easylauncher {
         }
         staging {
             filters = [
-                    customColorRibbonFilter("custom", "#556600CC", "#FFFFFF", "bottom", 0.17)
+                    customColorRibbonFilter("custom", "#6600CC", "#FFFFFF", "bottom", 0.17)
             ]
         }
         production {}
 
         aaa {
-            filters = customColorRibbonFilter("aaa", "#556600CC", "#FFFFFF", "topright")
+            filters = customColorRibbonFilter("aaa", "#6600CC", "#FFFFFF", "topright")
         }
         bbb {
             filters = customColorRibbonFilter("bbb", "#EEEEEE", "#FF00FF", "bottom")
