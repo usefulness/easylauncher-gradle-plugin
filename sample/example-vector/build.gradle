@@ -22,6 +22,9 @@ android {
         register("chromeLike") {
             dimension "reportedBugs"
         }
+        register("alpha") {
+            dimension "reportedBugs"
+        }
     }
 }
 
@@ -46,6 +49,9 @@ easylauncher {
         wrongLabelPosition {
             filters customRibbon(label: "GE", ribbonColor: "#cc0000", position: "top", textSizeRatio: 0.1f),
                     customRibbon(label: "QA-WHI", ribbonColor: "#0000cc", labelColor: "#FFFFFF", position: "bottom", textSizeRatio: 0.1f)
+        }
+        alpha {
+            filters customRibbon(ribbonColor: "#99000000", labelColor: "#88FF0000", textSizeRatio: 0.3f)
         }
     }
 }

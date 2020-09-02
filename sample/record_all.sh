@@ -33,4 +33,6 @@ addToIndex
 ./../gradlew :example-vector:recordWrongLabelPositionDebugAndroidTestScreenshotTest
 addToIndex
 ./../gradlew :example-vector:recordChromelikeDebugAndroidTestScreenshotTest
+addToIndex
+./../gradlew :example-vector:recordAlphaDebugAndroidTestScreenshotTest
 
