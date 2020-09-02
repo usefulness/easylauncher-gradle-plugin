@@ -5,6 +5,8 @@ import com.project.starter.easylauncher.filter.ColorRibbonFilter
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import com.project.starter.easylauncher.filter.OverlayFilter
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Nested
 import java.awt.Color
 import java.io.File
@@ -17,12 +19,12 @@ open class EasyLauncherConfig @Inject constructor(
     objectFactory: ObjectFactory
 ) : Serializable {
 
-    val enabled = objectFactory.property(Boolean::class.java).apply {
+    val enabled: Property<Boolean> = objectFactory.property(Boolean::class.java).apply {
         set(true)
     }
 
     @Nested
-    internal val filters = objectFactory.setProperty(EasyLauncherFilter::class.java).apply {
+    internal val filters: SetProperty<EasyLauncherFilter> = objectFactory.setProperty(EasyLauncherFilter::class.java).apply {
         set(emptyList())
     }
 
@@ -139,12 +141,24 @@ open class EasyLauncherConfig @Inject constructor(
 
     private fun String.toColor(): Color {
         val value = java.lang.Long.decode(this)
-        return Color(
-            (value shr 16 and 0xFF).toInt(),
-            (value shr 8 and 0xFF).toInt(),
-            (value and 0xFF).toInt(),
-            (value shr 32 and 0xFF).toInt()
-        )
+
+        return when (length) {
+            "#AARRGGBB".length -> {
+                val alpha = (value shr 24 and 0xFF).toInt()
+                val red = (value shr 16 and 0xFF).toInt()
+                val green = (value shr 8 and 0xFF).toInt()
+                val blue = (value and 0xFF).toInt()
+
+                Color(red, green, blue, alpha)
+            }
+            "#RRGGBB".length -> {
+                val red = (value shr 16 and 0xFF).toInt()
+                val green = (value shr 8 and 0xFF).toInt()
+                val blue = (value and 0xFF).toInt()
+                Color(red, green, blue)
+            }
+            else -> Color.decode(this)
+        }
     }
 
     companion object {

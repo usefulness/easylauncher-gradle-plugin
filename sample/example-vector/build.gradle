@@ -41,7 +41,7 @@ easylauncher {
         }
         twoVectors {
             filters grayRibbonFilter(),
-                    customRibbon(label: "second", ribbonColor: "#556600CC", labelColor: "#FFFFFF", position: "bottom")
+                    customRibbon(label: "second", ribbonColor: "#6600CC", labelColor: "#FFFFFF", position: "bottom")
         }
         wrongLabelPosition {
             filters customRibbon(label: "GE", ribbonColor: "#cc0000", position: "top", textSizeRatio: 0.1f),

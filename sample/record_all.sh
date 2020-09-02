@@ -7,10 +7,10 @@ function addToIndex {
   git status | grep "screenshots" | grep -v "new file:"  | grep -v "deleted:" | awk '{print $1}' | xargs git add
 }
 
-#echo "Record Start"
-#./../gradlew :example-simple:recordDebugAndroidTestScreenshotTest
-#addToIndex
-echo "Simple completed"
+echo "Record Start"
+./../gradlew :example-simple:recordDebugAndroidTestScreenshotTest
+addToIndex
+echo "Simple completed. Running custom"
 ./../gradlew :example-custom:recordLocalAaaDebugAndroidTestScreenshotTest
 addToIndex
 ./../gradlew :example-custom:recordProductionAaaDebugAndroidTestScreenshotTest
