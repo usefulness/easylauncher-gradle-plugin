@@ -113,3 +113,8 @@ jobs:
         with:
           name: failedScreenshots
           path: "${{ github.workspace }}/**/build/failedScreenshots"
+      - name: Upload screenshot tests result
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: "${{ github.workspace }}/**/build/*AndroidTest/"
