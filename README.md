@@ -134,13 +134,15 @@ easylauncher {
 | Custom gravity - TopLeft | `customRibbon(position: "topLeft")` | ![](icons/ribbon_custom_topleft.png) |
 | Custom gravity - TopRight | `customRibbon(position: "topRight")` | ![](icons/ribbon_custom_topright.png) |
 | Custom text size (relative to the icon size) | `customRibbon(position: "bottom", textSizeRatio: 0.2)` | ![](icons/ribbon_custom_textsizeratio.png) |
+| Custom font (locally installed) | `customRibbon(position: "top", fontName: "ComicSansMs")` | ![](icons/ribbon_custom_font.png) |
 
 ## Chrome-like filters
 
 | Filter | Command | Result |
 | --- | --- | --- |
 | Default | `chromeLike()` | ![](icons/chromelike_default.png) |
-| Custom | `chromeLike(label: "Custom", ribbonColor: "#FF00FF", labelColor: "#FFFFFF")` | ![](icons/chromelike_custom.png) |
+| Custom appearance | `chromeLike(label: "Custom", ribbonColor: "#FF00FF", labelColor: "#FFFFFF")` | ![](icons/chromelike_custom.png) |
+| Custom font (locally installed) | `chromeLike(label: "Custom", fontName: "ComicSansMS-Bold")` | ![](icons/chromelike_font.png) |
 
 ## Available options
 
