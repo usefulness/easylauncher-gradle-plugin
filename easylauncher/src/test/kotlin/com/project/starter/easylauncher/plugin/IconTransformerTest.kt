@@ -29,6 +29,7 @@ internal class IconTransformerTest {
 
     @Test
     fun `transforms vector icon`() {
+        val expected = tempDir.resolve("drawable-anydpi-v26/output.xml")
         sourceIcon.transformXml(
             output,
             listOf(
@@ -37,7 +38,7 @@ internal class IconTransformerTest {
             )
         )
 
-        assertThat(output).hasContent(
+        assertThat(expected).hasContent(
             """
             |<?xml version="1.0" encoding="utf-8"?>
             |<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
