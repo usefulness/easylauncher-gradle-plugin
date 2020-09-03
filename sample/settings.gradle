@@ -1,6 +1,7 @@
 include ':example-simple'
 include ':example-custom'
 include ':example-vector'
+include ':example-scripted'
 include ':adaptive-support'
 include ':screenshot-test-helpers'
 

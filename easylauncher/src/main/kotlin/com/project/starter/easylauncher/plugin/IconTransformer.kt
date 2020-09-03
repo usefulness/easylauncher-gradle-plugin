@@ -21,11 +21,9 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
     val width = iconXml.property("@android:width")?.toSize().let(::requireNotNull)
     val height = iconXml.property("@android:height")?.toSize().let(::requireNotNull)
 
-    outputFile.parentFile.mkdirs()
+    val drawableRoot = outputFile.parentFile // eg. debug/drawable/
 
     val layers = filters.mapIndexed { index, filter ->
-        val drawableRoot = outputFile.parentFile
-
         val filterId = "${filter::class.java.simpleName.toLowerCase()}_$index"
         val resourceName = "${filterId}_${outputFile.nameWithoutExtension}"
 
@@ -54,9 +52,10 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
             |       />
             |""".trimMargin()
         }
-    copyTo(outputFile.parentFile.resolve("easy_$name"), overwrite = true)
+    val v26DrawableRoot = drawableRoot.parentFile.resolve("${drawableRoot.name}-anydpi-v26")
 
-    outputFile.writeText(
+    copyTo(v26DrawableRoot.resolve("easy_$name"), overwrite = true)
+    v26DrawableRoot.resolve(outputFile.name).writeText(
         """
         |<?xml version="1.0" encoding="utf-8"?>
         |<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
