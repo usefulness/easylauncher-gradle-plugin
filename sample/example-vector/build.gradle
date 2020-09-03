@@ -25,6 +25,9 @@ android {
         register("alpha") {
             dimension "reportedBugs"
         }
+        register("customFont") {
+            dimension "reportedBugs"
+        }
     }
 }
 
@@ -52,6 +55,10 @@ easylauncher {
         }
         alpha {
             filters customRibbon(ribbonColor: "#99000000", labelColor: "#88FF0000", textSizeRatio: 0.3f)
+        }
+        customFont {
+            filters customRibbon(label: "regular", fontName: "ComicSansMS", position: "top"),
+                    chromeLike(label: "bold", fontName: "ComicSansMS-Bold")
         }
     }
 }

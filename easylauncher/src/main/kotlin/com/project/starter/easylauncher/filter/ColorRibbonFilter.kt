@@ -17,7 +17,8 @@ class ColorRibbonFilter(
     ribbonColor: Color? = null,
     labelColor: Color? = null,
     gravity: Gravity? = null,
-    private val textSizeRatio: Float? = null
+    private val textSizeRatio: Float? = null,
+    private val fontName: String? = null
 ) : EasyLauncherFilter {
 
     enum class Gravity {
@@ -27,9 +28,6 @@ class ColorRibbonFilter(
     private val ribbonColor = ribbonColor ?: Color(0, 0x72, 0, 0x99)
     private val labelColor = labelColor ?: Color.WHITE
     private val gravity = gravity ?: Gravity.TOPLEFT
-
-    private val fontName = "DEFAULT"
-    private val fontStyle = Font.PLAIN
 
     @Suppress("ComplexMethod")
     override fun apply(image: BufferedImage, adaptive: Boolean) {
@@ -97,28 +95,16 @@ class ColorRibbonFilter(
     private fun getFont(imageHeight: Int, maxLabelWidth: Int, frc: FontRenderContext): Font {
         // User-defined text size
         if (textSizeRatio != null) {
-            return Font(fontName, fontStyle, (imageHeight * textSizeRatio).roundToInt())
+            return Font(fontName, Font.PLAIN, (imageHeight * textSizeRatio).roundToInt())
         }
-        var max = imageHeight / 8
-        var min = 0
+        val max = imageHeight / 8 - 1
 
-        // Automatic calculation: as big as possible
-        var size = max
-        for (i in 0..9) {
-            val mid = (max + min) / 2
-            if (mid == size) {
-                break
+        return (max downTo 0).asSequence()
+            .map { size -> Font(fontName, Font.PLAIN, size) }
+            .first { font ->
+                val bounds = font.getStringBounds(label, frc)
+                bounds.width < maxLabelWidth
             }
-            val font = Font(fontName, fontStyle, mid)
-            val labelBounds = font.getStringBounds(label, frc)
-            if (labelBounds.width.toInt() > maxLabelWidth) {
-                max = mid
-            } else {
-                min = mid
-            }
-            size = mid
-        }
-        return Font(fontName, fontStyle, size)
     }
 
     companion object {
