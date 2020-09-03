@@ -13,7 +13,7 @@ import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions", "MagicNumber")
+@Suppress("TooManyFunctions", "MagicNumber", "LongParameterList")
 open class EasyLauncherConfig @Inject constructor(
     val name: String,
     objectFactory: ObjectFactory
@@ -68,13 +68,15 @@ open class EasyLauncherConfig @Inject constructor(
         val labelColor = properties["labelColor"]?.toString()
         val position = properties["position"]?.toString()?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }
         val textSizeRatio = properties["textSizeRatio"]?.toString()?.toFloatOrNull()
+        val fontName = properties["fontName"]?.toString()
 
         return customRibbon(
             label = label,
             ribbonColor = ribbonColor,
             labelColor = labelColor,
             gravity = position,
-            textSizeRatio = textSizeRatio
+            textSizeRatio = textSizeRatio,
+            fontName = fontName
         )
     }
 
@@ -83,13 +85,15 @@ open class EasyLauncherConfig @Inject constructor(
         ribbonColor: String? = null,
         labelColor: String? = null,
         gravity: ColorRibbonFilter.Gravity? = null,
-        textSizeRatio: Float? = null
+        textSizeRatio: Float? = null,
+        fontName: String? = null
     ) = ColorRibbonFilter(
         label = label ?: name,
         ribbonColor = ribbonColor?.toColor(),
         labelColor = labelColor?.toColor(),
         gravity = gravity,
-        textSizeRatio = textSizeRatio
+        textSizeRatio = textSizeRatio,
+        fontName = fontName
     )
 
     @JvmOverloads
@@ -124,19 +128,22 @@ open class EasyLauncherConfig @Inject constructor(
         label: String? = null,
         ribbonColor: String? = null,
         labelColor: String? = null,
+        fontName: String? = null
     ) =
         ChromeLikeFilter(
             label ?: this.name,
             ribbonColor = ribbonColor?.toColor(),
-            labelColor = labelColor?.toColor()
+            labelColor = labelColor?.toColor(),
+            fontName = fontName
         )
 
     fun chromeLike(properties: Map<String, Any>): ChromeLikeFilter {
         val ribbonText = properties["label"]?.toString()
         val background = properties["ribbonColor"]?.toString()
         val labelColor = properties["labelColor"]?.toString()
+        val fontName = properties["fontName"]?.toString()
 
-        return chromeLike(label = ribbonText, ribbonColor = background, labelColor = labelColor)
+        return chromeLike(label = ribbonText, ribbonColor = background, labelColor = labelColor, fontName = fontName)
     }
 
     private fun String.toColor(): Color {

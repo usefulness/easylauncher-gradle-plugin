@@ -17,7 +17,8 @@ class ColorRibbonFilter(
     ribbonColor: Color? = null,
     labelColor: Color? = null,
     gravity: Gravity? = null,
-    private val textSizeRatio: Float? = null
+    private val textSizeRatio: Float? = null,
+    private val fontName: String? = null
 ) : EasyLauncherFilter {
 
     enum class Gravity {
@@ -28,7 +29,6 @@ class ColorRibbonFilter(
     private val labelColor = labelColor ?: Color.WHITE
     private val gravity = gravity ?: Gravity.TOPLEFT
 
-    private val fontName = "DEFAULT"
     private val fontStyle = Font.PLAIN
 
     @Suppress("ComplexMethod")

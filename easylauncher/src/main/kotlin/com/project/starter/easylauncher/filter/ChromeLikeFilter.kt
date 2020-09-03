@@ -12,15 +12,13 @@ import kotlin.math.roundToInt
 @Suppress("MagicNumber")
 class ChromeLikeFilter(
     private val label: String,
+    private val fontName: String? = null,
     ribbonColor: Color? = null,
     labelColor: Color? = null,
 ) : EasyLauncherFilter {
 
     private val ribbonColor = ribbonColor ?: Color.DARK_GRAY
     private val labelColor = labelColor ?: Color.WHITE
-
-    private val fontName = "DEFAULT"
-    private val fontStyle = Font.PLAIN
 
     override fun apply(image: BufferedImage, adaptive: Boolean) {
         val graphics = image.graphics as Graphics2D
@@ -56,7 +54,7 @@ class ChromeLikeFilter(
 
     private fun getFont(imageHeight: Int, maxLabelWidth: Int, maxLabelHeight: Int, frc: FontRenderContext) =
         (imageHeight downTo 0).asSequence()
-            .map { size -> Font(fontName, fontStyle, size) }
+            .map { size -> Font(fontName, Font.PLAIN, size) }
             .first { font ->
                 val bounds = font.getStringBounds(label, frc)
                 bounds.width < maxLabelWidth && bounds.height < maxLabelHeight
