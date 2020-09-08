@@ -7,25 +7,29 @@ import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.font.FontRenderContext
 import java.awt.image.BufferedImage
+import java.io.File
 import kotlin.math.roundToInt
 
-@Suppress("MagicNumber")
 class ChromeLikeFilter(
     private val label: String,
-    private val fontName: String? = null,
     ribbonColor: Color? = null,
     labelColor: Color? = null,
+    fontName: String? = null,
+    fontResource: File? = null,
 ) : EasyLauncherFilter {
 
     private val ribbonColor = ribbonColor ?: Color.DARK_GRAY
     private val labelColor = labelColor ?: Color.WHITE
+    private val font = fontResource?.takeIf { it.exists() }
+        ?.let { Font.createFont(Font.TRUETYPE_FONT, it) }
+        ?: Font(fontName, Font.PLAIN, 1)
 
     override fun apply(image: BufferedImage, adaptive: Boolean) {
         val graphics = image.graphics as Graphics2D
 
         val frc = FontRenderContext(graphics.transform, true, true)
         // calculate the rectangle where the label is rendered
-        val backgroundHeight = (image.height * 0.4).roundToInt()
+        val backgroundHeight = (image.height * OVERLAY_HEIGHT).roundToInt()
         graphics.font = getFont(
             imageHeight = image.height,
             maxLabelWidth = (image.width * ADAPTIVE_CONTENT_SCALE).roundToInt(),
@@ -54,9 +58,13 @@ class ChromeLikeFilter(
 
     private fun getFont(imageHeight: Int, maxLabelWidth: Int, maxLabelHeight: Int, frc: FontRenderContext) =
         (imageHeight downTo 0).asSequence()
-            .map { size -> Font(fontName, Font.PLAIN, size) }
+            .map { size -> font.deriveFont(size.toFloat()) }
             .first { font ->
                 val bounds = font.getStringBounds(label, frc)
                 bounds.width < maxLabelWidth && bounds.height < maxLabelHeight
             }
+
+    companion object {
+        private const val OVERLAY_HEIGHT = 0.4
+    }
 }

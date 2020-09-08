@@ -53,10 +53,10 @@ open class EasyLauncherConfig @Inject constructor(
         position: String = "topleft",
         textSizeRatio: Float? = null
     ): ColorRibbonFilter {
-        return ColorRibbonFilter(
-            label = name ?: this.name,
-            ribbonColor = ribbonColor?.toColor(),
-            labelColor = labelColor.toColor(),
+        return customRibbon(
+            label = name,
+            ribbonColor = ribbonColor,
+            labelColor = labelColor,
             gravity = ColorRibbonFilter.Gravity.valueOf(position.toUpperCase()),
             textSizeRatio = textSizeRatio
         )
@@ -68,7 +68,23 @@ open class EasyLauncherConfig @Inject constructor(
         val labelColor = properties["labelColor"]?.toString()
         val position = properties["position"]?.toString()?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }
         val textSizeRatio = properties["textSizeRatio"]?.toString()?.toFloatOrNull()
-        val fontName = properties["fontName"]?.toString()
+
+        val fontName: String?
+        val font: File?
+        when (val fontRaw = properties["font"]) {
+            is File -> {
+                fontName = null
+                font = fontRaw
+            }
+            is String -> {
+                fontName = properties["fontName"]?.toString()
+                font = null
+            }
+            else -> {
+                fontName = properties["fontName"]?.toString()
+                font = null
+            }
+        }
 
         return customRibbon(
             label = label,
@@ -76,7 +92,8 @@ open class EasyLauncherConfig @Inject constructor(
             labelColor = labelColor,
             gravity = position,
             textSizeRatio = textSizeRatio,
-            fontName = fontName
+            fontName = fontName,
+            font = font
         )
     }
 
@@ -86,14 +103,16 @@ open class EasyLauncherConfig @Inject constructor(
         labelColor: String? = null,
         gravity: ColorRibbonFilter.Gravity? = null,
         textSizeRatio: Float? = null,
-        fontName: String? = null
+        fontName: String? = null,
+        font: File? = null
     ) = ColorRibbonFilter(
         label = label ?: name,
         ribbonColor = ribbonColor?.toColor(),
         labelColor = labelColor?.toColor(),
         gravity = gravity,
         textSizeRatio = textSizeRatio,
-        fontName = fontName
+        fontName = fontName,
+        fontResource = font
     )
 
     @JvmOverloads
@@ -128,22 +147,46 @@ open class EasyLauncherConfig @Inject constructor(
         label: String? = null,
         ribbonColor: String? = null,
         labelColor: String? = null,
-        fontName: String? = null
+        fontName: String? = null,
+        font: File? = null
     ) =
         ChromeLikeFilter(
             label ?: this.name,
             ribbonColor = ribbonColor?.toColor(),
             labelColor = labelColor?.toColor(),
-            fontName = fontName
+            fontName = fontName,
+            fontResource = font
         )
 
     fun chromeLike(properties: Map<String, Any>): ChromeLikeFilter {
         val ribbonText = properties["label"]?.toString()
         val background = properties["ribbonColor"]?.toString()
         val labelColor = properties["labelColor"]?.toString()
-        val fontName = properties["fontName"]?.toString()
 
-        return chromeLike(label = ribbonText, ribbonColor = background, labelColor = labelColor, fontName = fontName)
+        val fontName: String?
+        val font: File?
+        when (val fontRaw = properties["font"]) {
+            is File -> {
+                fontName = null
+                font = fontRaw
+            }
+            is String -> {
+                fontName = properties["fontName"]?.toString()
+                font = null
+            }
+            else -> {
+                fontName = properties["fontName"]?.toString()
+                font = null
+            }
+        }
+
+        return chromeLike(
+            label = ribbonText,
+            ribbonColor = background,
+            labelColor = labelColor,
+            fontName = fontName,
+            font = font
+        )
     }
 
     private fun String.toColor(): Color {

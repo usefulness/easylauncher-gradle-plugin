@@ -38,7 +38,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                                         label: "bitcoin", 
                                         ribbonColor: "#8A123456", 
                                         labelColor: "#654321", 
-                                        fontName: "Arial-Black"
+                                        font: "Arial-Black"
                                     )
                         }
                     }
@@ -68,7 +68,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                                         label: "bitcoin", 
                                         ribbonColor: "#8A123456", 
                                         labelColor: "#654321", 
-                                        fontName: "Tahoma"
+                                        font: "Tahoma"
                                     )
                         }
                     }

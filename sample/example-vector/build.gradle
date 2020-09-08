@@ -28,6 +28,9 @@ android {
         register("customFont") {
             dimension "reportedBugs"
         }
+        register("customFontByFile") {
+            dimension "reportedBugs"
+        }
     }
 }
 
@@ -57,8 +60,12 @@ easylauncher {
             filters customRibbon(ribbonColor: "#99000000", labelColor: "#88FF0000", textSizeRatio: 0.3f)
         }
         customFont {
-            filters customRibbon(label: "regular", fontName: "ComicSansMS", position: "top"),
-                    chromeLike(label: "bold", fontName: "ComicSansMS-Bold")
+            filters customRibbon(label: "regular", font: "ComicSansMS", position: "top"),
+                    chromeLike(label: "bold", font: "ComicSansMS-Bold")
+        }
+        customFontByFile {
+            filters customRibbon(label: "\ue868\ue3B7", font: file("fonts/MaterialIcons-Regular.ttf"), position: "top"),
+                    chromeLike(label: "\ue857\ue8DC", font: file("fonts/MaterialIcons-Regular.ttf"))
         }
     }
 }
