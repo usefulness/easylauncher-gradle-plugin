@@ -32,7 +32,7 @@ jobs:
       if: ${{ steps.dependency-diff.outputs.text-diff != null || steps.find_comment.outputs.comment-id != null }}
       with:
         body: |
-          Dependency diff (customize your message here): 
+          Dependency diff: 
             ```diff
             ${{ steps.dependency-diff.outputs.text-diff }}
             ```
