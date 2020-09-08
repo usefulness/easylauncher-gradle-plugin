@@ -7,18 +7,19 @@ import java.awt.RenderingHints
 import java.awt.font.FontRenderContext
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
-import kotlin.math.pow
+import java.io.File
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "LongParameterList")
 class ColorRibbonFilter(
     private val label: String,
     ribbonColor: Color? = null,
     labelColor: Color? = null,
     gravity: Gravity? = null,
     private val textSizeRatio: Float? = null,
-    private val fontName: String? = null
+    fontName: String? = null,
+    fontResource: File? = null,
 ) : EasyLauncherFilter {
 
     enum class Gravity {
@@ -28,6 +29,9 @@ class ColorRibbonFilter(
     private val ribbonColor = ribbonColor ?: Color(0, 0x72, 0, 0x99)
     private val labelColor = labelColor ?: Color.WHITE
     private val gravity = gravity ?: Gravity.TOPLEFT
+    private val font = fontResource?.takeIf { it.exists() }
+        ?.let { Font.createFont(Font.TRUETYPE_FONT, it) }
+        ?: Font(fontName, Font.PLAIN, 1)
 
     @Suppress("ComplexMethod")
     override fun apply(image: BufferedImage, adaptive: Boolean) {
@@ -95,12 +99,12 @@ class ColorRibbonFilter(
     private fun getFont(imageHeight: Int, maxLabelWidth: Int, frc: FontRenderContext): Font {
         // User-defined text size
         if (textSizeRatio != null) {
-            return Font(fontName, Font.PLAIN, (imageHeight * textSizeRatio).roundToInt())
+            return font.deriveFont((imageHeight * textSizeRatio).roundToInt().toFloat())
         }
         val max = imageHeight / 8 - 1
 
         return (max downTo 0).asSequence()
-            .map { size -> Font(fontName, Font.PLAIN, size) }
+            .map { size -> font.deriveFont(size.toFloat()) }
             .first { font ->
                 val bounds = font.getStringBounds(label, frc)
                 bounds.width < maxLabelWidth
@@ -108,8 +112,7 @@ class ColorRibbonFilter(
     }
 
     companion object {
-        private fun calculateMaxLabelWidth(y: Int): Int {
-            return sqrt(y.toDouble().pow(2.0) * 2).roundToInt()
-        }
+        private fun calculateMaxLabelWidth(y: Int) =
+            (y * sqrt(2.0)).roundToInt()
     }
 }
