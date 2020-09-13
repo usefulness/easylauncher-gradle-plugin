@@ -26,13 +26,13 @@ jobs:
         with:
           job-id: build-plugin
       - name: Code style check
-        run: ./gradlew projectCodestyle
+        run: ./gradlew projectCodestyle --stacktrace
       - name: Assemble
-        run: ./gradlew assemble
+        run: ./gradlew assemble --stacktrace
       - name: Validate Plugins
-        run: ./gradlew validatePlugins validateTaskProperties
+        run: ./gradlew validatePlugins validateTaskProperties --stacktrace
       - name: Unit tests
-        run: ./gradlew projectCoverage
+        run: ./gradlew projectCoverage --stacktrace
       - uses: codecov/codecov-action@v1
       - name: Upload test results
         if: ${{ always() }}
@@ -77,7 +77,7 @@ jobs:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
           dependencies-cache-enabled: true
-          arguments: assemble -PuseMavenLocal
+          arguments: assemble -PuseMavenLocal --stacktrace
 
   icons-test:
     runs-on: macos-latest
