@@ -26,6 +26,9 @@ open class EasyLauncherTask : DefaultTask() {
     @Input
     val filters: ListProperty<EasyLauncherFilter> = listProperty<EasyLauncherFilter>()
 
+    @Input
+    val iconsNames: ListProperty<String> = listProperty<String>()
+
     @TaskAction
     fun run() {
         if (filters.get().isEmpty()) {
@@ -36,19 +39,20 @@ open class EasyLauncherTask : DefaultTask() {
             val android = project.extensions.getByType(AppExtension::class.java)
             val variant = android.applicationVariants.find { it.name == variantName.get() }
                 ?: throw GradleException("invalid variant name ${variantName.get()}")
-            val names = android.getLauncherIconNames(variant).toSet()
 
-            variant.getAllSourceSets().forEach { resDir ->
+            val names = (iconsNames.orNull?.takeIf { it.isNotEmpty() } ?: android.getLauncherIconNames(variant)).toSet()
+            logger.info("will process icons: ${names.joinToString()}")
+            val icons = variant.getAllSourceSets().flatMap { resDir ->
                 names.flatMap { resDir.getIconFiles(it) }
-                    .forEach { iconFile ->
-                        val adaptiveIcon = iconFile.asAdaptiveIcon()
-                        if (adaptiveIcon == null) {
-                            val outputFile = iconFile.getOutputFile()
-                            iconFile.transformPng(outputFile, filters.get(), adaptive = false)
-                        } else {
-                            variant.processIcon(adaptiveIcon)
-                        }
-                    }
+            }
+            icons.forEach { iconFile ->
+                val adaptiveIcon = iconFile.asAdaptiveIcon()
+                if (adaptiveIcon == null) {
+                    val outputFile = iconFile.getOutputFile()
+                    iconFile.transformPng(outputFile, filters.get(), adaptive = false)
+                } else {
+                    variant.processIcon(adaptiveIcon)
+                }
             }
         }
 

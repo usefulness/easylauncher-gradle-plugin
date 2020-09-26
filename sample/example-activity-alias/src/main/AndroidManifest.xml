@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.multiplelauncher"
+    >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        >
+
+        <!-- Main activity has no icons so would use the app icon but its not shown in launcher anyway -->
+        <activity android:name="com.example.multiplelauncher.MultiAliasActivity">
+
+        </activity>
+
+        <!-- Alias One has a different and complete icon set: vector, legacy, and round -->
+        <activity-alias
+            android:name=".MainActivityAlias"
+            android:icon="@mipmap/ic_launcher_one"
+            android:label="Multi Test 1"
+            android:roundIcon="@mipmap/ic_launcher_one_round"
+            android:targetActivity="com.example.multiplelauncher.MultiAliasActivity"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- Alias two has a different icon, but only legacy ones -->
+        <activity-alias
+            android:name=".MainActivityAliasTwo"
+            android:icon="@mipmap/ic_launcher_two"
+            android:label="Multi Test 2"
+            android:targetActivity="com.example.multiplelauncher.MultiAliasActivity"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+    </application>
+
+</manifest>

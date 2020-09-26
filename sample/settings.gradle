@@ -2,6 +2,7 @@ include ':example-simple'
 include ':example-custom'
 include ':example-vector'
 include ':example-scripted'
+include ':example-activity-alias'
 include ':adaptive-support'
 include ':screenshot-test-helpers'
 

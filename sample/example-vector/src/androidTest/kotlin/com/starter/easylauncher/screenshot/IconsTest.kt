@@ -2,6 +2,7 @@ package com.starter.easylauncher.screenshot
 
 import android.Manifest
 import androidx.test.rule.GrantPermissionRule
+import com.example.custom.adaptive.MainActivity
 import com.example.vector.BuildConfig
 import com.starter.easylauncher.recordScreenshot
 import org.junit.Rule
@@ -14,6 +15,6 @@ internal class IconsTest {
 
     @Test
     fun doScreenshot() {
-        recordScreenshot(BuildConfig.FLAVOR)
+        recordScreenshot<MainActivity>(BuildConfig.FLAVOR)
     }
 }
