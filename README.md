@@ -124,16 +124,15 @@ easylauncher {
 
 #### Providing Icon Names
 By default, the plugin **automatically** discovers launcher icon and applies provided filters.  
-It is possible to override that behavior and manually provide a set of   
-Custom icon names, useful when defining multiple activity aliases, can be provided using `iconNames` property as follows:
+Custom icon names, useful i.e. when defining multiple activity aliases, can be provided using `iconNames` property as follows:
 
 ```groovy
 easylauncher {
-    iconNames = ["@mipmap/custom_launcher_icon"] // optional, disables automatic launcher icon discovery
+    iconNames = ["@mipmap/custom_launcher_icon"] // optional, disables automatic launcher icon discovery and will use provided icons only
 
     buildTypes {
         beta {
-            // icon names can also be overridden per-build variant (both buildType and productFlavor)
+            // icon names can also be provided per each configuration (buildType, productFlavor or variant)
             iconNames = ["@mipmap/beta_launcher"]  
         }
     }
