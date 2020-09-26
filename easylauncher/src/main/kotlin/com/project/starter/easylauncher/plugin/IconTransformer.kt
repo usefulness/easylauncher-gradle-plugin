@@ -35,7 +35,7 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
             )
             filter.apply(overlay, adaptive = true)
 
-            val qualifiedRoot = drawableRoot.parentFile.resolve("${drawableRoot.name}-$qualifier")
+            val qualifiedRoot = drawableRoot.parentFile.resolve("${drawableRoot.normalizedName}-$qualifier")
             val qualifiedOverlayFile = qualifiedRoot.resolve("$resourceName.png").also { it.mkdirs() }
             ImageIO.write(overlay, "png", qualifiedOverlayFile)
         }
@@ -47,12 +47,12 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
             |   <item
             |       android:width="${width.androidSize}"
             |       android:height="${height.androidSize}"
-            |       android:drawable="@${outputFile.parentFile.name}/$it"
+            |       android:drawable="@${outputFile.parentFile.normalizedName}/$it"
             |       android:gravity="center"
             |       />
             |""".trimMargin()
         }
-    val v26DrawableRoot = drawableRoot.parentFile.resolve("${drawableRoot.name}-anydpi-v26")
+    val v26DrawableRoot = drawableRoot.parentFile.resolve("${drawableRoot.normalizedName}-anydpi-v26")
 
     copyTo(v26DrawableRoot.resolve("easy_$name"), overwrite = true)
     v26DrawableRoot.resolve(outputFile.name).writeText(
@@ -67,6 +67,17 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
         |""".trimMargin()
     )
 }
+
+/**
+ * Fallback for a setup currently considered invalid. Just to avoid failing the build.
+ * Reference: https://github.com/usefulness/easylauncher-gradle-plugin/issues/78
+ */
+private val File.normalizedName
+    get() = when {
+        name.contains("-v2") -> "drawable"
+        name.contains("dpi") -> "drawable"
+        else -> name
+    }
 
 private val Size.androidSize: String
     get() = "${(value * ADAPTIVE_SCALE).roundToInt()}$unit"
