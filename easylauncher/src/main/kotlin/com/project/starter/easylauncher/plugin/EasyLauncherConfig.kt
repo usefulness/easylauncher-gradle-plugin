@@ -5,6 +5,7 @@ import com.project.starter.easylauncher.filter.ColorRibbonFilter
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import com.project.starter.easylauncher.filter.OverlayFilter
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Nested
@@ -28,6 +29,10 @@ open class EasyLauncherConfig @Inject constructor(
         set(emptyList())
     }
 
+    val iconNames: ListProperty<String> = objectFactory.listProperty(String::class.java).apply {
+        set(emptyList())
+    }
+
     fun enable(enabled: Boolean) {
         this.enabled.value(enabled)
     }
@@ -42,6 +47,10 @@ open class EasyLauncherConfig @Inject constructor(
 
     fun filters(vararg filters: EasyLauncherFilter) {
         this.filters.value(this.filters.get() + filters)
+    }
+
+    fun setIconNames(names: Iterable<String>) {
+        iconNames.set(names)
     }
 
     @JvmOverloads

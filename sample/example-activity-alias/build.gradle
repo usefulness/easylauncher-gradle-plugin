@@ -1,0 +1,60 @@
+apply plugin: 'com.starter.application.android'
+apply plugin: 'com.starter.easylauncher'
+
+static def isCiBuild() {
+    // allows the build server to produce release builds for internal testing only
+    // obviously this isn't going to change itself in this example
+    return true
+}
+
+android {
+
+    defaultConfig {
+        applicationId "com.example.mutliplelauncher"
+    }
+
+    signingConfigs {
+        dummy {
+            storeFile file('dummy.keystore')
+            storePassword 'android'
+            keyAlias 'androidkey'
+            keyPassword 'android'
+        }
+    }
+
+    buildTypes {
+        register("unspecified") {
+            initWith debug
+            matchingFallbacks = ["debug"]
+        }
+        named("release") {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+            signingConfig signingConfigs.dummy
+        }
+    }
+}
+
+easylauncher {
+    iconNames = ["@mipmap/ic_launcher_one"]
+    buildTypes {
+        debug {
+            filters = redRibbonFilter()
+
+            iconNames = ["@mipmap/ic_launcher", "@mipmap/ic_launcher_one", "@mipmap/ic_launcher_two"]
+        }
+        unspecified {
+            filters = blueRibbonFilter()
+        }
+        release {
+            enable isCiBuild()
+            filters = redRibbonFilter("CI")
+
+            iconNames = ["@mipmap/ic_launcher", "@mipmap/ic_launcher_one", "@mipmap/ic_launcher_two"]
+        }
+    }
+}
+
+dependencies {
+    implementation project(":adaptive-support")
+}

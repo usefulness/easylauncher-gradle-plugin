@@ -47,11 +47,18 @@ class EasyLauncherPlugin : Plugin<Project> {
                         val generatedResDir = getGeneratedResDir(variant)
                         android.sourceSets.getByName(variant.name).res.srcDir(generatedResDir)
 
+                        val customIconNames = provider {
+                            val global = extension.iconNames.orNull.orEmpty()
+                            val variantSpecific = configs.flatMap { config -> config.iconNames.orNull.orEmpty() }
+                            (global + variantSpecific).toSet()
+                        }
+
                         val name = "${EasyLauncherTask.NAME}${variant.name.capitalize()}"
                         val task = tasks.register(name, EasyLauncherTask::class.java) {
                             it.variantName.set(variant.name)
                             it.outputDir.set(generatedResDir)
                             it.filters.set(filters)
+                            it.iconsNames.set(customIconNames)
                         }
 
                         easyLauncherTasks.add(task)
