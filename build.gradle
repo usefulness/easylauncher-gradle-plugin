@@ -2,8 +2,8 @@ buildscript {
     repositories.google()
 }
 plugins {
-    id "com.starter.config" version '0.19.0'
-    id "com.starter.versioning" version '0.19.0'
+    id "com.starter.config" version '0.20.0'
+    id "com.starter.versioning" version '0.20.0'
 }
 
 commonConfig {
