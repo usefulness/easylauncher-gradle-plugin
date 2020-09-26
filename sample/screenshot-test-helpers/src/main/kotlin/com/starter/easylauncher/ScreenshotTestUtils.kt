@@ -1,18 +1,21 @@
 package com.starter.easylauncher
 
+import android.app.Activity
 import android.view.View
-import androidx.test.core.app.launchActivity
-import com.example.custom.adaptive.MainActivity
+import androidx.test.core.app.ActivityScenario
 import com.facebook.testing.screenshot.Screenshot
 import com.facebook.testing.screenshot.ViewHelpers
 import com.facebook.testing.screenshot.internal.TestNameDetector
+import kotlin.reflect.KClass
 
 private const val SCREENSHOT_WIDTH = 300
 
-fun recordScreenshot(flavor: String) {
+inline fun <reified T : Activity> recordScreenshot(flavor: String) = recordScreenshot(T::class, flavor)
+
+fun recordScreenshot(activityClass: KClass<out Activity>, flavor: String) {
     lateinit var root: View
-    launchActivity<MainActivity>().onActivity { activity ->
-        root = activity.findViewById<View>(android.R.id.content)
+    ActivityScenario.launch(activityClass.java).onActivity { activity ->
+        root = activity.findViewById(android.R.id.content)
     }
 
     ViewHelpers.setupView(root).setExactWidthDp(SCREENSHOT_WIDTH).layout()

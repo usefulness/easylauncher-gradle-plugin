@@ -2,6 +2,7 @@ package com.starter.easylauncher.screenshot
 
 import android.Manifest
 import androidx.test.rule.GrantPermissionRule
+import com.example.custom.adaptive.MainActivity
 import com.starter.easylauncher.recordScreenshot
 import org.junit.Rule
 import org.junit.Test
@@ -13,6 +14,6 @@ internal class IconsTest {
 
     @Test
     fun doScreenshot() {
-        recordScreenshot("default")
+        recordScreenshot<MainActivity>("default")
     }
 }

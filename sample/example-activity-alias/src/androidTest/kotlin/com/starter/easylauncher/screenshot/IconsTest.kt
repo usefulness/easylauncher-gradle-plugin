@@ -3,7 +3,8 @@ package com.starter.easylauncher.screenshot
 import android.Manifest
 import androidx.test.rule.GrantPermissionRule
 import com.example.custom.adaptive.MainActivity
-import com.example.custom.BuildConfig
+import com.example.multiplelauncher.BuildConfig
+import com.example.multiplelauncher.MultiAliasActivity
 import com.starter.easylauncher.recordScreenshot
 import org.junit.Rule
 import org.junit.Test
@@ -15,6 +16,6 @@ internal class IconsTest {
 
     @Test
     fun doScreenshot() {
-        recordScreenshot<MainActivity>(BuildConfig.FLAVOR)
+        recordScreenshot<MultiAliasActivity>(BuildConfig.BUILD_TYPE)
     }
 }

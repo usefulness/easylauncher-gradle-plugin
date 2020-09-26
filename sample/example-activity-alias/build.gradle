@@ -8,6 +8,7 @@ static def isCiBuild() {
 }
 
 android {
+    testBuildType findProperty("testBuildType")?.toString() ?: "debug"
 
     defaultConfig {
         applicationId "com.example.mutliplelauncher"
@@ -28,8 +29,6 @@ android {
             matchingFallbacks = ["debug"]
         }
         named("release") {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
             signingConfig signingConfigs.dummy
         }
     }

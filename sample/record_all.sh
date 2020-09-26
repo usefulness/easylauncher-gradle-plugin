@@ -35,4 +35,13 @@ addToIndex
 ./../gradlew :example-vector:recordChromelikeDebugAndroidTestScreenshotTest
 addToIndex
 ./../gradlew :example-vector:recordAlphaDebugAndroidTestScreenshotTest
+addToIndex
+echo "Vector completed"
+./../gradlew :example-activity-alias:recordDebugAndroidTestScreenshotTest
+addToIndex
+./../gradlew :example-activity-alias:recordUnspecifiedAndroidTestScreenshotTest
+addToIndex
+./../gradlew :example-activity-alias:recordReleaseAndroidTestScreenshotTest
+addToIndex
+echo "mutli Activity Alias completed"
 

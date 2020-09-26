@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
+    tools:context=".MultiAliasActivity"
     >
 
     <com.google.android.material.appbar.AppBarLayout
@@ -20,27 +22,41 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:text="Hello world"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        android:text="Launcher icon"
         />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="22dp"
-        android:text="Button"
-        />
-
 
     <com.example.custom.adaptive.LauncherIconView
         android:id="@+id/launcher_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="First alias icon"
+        />
+
+    <com.example.custom.adaptive.LauncherIconView
+        android:id="@+id/fist_alias_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Second alias icon"
+        />
+
+    <com.example.custom.adaptive.LauncherIconView
+        android:id="@+id/second_alias_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
