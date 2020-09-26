@@ -21,10 +21,30 @@ This library heavily relies on the original [Akaita's easylauncher](https://gith
 ```groovy
 // in app/build.gradle
 plugins {
-  id "com.starter.easylauncher" version "${{version}}"
+    id "com.starter.easylauncher" version "${{version}}"
 }
 ```
-see [Gradle Plugin Portal](https://plugins.gradle.org/plugin/com.starter.easylauncher) for details
+see [Gradle Plugin Portal] for the details  
+
+<details>
+  <summary>What do I do if I get `Could not resolve all artifacts` error?</summary>
+    
+  In some configurations a dependency resolution error might be thrown with a message: 
+  > Could not find com.android.tools.build:gradle:4.0.1.`.
+  
+  As a solution add repository where the missing dependency resides:
+  
+  ```groovy
+// in app/build.gradle
+buildscript {
+    repositories.google()
+}
+plugins {
+    id "com.starter.easylauncher" version "${{version}}"
+}
+  ```
+  
+</details>  
 
 ### Advanced usage
 
@@ -102,6 +122,23 @@ easylauncher {
 }
 ```
 
+#### Providing Icon Names
+By default, the plugin **automatically** discovers launcher icon and applies provided filters.  
+It is possible to override that behavior and manually provide a set of   
+Custom icon names, useful when defining multiple activity aliases, can be provided using `iconNames` property as follows:
+
+```groovy
+easylauncher {
+    iconNames = ["@mipmap/custom_launcher_icon"] // optional, disables automatic launcher icon discovery
+
+    buildTypes {
+        beta {
+            // icon names can also be overridden per-build variant (both buildType and productFlavor)
+            iconNames = ["@mipmap/beta_launcher"]  
+        }
+    }
+}
+```  
 
 ## Available filters
 
@@ -152,6 +189,7 @@ easylauncher {
  - `productFlavors`: define filters for flavors (will be **added** to filters defined for types)
  - `buildTypes`: define filters for types (will be **added** to filter defined for flavors)
  - `variants`: define filters for variants (will **override** any other filters)
+ - `iconNames`: provides a list of icons which will have the filters applied
 
 ## Requirements
 Minimal requirements for the plugin are: 
@@ -168,3 +206,6 @@ sample/         - root directory of supported Android applications which serve a
 
 ## Credits
 Credits to [Akaita's easylauncher plugin](https://github.com/akaita/easylauncher-gradle-plugin) which this project heavily relies on
+
+
+[Gradle Plugin Portal]: https://plugins.gradle.org/plugin/com.starter.easylauncher
