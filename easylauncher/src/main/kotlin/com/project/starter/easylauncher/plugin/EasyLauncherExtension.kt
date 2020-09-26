@@ -10,10 +10,6 @@ open class EasyLauncherExtension @Inject constructor(
     objectFactory: ObjectFactory
 ) {
 
-    companion object {
-        const val NAME = "easylauncher"
-    }
-
     /**
      * True to use flavor name for default ribbons, false to use type name
      */
@@ -41,5 +37,9 @@ open class EasyLauncherExtension @Inject constructor(
      */
     fun defaultFlavorNaming(defaultFlavorNaming: Boolean) {
         isDefaultFlavorNaming.value(defaultFlavorNaming)
+    }
+
+    companion object {
+        const val NAME = "easylauncher"
     }
 }
