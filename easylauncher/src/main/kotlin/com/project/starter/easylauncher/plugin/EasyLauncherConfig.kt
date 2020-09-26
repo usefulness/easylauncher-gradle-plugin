@@ -86,7 +86,7 @@ open class EasyLauncherConfig @Inject constructor(
                 font = fontRaw
             }
             is String -> {
-                fontName = properties["fontName"]?.toString()
+                fontName = fontRaw
                 font = null
             }
             else -> {
@@ -180,7 +180,7 @@ open class EasyLauncherConfig @Inject constructor(
                 font = fontRaw
             }
             is String -> {
-                fontName = properties["fontName"]?.toString()
+                fontName = fontRaw
                 font = null
             }
             else -> {
