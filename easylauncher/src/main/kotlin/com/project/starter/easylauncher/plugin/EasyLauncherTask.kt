@@ -1,7 +1,7 @@
 package com.project.starter.easylauncher.plugin
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.api.ApplicationVariant
+import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.api.BaseVariant
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import com.project.starter.easylauncher.plugin.models.AdaptiveIcon
 import org.gradle.api.DefaultTask
@@ -36,8 +36,8 @@ open class EasyLauncherTask : DefaultTask() {
         }
 
         val taskExecutionTime = measureTimeMillis {
-            val android = project.extensions.getByType(AppExtension::class.java)
-            val variant = android.applicationVariants.find { it.name == variantName.get() }
+            val android = project.extensions.getByType(BaseExtension::class.java)
+            val variant = project.findVariants().find { it.name == variantName.get() }
                 ?: throw GradleException("invalid variant name ${variantName.get()}")
 
             val names = (iconsNames.orNull?.takeIf { it.isNotEmpty() } ?: android.getLauncherIconNames(variant)).toSet()
@@ -59,11 +59,11 @@ open class EasyLauncherTask : DefaultTask() {
         logger.info("task finished in $taskExecutionTime ms")
     }
 
-    private fun ApplicationVariant.getAllSourceSets() =
+    private fun BaseVariant.getAllSourceSets() =
         sourceSets.flatMap { sourceSet -> sourceSet.resDirectories }
             .filterNot { resDirectory -> resDirectory == outputDir.asFile.get() }
 
-    private fun ApplicationVariant.processIcon(adaptiveIcon: AdaptiveIcon) {
+    private fun BaseVariant.processIcon(adaptiveIcon: AdaptiveIcon) {
         getAllSourceSets().forEach { resDir ->
             val icons = resDir.getIconFiles(adaptiveIcon.foreground)
             icons.forEach { iconFile ->
@@ -90,11 +90,11 @@ open class EasyLauncherTask : DefaultTask() {
         }
     }
 
-    private fun AppExtension.getLauncherIconNames(variant: ApplicationVariant) =
+    private fun BaseExtension.getLauncherIconNames(variant: BaseVariant) =
         getAndroidManifestFiles(variant)
             .mapNotNull { manifestFile -> manifestFile.getLauncherIcon() }
 
-    private fun AppExtension.getAndroidManifestFiles(variant: ApplicationVariant): Iterable<File> {
+    private fun BaseExtension.getAndroidManifestFiles(variant: BaseVariant): Iterable<File> {
         return listOf("main", variant.name, variant.buildType.name, variant.flavorName)
             .filter { it.isNotEmpty() }
             .distinct()

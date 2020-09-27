@@ -1,0 +1,53 @@
+apply plugin: 'com.starter.library.android'
+apply plugin: 'com.starter.easylauncher'
+apply plugin: 'com.facebook.testing.screenshot'
+
+android {
+    defaultConfig {
+        minSdkVersion(26)
+        testInstrumentationRunner "com.starter.easylauncher.ScreenshotsRunner"
+    }
+
+    testOptions.unitTests.includeAndroidResources true
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE*'
+    }
+
+    libraryVariants.configureEach { variant ->
+        variant.mergedFlavor.applicationIdSuffix = variant.name
+        if (variant.flavorName == "") {
+            variant.mergedFlavor.manifestPlaceholders = [appName: "$project.name"]
+        } else {
+            variant.mergedFlavor.manifestPlaceholders = [appName: "$variant.flavorName"]
+        }
+    }
+}
+tasks.register("verifyAll") {
+    android.libraryVariants.configureEach { variant ->
+        dependsOn("verify${variant.flavorName.capitalize()}DebugAndroidTestScreenshotTest")
+    }
+}
+tasks.register("recordAll") {
+    android.libraryVariants.configureEach { variant ->
+        dependsOn("record${variant.flavorName.capitalize()}DebugAndroidTestScreenshotTest")
+    }
+}
+
+tasks.register("installAll") {
+    android.libraryVariants.configureEach { variant ->
+        dependsOn("install${variant.name.capitalize()}")
+    }
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}
+screenshots {
+    failureDir = "${buildDir}/failedScreenshots"
+}
+
+dependencies {
+    implementation project(":adaptive-support")
+    androidTestImplementation project(":screenshot-test-helpers")
+}

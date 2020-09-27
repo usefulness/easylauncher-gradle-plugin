@@ -37,6 +37,40 @@ fun File.buildScript(androidBlock: () -> String, easylauncherBlock: () -> String
     writeText(buildScript)
 }
 
+fun File.libraryBuildscript(androidBlock: () -> String, easylauncherBlock: () -> String = { "" }) {
+    @Language("groovy")
+    val buildScript =
+        """
+                    plugins {
+                        id 'com.android.library'
+                        id 'com.starter.easylauncher' 
+                    }
+                    
+                    repositories {
+                        jcenter()
+                        google()
+                    }
+                    
+                    android {
+                        defaultConfig {
+                            compileSdkVersion 29
+                            minSdkVersion 23
+                        }
+                        ${androidBlock()}
+                    }
+                    
+                    easylauncher {
+                        ${easylauncherBlock()}
+                    }
+                    
+                    dependencies {
+                        testImplementation 'junit:junit:4.13'
+                    }
+                    
+        """.trimIndent()
+    writeText(buildScript)
+}
+
 internal fun vectorFile() =
     """
     <vector xmlns:android="http://schemas.android.com/apk/res/android"

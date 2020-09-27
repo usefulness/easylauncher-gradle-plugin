@@ -1,7 +1,7 @@
 package com.project.starter.easylauncher.plugin
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.api.ApplicationVariant
+import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.api.BaseVariant
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
@@ -14,12 +14,12 @@ class EasyLauncherPlugin : Plugin<Project> {
 
         logger.info("Running gradle version: ${gradle.gradleVersion}")
 
-        pluginManager.withPlugin("com.android.application") {
-            val android = extensions.getByType(AppExtension::class.java)
+        configureSupportedPlugins { variants ->
+            val android = extensions.getByType(BaseExtension::class.java)
 
             val easyLauncherTasks = mutableListOf<TaskProvider<EasyLauncherTask>>()
 
-            android.applicationVariants.configureEach { variant ->
+            variants.configureEach { variant ->
                 val configs = extension.variants.filter { it.name == variant.name }.takeIf { it.isNotEmpty() }
                     ?: findConfigs(variant, extension.productFlavors, extension.buildTypes)
 
@@ -75,13 +75,13 @@ class EasyLauncherPlugin : Plugin<Project> {
     }
 
     private fun findConfigs(
-        variant: ApplicationVariant,
+        variant: BaseVariant,
         ribbonProductFlavors: Iterable<EasyLauncherConfig>,
         ribbonBuildTypes: Iterable<EasyLauncherConfig>
     ): List<EasyLauncherConfig> =
         ribbonProductFlavors.filter { config -> variant.productFlavors.any { config.name == it.name } } +
             ribbonBuildTypes.filter { it.name == variant.buildType.name }
 
-    private fun Project.getGeneratedResDir(variant: ApplicationVariant) =
+    private fun Project.getGeneratedResDir(variant: BaseVariant) =
         File(project.buildDir, "generated/easylauncher/res/${variant.name}")
 }
