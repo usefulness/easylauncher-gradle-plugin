@@ -24,30 +24,40 @@ plugins {
     id "com.starter.easylauncher" version "${{version}}"
 }
 ```
-see [Gradle Plugin Portal] for the details  
+see [Gradle Plugin Portal] for the details
 
 <details>
-  <summary>What do I do if I get `Could not resolve all artifacts` error?</summary>
+  <summary>What should I do if I get `Could not resolve all artifacts` error?</summary>
     
   In some configurations a dependency resolution error might be thrown with a message: 
-  > Could not find com.android.tools.build:gradle:4.0.1.`.
+  > Could not find com.android.tools.build:gradle:x.x.x`.
   
-  As a solution add repository where the missing dependency resides:
+  As a solution apply the plugin to the root project using:
   
-  ```groovy
-// in app/build.gradle
+```groovy
+// in root project's build.gradle 
 buildscript {
     repositories.google()
 }
 plugins {
-    id "com.starter.easylauncher" version "${{version}}"
+    id "com.starter.easylauncher" version "${{version}}" apply false
 }
   ```
+then apply the plugin in your application module:
+```groovy
+// in app/build.gradle 
+plugins {
+    id "com.starter.easylauncher"
+}
+```
+
+See [related issue](https://github.com/usefulness/easylauncher-gradle-plugin/issues/80) for more information.
   
 </details>  
 
 ### Advanced usage
 
+By default, the plugin applies green ribbon for all debuggable build variants. 
 You can customize the filters applied to each type, flavor and variant of your app.  
 
 Imagine these are the type and flavors of your app:
