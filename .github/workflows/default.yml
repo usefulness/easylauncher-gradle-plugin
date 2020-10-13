@@ -76,13 +76,13 @@ jobs:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
           dependencies-cache-enabled: true
-          arguments: projectCode -PuseMavenLocal -PagpVersion=${{ matrix.agpVersion }} --stacktrace
+          arguments: projectCode -PuseMavenLocal -PagpVersion=${{ matrix.agp }} --stacktrace
       - uses: eskatos/gradle-command-action@v1
         with:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
           dependencies-cache-enabled: true
-          arguments: assemble -PuseMavenLocal -PagpVersion=${{ matrix.agpVersion }} --stacktrace
+          arguments: assemble -PuseMavenLocal -PagpVersion=${{ matrix.agp }} --stacktrace
 
   icons-test:
     runs-on: macos-latest
