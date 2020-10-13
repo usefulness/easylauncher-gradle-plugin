@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        gradle: [ 6.1.1, current, rc ]
+        gradle: [ 6.5, current, rc ]
     name: Run with Gradle ${{ matrix.gradle }}
     steps:
       - uses: actions/checkout@v2

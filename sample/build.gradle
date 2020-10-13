@@ -13,7 +13,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.facebook.testing.screenshot:plugin:0.13.0'
+        classpath "com.facebook.testing.screenshot:plugin:0.13.0"
         if (project.hasProperty("useMavenLocal")) {
             classpath "com.project.starter.local:easylauncher:+"
         } else {
@@ -23,7 +23,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.starter.config' version "0.20.0"
+    id "com.starter.config" version "0.21.0"
 }
 
 commonConfig {
@@ -48,7 +48,7 @@ subprojects {
             testOptions.unitTests.includeAndroidResources true
 
             packagingOptions {
-                exclude 'META-INF/LICENSE*'
+                exclude "META-INF/LICENSE*"
             }
 
             applicationVariants.configureEach { variant ->
