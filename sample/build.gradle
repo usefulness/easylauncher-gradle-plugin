@@ -8,23 +8,32 @@ buildscript {
                 includeGroupByRegex "com\\.google.*"
             }
         }
+        gradlePluginPortal()
         if (project.hasProperty("useMavenLocal")) {
             mavenLocal()
         }
     }
     dependencies {
+        classpath "com.project.starter:plugins:0.21.1"
         classpath "com.facebook.testing.screenshot:plugin:0.13.0"
         if (project.hasProperty("useMavenLocal")) {
             classpath "com.project.starter.local:easylauncher:+"
         } else {
             classpath "com.project.starter:easylauncher"
         }
+
+        def agpVersion = project.properties["agpVersion"]?.toString()
+        if (agpVersion != null) {
+            classpath("com.android.tools.build:gradle") {
+                version {
+                    strictly(agpVersion)
+                }
+            }
+        }
     }
 }
 
-plugins {
-    id "com.starter.config" version "0.21.0"
-}
+apply plugin: "com.starter.config"
 
 commonConfig {
     javaFilesAllowed false
