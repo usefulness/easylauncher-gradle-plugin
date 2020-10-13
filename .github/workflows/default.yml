@@ -51,8 +51,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        gradle: [ 6.5, current, rc ]
-    name: Run with Gradle ${{ matrix.gradle }}
+        gradle: [ 6.1.1, current, rc ]
+        agp: [ 4.0.0, 4.1.0 ]
+        exclude:
+          - gradle: 6.1.1
+            agp: 4.1.0
+    name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -72,13 +76,13 @@ jobs:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
           dependencies-cache-enabled: true
-          arguments: projectCode -PuseMavenLocal --stacktrace
+          arguments: projectCode -PuseMavenLocal -PagpVersion=${{ matrix.agpVersion }} --stacktrace
       - uses: eskatos/gradle-command-action@v1
         with:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
           dependencies-cache-enabled: true
-          arguments: assemble -PuseMavenLocal --stacktrace
+          arguments: assemble -PuseMavenLocal -PagpVersion=${{ matrix.agpVersion }} --stacktrace
 
   icons-test:
     runs-on: macos-latest
