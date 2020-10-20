@@ -33,13 +33,13 @@ internal class XmlReaderTest {
             """.trimIndent()
         )
 
-        val icon = manifest.getLauncherIcon()
+        val icon = manifest.getLauncherIcons()
 
-        assertThat(icon).isEqualTo("@drawable/ic_launcher")
+        assertThat(icon).containsExactly("@drawable/ic_launcher")
     }
 
     @Test
-    fun `getLauncherIcon without 'icon'`() {
+    fun `getLauncherIcon without 'icon' nor 'roundIcon'`() {
         val manifest = tempDir.resolve("AndroidManifest.xml")
         manifest.writeText(
             """
@@ -53,7 +53,6 @@ internal class XmlReaderTest {
                     android:targetSdkVersion="23" />
                 <application
                     android:allowBackup="true"
-                    android:roundIcon="@drawable/ic_launcher_round"
                     android:label="@string/app_name"
                     android:theme="@style/AppTheme" >
                 </application>
@@ -61,9 +60,9 @@ internal class XmlReaderTest {
             """.trimIndent()
         )
 
-        val icon = manifest.getLauncherIcon()
+        val icon = manifest.getLauncherIcons()
 
-        assertThat(icon).isNull()
+        assertThat(icon).isEmpty()
     }
 
     @Test
@@ -90,8 +89,37 @@ internal class XmlReaderTest {
             """.trimIndent()
         )
 
-        val icon = manifest.getLauncherIcon()
+        val icon = manifest.getLauncherIcons()
 
-        assertThat(icon).isEqualTo("@drawable/ic_launcher")
+        assertThat(icon).containsExactly("@drawable/ic_launcher", "@drawable/ic_launcher_round")
+    }
+
+    @Test
+    fun `getLauncherIcon with both 'icon' and 'roundIcon' set to the same value`() {
+        val manifest = tempDir.resolve("AndroidManifest.xml")
+        manifest.writeText(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+                package="com.akaita.android.easylauncher.example"
+                android:versionCode="1"
+                android:versionName="1.0" >
+                <uses-sdk
+                    android:minSdkVersion="15"
+                    android:targetSdkVersion="23" />
+                <application
+                    android:allowBackup="true"
+                    android:icon="@drawable/ic_launcher"
+                    android:roundIcon="@drawable/ic_launcher"
+                    android:label="@string/app_name"
+                    android:theme="@style/AppTheme" >
+                </application>
+            </manifest>
+            """.trimIndent()
+        )
+
+        val icon = manifest.getLauncherIcons()
+
+        assertThat(icon).containsExactly("@drawable/ic_launcher")
     }
 }

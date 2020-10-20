@@ -5,12 +5,16 @@ import groovy.util.XmlSlurper
 import groovy.util.slurpersupport.GPathResult
 import java.io.File
 
-internal fun File.getLauncherIcon(): String? {
+internal fun File.getLauncherIcons(): Set<String> {
     val manifestXml = XmlSlurper().parse(this)
     val applicationNode = manifestXml.getProperty("application") as GPathResult
     val icon = applicationNode.getProperty("@android:icon")?.toString()
+    val roundIcon = applicationNode.getProperty("@android:roundIcon")?.toString()
 
-    return icon?.takeIf { it.isNotBlank() }
+    return listOfNotNull(
+        icon?.takeIf { it.isNotBlank() },
+        roundIcon?.takeIf { it.isNotBlank() }
+    ).toSet()
 }
 
 internal fun File.asAdaptiveIcon(): AdaptiveIcon? {
