@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
+    private val iconName
+        get() = intent?.getIntExtra("iconName", R.mipmap.ic_launcher) ?: R.mipmap.ic_launcher
+
     override fun onCreate(savedInstanceState: Bundle?) {
         StrictMode.enableDefaults()
         super.onCreate(savedInstanceState)
@@ -21,7 +24,8 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton(android.R.string.ok, null)
                 .show()
         }
+
         val iconView = findViewById<LauncherIconView>(R.id.launcher_icon)
-        iconView.setIcon(R.mipmap.ic_launcher)
+        iconView.setIcon(iconName)
     }
 }

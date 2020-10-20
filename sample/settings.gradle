@@ -4,6 +4,7 @@ include ':example-vector'
 include ':example-scripted'
 include ':example-activity-alias'
 include ':example-library'
+include ':example-icon-round'
 include ':adaptive-support'
 include ':screenshot-test-helpers'
 
