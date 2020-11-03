@@ -63,9 +63,9 @@ subprojects {
             applicationVariants.configureEach { variant ->
                 variant.mergedFlavor.applicationIdSuffix = variant.name
                 if (variant.flavorName == "") {
-                    variant.mergedFlavor.manifestPlaceholders = [appName: "$project.name"]
+                    variant.mergedFlavor.manifestPlaceholders += [appName: "$project.name"]
                 } else {
-                    variant.mergedFlavor.manifestPlaceholders = [appName: "$variant.flavorName"]
+                    variant.mergedFlavor.manifestPlaceholders += [appName: "$variant.flavorName"]
                 }
             }
         }

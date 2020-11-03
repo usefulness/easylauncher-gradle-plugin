@@ -92,7 +92,7 @@ open class EasyLauncherTask : DefaultTask() {
 
     private fun BaseExtension.getLauncherIconNames(variant: BaseVariant) =
         getAndroidManifestFiles(variant)
-            .flatMap { manifestFile -> manifestFile.getLauncherIcons() }
+            .flatMap { manifestFile -> manifestFile.getLauncherIcons(variant.mergedFlavor.manifestPlaceholders) }
 
     private fun BaseExtension.getAndroidManifestFiles(variant: BaseVariant): Iterable<File> {
         return listOf("main", variant.name, variant.buildType.name, variant.flavorName)

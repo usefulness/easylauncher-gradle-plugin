@@ -5,17 +5,22 @@ import groovy.util.XmlSlurper
 import groovy.util.slurpersupport.GPathResult
 import java.io.File
 
-internal fun File.getLauncherIcons(): Set<String> {
+internal fun File.getLauncherIcons(manifestPlaceholders: Map<String, Any> = emptyMap()): Set<String> {
     val manifestXml = XmlSlurper().parse(this)
     val applicationNode = manifestXml.getProperty("application") as GPathResult
-    val icon = applicationNode.getProperty("@android:icon")?.toString()
-    val roundIcon = applicationNode.getProperty("@android:roundIcon")?.toString()
+    val icon = applicationNode.getProperty("@android:icon")?.toString()?.applyPlaceholders(manifestPlaceholders)
+    val roundIcon = applicationNode.getProperty("@android:roundIcon")?.toString()?.applyPlaceholders(manifestPlaceholders)
 
     return listOfNotNull(
         icon?.takeIf { it.isNotBlank() },
         roundIcon?.takeIf { it.isNotBlank() }
     ).toSet()
 }
+
+private val regex by lazy { "\\\$\\{([^{}]*)}".toRegex() }
+
+private fun String.applyPlaceholders(manifestPlaceholders: Map<String, Any>): String =
+    replace(regex) { manifestPlaceholders[it.groups[1]?.value]?.toString() ?: it.value }
 
 internal fun File.asAdaptiveIcon(): AdaptiveIcon? {
     if (extension != "xml") {

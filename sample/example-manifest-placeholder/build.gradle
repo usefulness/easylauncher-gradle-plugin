@@ -1,0 +1,22 @@
+apply plugin: 'com.starter.application.android'
+apply plugin: 'com.starter.easylauncher'
+
+android {
+    defaultConfig {
+        minSdkVersion 25
+
+        manifestPlaceholders += [
+                appIcon     : "@mipmap/ic_launcher",
+                appRoundIcon: "@mipmap/ic_launcher_round"
+        ]
+    }
+    buildTypes {
+        named("release") {
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+dependencies {
+    implementation project(":adaptive-support")
+}
