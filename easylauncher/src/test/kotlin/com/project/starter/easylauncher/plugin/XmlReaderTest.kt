@@ -179,4 +179,44 @@ internal class XmlReaderTest {
 
         assertThat(icon).containsExactly("@drawable/cat", "@mipmap/dog")
     }
+
+    @Test
+    fun `parses adaptive icon`() {
+        val adaptiveIcon = tempDir.resolve("ic_launcher.xml")
+        adaptiveIcon.writeText(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+                <background android:drawable="@drawable/ic_launcher_background" />
+                <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+            </adaptive-icon>
+
+            """.trimIndent()
+        )
+
+        val icon = adaptiveIcon.asAdaptiveIcon()
+
+        assertThat(icon?.background).isEqualTo("@drawable/ic_launcher_background")
+        assertThat(icon?.foreground).isEqualTo("@mipmap/ic_launcher_foreground")
+        assertThat(icon?.file?.path).isEqualTo(adaptiveIcon.path)
+    }
+
+    @Test
+    fun `does not parse txt file as adaptive icon`() {
+        val adaptiveIcon = tempDir.resolve("ic_launcher.txt")
+        adaptiveIcon.writeText(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+                <background android:drawable="@drawable/ic_launcher_background" />
+                <foreground android:drawable="@drawable/ic_launcher_foreground" />
+            </adaptive-icon>
+
+            """.trimIndent()
+        )
+
+        val icon = adaptiveIcon.asAdaptiveIcon()
+
+        assertThat(icon).isNull()
+    }
 }

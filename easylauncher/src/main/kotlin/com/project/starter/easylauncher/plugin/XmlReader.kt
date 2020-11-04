@@ -29,7 +29,7 @@ internal fun File.asAdaptiveIcon(): AdaptiveIcon? {
 
     val iconXml = XmlSlurper().parse(this)
     val foreground = iconXml.getProperty("foreground") as GPathResult
-    val background = iconXml.getProperty("foreground") as GPathResult
+    val background = iconXml.getProperty("background") as GPathResult
     val backgroundDrawable = background.property("@android:drawable")
     val foregroundDrawable = foreground.property("@android:drawable")
 
