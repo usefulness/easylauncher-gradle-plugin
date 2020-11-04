@@ -5,6 +5,7 @@ include ':example-scripted'
 include ':example-activity-alias'
 include ':example-library'
 include ':example-icon-round'
+include ':example-manifest-placeholder'
 include ':adaptive-support'
 include ':screenshot-test-helpers'
 
