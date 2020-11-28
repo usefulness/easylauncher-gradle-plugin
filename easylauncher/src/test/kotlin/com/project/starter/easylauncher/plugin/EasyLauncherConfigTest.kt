@@ -69,7 +69,11 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                                         label: "bitcoin", 
                                         ribbonColor: "#8A123456", 
                                         labelColor: "#654321", 
-                                        font: "Tahoma"
+                                        font: "Tahoma",
+                                        gravity: "top",
+                                        labelPadding: 12,
+                                        overlayHeight: 0.4,
+                                        textSizeRatio: 0.2
                                     )
                         }
                     }
