@@ -107,5 +107,8 @@ easylauncher {
             // OVERRIDE all previous filters defined for `productionAADebug` variant
             filters = orangeRibbonFilter("custom")
         }
+        localBbbCanary {
+            filters = chromeLike(label: "api<26", ribbonColor: "#0B3954", labelColor: "#FF6663")
+        }
     }
 }

@@ -1,26 +1,11 @@
 apply plugin: 'com.starter.application.android'
 apply plugin: 'com.starter.easylauncher'
 
-static def isCiBuild() {
-    // allows the build server to produce release builds for internal testing only
-    // obviously this isn't going to change itself in this example
-    return true
-}
-
 android {
     testBuildType findProperty("testBuildType")?.toString() ?: "debug"
 
     defaultConfig {
         applicationId "com.example.mutliplelauncher"
-    }
-
-    signingConfigs {
-        dummy {
-            storeFile file('dummy.keystore')
-            storePassword 'android'
-            keyAlias 'androidkey'
-            keyPassword 'android'
-        }
     }
 
     buildTypes {
@@ -29,7 +14,7 @@ android {
             matchingFallbacks = ["debug"]
         }
         named("release") {
-            signingConfig signingConfigs.dummy
+            signingConfig signingConfigs.debug
         }
     }
 }
@@ -46,7 +31,6 @@ easylauncher {
             filters = blueRibbonFilter()
         }
         release {
-            enable isCiBuild()
             filters = redRibbonFilter("CI")
 
             iconNames = ["@mipmap/ic_launcher", "@mipmap/ic_launcher_one", "@mipmap/ic_launcher_two"]

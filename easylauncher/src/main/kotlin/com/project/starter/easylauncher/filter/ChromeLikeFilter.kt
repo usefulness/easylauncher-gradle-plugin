@@ -1,6 +1,7 @@
 package com.project.starter.easylauncher.filter
 
 import com.project.starter.easylauncher.plugin.ADAPTIVE_CONTENT_SCALE
+import java.awt.AlphaComposite
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics2D
@@ -43,8 +44,13 @@ class ChromeLikeFilter(
 
         // draw the ribbon
         graphics.color = ribbonColor
+        if (!adaptive) {
+            graphics.composite = AlphaComposite.getInstance(AlphaComposite.SRC_IN, 1f)
+        }
         graphics.fillRect(0, yGravity, image.width, backgroundHeight)
+
         // draw the label
+        graphics.setPaintMode()
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         graphics.color = labelColor
         val fm = graphics.fontMetrics
