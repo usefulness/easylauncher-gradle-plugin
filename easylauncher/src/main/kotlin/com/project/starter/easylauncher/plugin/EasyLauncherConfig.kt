@@ -155,26 +155,25 @@ open class EasyLauncherConfig @Inject constructor(
     @JvmOverloads
     fun chromeLike(
         label: String? = null,
-        gravity: ChromeLikeFilter.Gravity? = null,
         ribbonColor: String? = null,
         labelColor: String? = null,
-        labelPadding: Int? = null,
         fontName: String? = null,
         font: File? = null,
+        labelPadding: Int? = null,
         overlayHeight: Float? = null,
         textSizeRatio: Float? = null,
-    ) =
-        ChromeLikeFilter(
-            label ?: this.name,
-            ribbonColor = ribbonColor?.toColor(),
-            labelColor = labelColor?.toColor(),
-            labelPadding = labelPadding,
-            gravity = gravity,
-            fontName = fontName,
-            fontResource = font,
-            overlayHeight = overlayHeight,
-            textSizeRatio = textSizeRatio,
-        )
+        gravity: ChromeLikeFilter.Gravity? = null,
+    ) = ChromeLikeFilter(
+        label ?: this.name,
+        ribbonColor = ribbonColor?.toColor(),
+        labelColor = labelColor?.toColor(),
+        labelPadding = labelPadding,
+        gravity = gravity,
+        fontName = fontName,
+        fontResource = font,
+        overlayHeight = overlayHeight,
+        textSizeRatio = textSizeRatio,
+    )
 
     fun chromeLike(properties: Map<String, Any>): ChromeLikeFilter {
         val gravity = properties["gravity"]?.toString()?.toUpperCase()?.let { ChromeLikeFilter.Gravity.valueOf(it) }
