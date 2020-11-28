@@ -22,6 +22,12 @@ android {
         register("chromeLike") {
             dimension "reportedBugs"
         }
+        register("chromeLikeCustomized") {
+            dimension "reportedBugs"
+        }
+        register("chromeLikeTop") {
+            dimension "reportedBugs"
+        }
         register("alpha") {
             dimension "reportedBugs"
         }
@@ -50,6 +56,12 @@ easylauncher {
     productFlavors {
         chromeLike {
             filters chromeLike("Beta")
+        }
+        chromeLikeCustomized {
+            filters chromeLike(label: "GDPR", ribbonColor: "#723D46", labelColor: "#EEFFFEE", labelPadding: 25, overlayHeight: 0.6, textSizeRatio: 0.15)
+        }
+        chromeLikeTop {
+            filters chromeLike(label: "Top", gravity: "TOP"), chromeLike(label: "Bottom", gravity: "BOTTOM")
         }
         twoVectors {
             filters grayRibbonFilter(),

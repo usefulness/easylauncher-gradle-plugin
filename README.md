@@ -190,6 +190,8 @@ easylauncher {
 | Default | `chromeLike()` | ![](icons/chromelike_default.png) |
 | Custom appearance | `chromeLike(label: "Custom", ribbonColor: "#FF00FF", labelColor: "#FFFFFF")` | ![](icons/chromelike_custom.png) |
 | Custom font (locally installed) | `chromeLike(label: "Custom", font: "ComicSansMS-Bold")` | ![](icons/chromelike_font.png) |
+| Custom gravity - Top| `chromeLike(label: "Top", gravity: "Top")` | ![](icons/chromelike_top.png) |
+| Custom overlay height| `chromeLike(label: "Top", labelPadding: 25, overlayHeight: 0.6, textSizeRatio: 0.15)` | ![](icons/chromelike_custom.png) |
 
 ## Available options
 
