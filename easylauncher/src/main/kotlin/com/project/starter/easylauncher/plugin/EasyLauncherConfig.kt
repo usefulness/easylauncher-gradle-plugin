@@ -13,6 +13,7 @@ import java.awt.Color
 import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @Suppress("TooManyFunctions", "MagicNumber", "LongParameterList")
 open class EasyLauncherConfig @Inject constructor(
@@ -154,23 +155,35 @@ open class EasyLauncherConfig @Inject constructor(
     @JvmOverloads
     fun chromeLike(
         label: String? = null,
+        gravity: ChromeLikeFilter.Gravity? = null,
         ribbonColor: String? = null,
         labelColor: String? = null,
+        labelPadding: Int? = null,
         fontName: String? = null,
-        font: File? = null
+        font: File? = null,
+        overlayHeight: Float? = null,
+        textSizeRatio: Float? = null,
     ) =
         ChromeLikeFilter(
             label ?: this.name,
             ribbonColor = ribbonColor?.toColor(),
             labelColor = labelColor?.toColor(),
+            labelPadding = labelPadding,
+            gravity = gravity,
             fontName = fontName,
-            fontResource = font
+            fontResource = font,
+            overlayHeight = overlayHeight,
+            textSizeRatio = textSizeRatio,
         )
 
     fun chromeLike(properties: Map<String, Any>): ChromeLikeFilter {
+        val gravity = properties["gravity"]?.toString()?.toUpperCase()?.let { ChromeLikeFilter.Gravity.valueOf(it) }
         val ribbonText = properties["label"]?.toString()
         val background = properties["ribbonColor"]?.toString()
         val labelColor = properties["labelColor"]?.toString()
+        val labelPadding = properties["labelPadding"]?.toString()?.toDoubleOrNull()?.roundToInt()
+        val overlayHeight = properties["overlayHeight"]?.toString()?.toFloatOrNull()
+        val textSizeRatio = properties["textSizeRatio"]?.toString()?.toFloatOrNull()
 
         val fontName: String?
         val font: File?
@@ -190,11 +203,15 @@ open class EasyLauncherConfig @Inject constructor(
         }
 
         return chromeLike(
+            gravity = gravity,
             label = ribbonText,
             ribbonColor = background,
             labelColor = labelColor,
+            labelPadding = labelPadding,
             fontName = fontName,
-            font = font
+            font = font,
+            overlayHeight = overlayHeight,
+            textSizeRatio = textSizeRatio,
         )
     }
 
