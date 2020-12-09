@@ -16,7 +16,7 @@ jobs:
       with:
           java-version: 1.8
     - name: Cache .gradle
-      uses: burrunan/gradle-cache-action@v1
+      uses: burrunan/gradle-cache-action@v1.6
     - id: dependency-diff
       name: Generate dependency diff
       uses: usefulness/dependency-tree-diff-action@v1

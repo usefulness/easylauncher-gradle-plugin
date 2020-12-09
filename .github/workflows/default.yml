@@ -22,7 +22,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v1.6
         with:
           job-id: build-plugin
       - name: Code style check
@@ -66,7 +66,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v1.6
         with:
           job-id: build-all-sample-apps
       - name: Pre-compile plugin
@@ -95,7 +95,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v1.6
         with:
           job-id: icons
       - name: Set up Python
