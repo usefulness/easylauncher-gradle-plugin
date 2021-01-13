@@ -40,6 +40,11 @@ android {
         register("customFontByOtf") {
             dimension "reportedBugs"
         }
+        register("usingAndroidVersion") {
+            dimension "reportedBugs"
+            applicationIdSuffix = ".app.dev"
+            versionName = "1.0.4"
+        }
     }
 }
 
@@ -85,6 +90,9 @@ easylauncher {
         customFontByOtf {
             filters customRibbon(label: "condensed", ribbonColor: "#99000000", font: file("fonts/StintUltraCondensed-Regular.otf"), position: "top"),
                     chromeLike(label: "otf font", font: file("fonts/StintUltraCondensed-Regular.otf"))
+        }
+        register("usingAndroidVersion") {
+            filters customRibbon(label: "DEV ${android.productFlavors.usingAndroidVersion.versionName}")
         }
     }
 }
