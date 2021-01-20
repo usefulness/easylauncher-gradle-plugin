@@ -52,10 +52,10 @@ jobs:
       fail-fast: false
       matrix:
         gradle: [ 6.1.1, current, rc ]
-        agp: [ 4.0.0, 4.1.1 ]
+        agp: [ 4.0.0, 4.1.2 ]
         exclude:
           - gradle: 6.1.1
-            agp: 4.1.1
+            agp: 4.1.2
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
     steps:
       - uses: actions/checkout@v2
