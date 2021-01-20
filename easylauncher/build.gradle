@@ -45,7 +45,7 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
 }
 
 dependencies {
-    compileOnly "com.android.tools.build:gradle:4.1.1"
+    compileOnly "com.android.tools.build:gradle:4.1.2"
 
     testImplementation gradleTestKit()
     testImplementation "org.assertj:assertj-core:3.18.1"
