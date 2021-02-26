@@ -14,7 +14,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.project.starter:plugins:0.22.0"
+        classpath "com.project.starter:plugins:0.23.0"
         classpath "com.facebook.testing.screenshot:plugin:0.13.0"
         if (project.hasProperty("useMavenLocal")) {
             classpath "com.project.starter.local:easylauncher:+"
