@@ -3,6 +3,7 @@ package com.project.starter.easylauncher.plugin
 import com.project.starter.easylauncher.plugin.utils.WithGradleProjectTest
 import com.project.starter.easylauncher.plugin.utils.buildScript
 import com.project.starter.easylauncher.plugin.utils.libraryBuildscript
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -39,7 +40,8 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                                         label: "bitcoin", 
                                         ribbonColor: "#8A123456", 
                                         labelColor: "#654321", 
-                                        font: "Arial-Black"
+                                        font: "Arial-Black",
+                                        drawingOptions: ["IgnoreTransparentPixels"],
                                     )
                         }
                     }
@@ -48,6 +50,66 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
         )
 
         runTask("assembleDebug", "--stacktrace")
+    }
+
+    @Test
+    fun `custom ribbon - drawing options`() {
+        rootDirectory.resolve("build.gradle").buildScript(
+            androidBlock = {
+                """
+                    buildTypes {
+                        debug { }
+                        release { }
+                    }
+                """.trimIndent()
+            },
+            easylauncherBlock = {
+                """
+                    buildTypes {
+                        debug {
+                            filters customRibbon(
+                                        label: "bitcoin", 
+                                        ribbonColor: "#8A123456", 
+                                        labelColor: "#654321", 
+                                        font: "Arial-Black",
+                                        drawingOptions: ["IgnoreTransparentPixels", "AddExtraPadding"],
+                                    )
+                        }
+                    }
+                """.trimIndent()
+            }
+        )
+
+        runTask("assembleDebug", "--stacktrace")
+
+        rootDirectory.resolve("build.gradle").buildScript(
+            androidBlock = {
+                """
+                    buildTypes {
+                        debug { }
+                        release { }
+                    }
+                """.trimIndent()
+            },
+            easylauncherBlock = {
+                """
+                    buildTypes {
+                        debug {
+                            filters customRibbon(
+                                        label: "bitcoin", 
+                                        ribbonColor: "#8A123456", 
+                                        labelColor: "#654321", 
+                                        font: "Arial-Black",
+                                        drawingOptions: ["AnUnknownOption"],
+                                    )
+                        }
+                    }
+                """.trimIndent()
+            }
+        )
+
+        val result = runTask("assembleDebug", shouldFail = true)
+        assertThat(result.output).contains("Unknown option: AnUnknownOption. Use one of [IGNORE_TRANSPARENT_PIXELS, ADD_EXTRA_PADDING]")
     }
 
     @Test
