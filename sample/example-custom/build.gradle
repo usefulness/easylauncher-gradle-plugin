@@ -80,7 +80,13 @@ easylauncher {
         production {}
 
         aaa {
-            filters = customColorRibbonFilter("aaa", "#6600CC", "#FFFFFF", "topright")
+            filters = customRibbon(
+                    label: "aaa",
+                    ribbonColor: "#6600CC",
+                    labelColor: "#FFFFFF",
+                    position: "topRight",
+                    drawingOptions: ["IgnoreTransparentPixels", "AddExtraPadding"],
+            )
         }
         bbb {
             filters = customColorRibbonFilter("bbb", "#EEEEEE", "#FF00FF", "bottom")

@@ -1,5 +1,6 @@
 package com.project.starter.easylauncher.filter
 
+import java.awt.AlphaComposite
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics2D
@@ -11,7 +12,7 @@ import java.io.File
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
-@Suppress("MagicNumber", "LongParameterList")
+@Suppress("MagicNumber")
 class ColorRibbonFilter(
     private val label: String,
     ribbonColor: Color? = null,
@@ -20,10 +21,16 @@ class ColorRibbonFilter(
     private val textSizeRatio: Float? = null,
     fontName: String? = null,
     fontResource: File? = null,
+    private val drawingOptions: Set<DrawingOption> = emptySet(),
 ) : EasyLauncherFilter {
 
     enum class Gravity {
         TOP, BOTTOM, TOPLEFT, TOPRIGHT
+    }
+
+    enum class DrawingOption {
+        IGNORE_TRANSPARENT_PIXELS,
+        ADD_EXTRA_PADDING,
     }
 
     private val ribbonColor = ribbonColor ?: Color(0, 0x72, 0, 0x99)
@@ -35,6 +42,7 @@ class ColorRibbonFilter(
 
     @Suppress("ComplexMethod")
     override fun apply(image: BufferedImage, adaptive: Boolean) {
+        val applyLargePadding = adaptive || drawingOptions.contains(DrawingOption.ADD_EXTRA_PADDING)
         val graphics = image.graphics as Graphics2D
         when (gravity) {
             Gravity.TOP, Gravity.BOTTOM -> Unit
@@ -56,13 +64,17 @@ class ColorRibbonFilter(
 
         // update y gravity after calculating font size
         val yGravity = when (gravity) {
-            Gravity.TOP -> if (adaptive) image.height / 4 else 0
-            Gravity.BOTTOM -> image.height - labelHeight - (if (adaptive) image.height / 4 else 0)
-            Gravity.TOPRIGHT, Gravity.TOPLEFT -> image.height / (if (adaptive) 2 else 4)
+            Gravity.TOP -> if (applyLargePadding) image.height / 4 else 0
+            Gravity.BOTTOM -> image.height - labelHeight - (if (applyLargePadding) image.height / 4 else 0)
+            Gravity.TOPRIGHT, Gravity.TOPLEFT -> image.height / (if (applyLargePadding) 2 else 4)
         }
 
         // draw the ribbon
         graphics.color = ribbonColor
+        if (drawingOptions.contains(DrawingOption.IGNORE_TRANSPARENT_PIXELS) && !adaptive) {
+            graphics.composite = AlphaComposite.getInstance(AlphaComposite.SRC_IN, 1f)
+        }
+
         if (gravity == Gravity.TOP || gravity == Gravity.BOTTOM) {
             graphics.fillRect(0, yGravity, image.width, labelHeight)
         } else if (gravity == Gravity.TOPRIGHT) {

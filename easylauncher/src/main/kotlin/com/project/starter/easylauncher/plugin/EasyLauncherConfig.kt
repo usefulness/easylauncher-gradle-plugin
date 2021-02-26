@@ -12,13 +12,14 @@ import org.gradle.api.tasks.Nested
 import java.awt.Color
 import java.io.File
 import java.io.Serializable
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-@Suppress("TooManyFunctions", "MagicNumber", "LongParameterList")
+@Suppress("TooManyFunctions", "MagicNumber")
 open class EasyLauncherConfig @Inject constructor(
     val name: String,
-    objectFactory: ObjectFactory
+    objectFactory: ObjectFactory,
 ) : Serializable {
 
     val enabled: Property<Boolean> = objectFactory.property(Boolean::class.java).apply {
@@ -61,14 +62,14 @@ open class EasyLauncherConfig @Inject constructor(
         ribbonColor: String?,
         labelColor: String = "#FFFFFF",
         position: String = "topleft",
-        textSizeRatio: Float? = null
+        textSizeRatio: Float? = null,
     ): ColorRibbonFilter {
         return customRibbon(
             label = name,
             ribbonColor = ribbonColor,
             labelColor = labelColor,
             gravity = ColorRibbonFilter.Gravity.valueOf(position.toUpperCase()),
-            textSizeRatio = textSizeRatio
+            textSizeRatio = textSizeRatio,
         )
     }
 
@@ -76,8 +77,11 @@ open class EasyLauncherConfig @Inject constructor(
         val label = properties["label"]?.toString()
         val ribbonColor = properties["ribbonColor"]?.toString()
         val labelColor = properties["labelColor"]?.toString()
-        val position = properties["position"]?.toString()?.toUpperCase()?.let { ColorRibbonFilter.Gravity.valueOf(it) }
+        val position = properties["position"]?.toString()
+            ?.toUpperCase(Locale.ENGLISH)
+            ?.let(ColorRibbonFilter.Gravity::valueOf)
         val textSizeRatio = properties["textSizeRatio"]?.toString()?.toFloatOrNull()
+        val drawingOptions = (properties["drawingOptions"] as? Iterable<*>).toDrawingOptions()
 
         val fontName: String?
         val font: File?
@@ -103,7 +107,8 @@ open class EasyLauncherConfig @Inject constructor(
             gravity = position,
             textSizeRatio = textSizeRatio,
             fontName = fontName,
-            font = font
+            font = font,
+            drawingOptions = drawingOptions,
         )
     }
 
@@ -114,7 +119,8 @@ open class EasyLauncherConfig @Inject constructor(
         gravity: ColorRibbonFilter.Gravity? = null,
         textSizeRatio: Float? = null,
         fontName: String? = null,
-        font: File? = null
+        font: File? = null,
+        drawingOptions: Set<ColorRibbonFilter.DrawingOption> = emptySet(),
     ) = ColorRibbonFilter(
         label = label ?: name,
         ribbonColor = ribbonColor?.toColor(),
@@ -122,7 +128,8 @@ open class EasyLauncherConfig @Inject constructor(
         gravity = gravity,
         textSizeRatio = textSizeRatio,
         fontName = fontName,
-        fontResource = font
+        fontResource = font,
+        drawingOptions = drawingOptions,
     )
 
     @JvmOverloads
@@ -240,3 +247,14 @@ open class EasyLauncherConfig @Inject constructor(
         private const val serialVersionUID = 1L
     }
 }
+
+private fun Iterable<*>?.toDrawingOptions() =
+    this?.map { it.toString() }.orEmpty()
+        .map { rawOption ->
+            val option = ColorRibbonFilter.DrawingOption.values().firstOrNull { rawOption.matchesEnum(it) }
+            checkNotNull(option) { "Unknown option: $rawOption. Use one of ${ColorRibbonFilter.DrawingOption.values().map { it.name }}" }
+        }
+        .toSet()
+
+private fun <T : Enum<T>> String.matchesEnum(option: T) =
+    replace("_", "").equals(option.name.replace("_", ""), ignoreCase = true)
