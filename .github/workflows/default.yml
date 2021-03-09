@@ -82,7 +82,7 @@ jobs:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
           dependencies-cache-enabled: true
-          arguments: assemble -PuseMavenLocal -PagpVersion=${{ matrix.agp }} --stacktrace
+          arguments: assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }} --stacktrace
 
   icons-test:
     runs-on: macos-latest

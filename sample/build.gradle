@@ -68,6 +68,12 @@ subprojects {
                     variant.mergedFlavor.manifestPlaceholders += [appName: "$variant.flavorName"]
                 }
             }
+
+            lintOptions {
+                disable("VectorPath", "HardcodedText", "IconDuplicates")
+                disable("IconLauncherShape") // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
+                warningsAsErrors = true
+            }
         }
         tasks.register("verifyAll") {
             android.applicationVariants.configureEach { variant ->

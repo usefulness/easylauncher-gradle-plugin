@@ -16,7 +16,7 @@ internal fun File.transformPng(outputFile: File, filters: List<EasyLauncherFilte
     ImageIO.write(image, "png", outputFile)
 }
 
-internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilter>) {
+internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: List<EasyLauncherFilter>) {
     val iconXml = XmlSlurper().parse(this)
     val width = iconXml.property("@android:width")?.toSize().let(::requireNotNull)
     val height = iconXml.property("@android:height")?.toSize().let(::requireNotNull)
@@ -44,15 +44,16 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
     }
         .joinToString(separator = "\n") {
             """
-            |   <item
-            |       android:width="${width.androidSize}"
-            |       android:height="${height.androidSize}"
-            |       android:drawable="@${outputFile.parentFile.normalizedName}/$it"
-            |       android:gravity="center"
-            |       />
+            |    <item
+            |        android:width="${width.androidSize}"
+            |        android:height="${height.androidSize}"
+            |        android:drawable="@${outputFile.parentFile.normalizedName}/$it"
+            |        android:gravity="center"
+            |        />
             |""".trimMargin()
         }
-    val v26DrawableRoot = drawableRoot.parentFile.resolve("${drawableRoot.normalizedName}-anydpi-v26")
+    val versionSuffix = if (minSdkVersion >= ANDROID_OREO) "" else "-v26"
+    val v26DrawableRoot = drawableRoot.parentFile.resolve("${drawableRoot.normalizedName}-anydpi$versionSuffix")
 
     copyTo(v26DrawableRoot.resolve("easy_$name"), overwrite = true)
     v26DrawableRoot.resolve(outputFile.name).writeText(
@@ -60,8 +61,8 @@ internal fun File.transformXml(outputFile: File, filters: List<EasyLauncherFilte
         |<?xml version="1.0" encoding="utf-8"?>
         |<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
         |
-        |   <item android:drawable="@drawable/easy_$nameWithoutExtension" />
-        |   
+        |    <item android:drawable="@drawable/easy_$nameWithoutExtension" />
+        |
         |$layers
         |</layer-list>
         |""".trimMargin()
@@ -84,6 +85,8 @@ private val Size.androidSize: String
 
 internal const val ADAPTIVE_SCALE = 72 / 108f
 internal const val ADAPTIVE_CONTENT_SCALE = 56 / 108f
+
+internal const val ANDROID_OREO = 26
 
 @Suppress("MagicNumber")
 private val densities = mapOf(

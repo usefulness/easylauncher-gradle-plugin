@@ -28,14 +28,15 @@ internal class IconTransformerTest {
     }
 
     @Test
-    fun `transforms vector icon`() {
+    fun `transforms vector icon pre api 26`() {
         val expected = tempDir.resolve("drawable-anydpi-v26/output.xml")
         sourceIcon.transformXml(
-            output,
-            listOf(
+            outputFile = output,
+            minSdkVersion = 21,
+            filters = listOf(
                 ColorRibbonFilter(label = "test1", ribbonColor = Color.BLUE),
                 ColorRibbonFilter(label = "test2", ribbonColor = Color.RED, gravity = ColorRibbonFilter.Gravity.BOTTOM)
-            )
+            ),
         )
 
         assertThat(expected).hasContent(
@@ -43,21 +44,59 @@ internal class IconTransformerTest {
             |<?xml version="1.0" encoding="utf-8"?>
             |<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
             |
-            |   <item android:drawable="@drawable/easy_icon_resource" />
-            |   
-            |   <item
-            |       android:width="16dp"
-            |       android:height="16dp"
-            |       android:drawable="@drawable/colorribbonfilter_0_output"
-            |       android:gravity="center"
-            |       />
+            |    <item android:drawable="@drawable/easy_icon_resource" />
             |
-            |   <item
-            |       android:width="16dp"
-            |       android:height="16dp"
-            |       android:drawable="@drawable/colorribbonfilter_1_output"
-            |       android:gravity="center"
-            |       />
+            |    <item
+            |        android:width="16dp"
+            |        android:height="16dp"
+            |        android:drawable="@drawable/colorribbonfilter_0_output"
+            |        android:gravity="center"
+            |        />
+            |
+            |    <item
+            |        android:width="16dp"
+            |        android:height="16dp"
+            |        android:drawable="@drawable/colorribbonfilter_1_output"
+            |        android:gravity="center"
+            |        />
+            |
+            |</layer-list>
+            |""".trimMargin()
+        )
+    }
+
+    @Test
+    fun `transforms vector icon since api 26`() {
+        val expected = tempDir.resolve("drawable-anydpi/output.xml")
+        sourceIcon.transformXml(
+            outputFile = output,
+            minSdkVersion = 26,
+            filters = listOf(
+                ColorRibbonFilter(label = "test1", ribbonColor = Color.BLUE),
+                ColorRibbonFilter(label = "test2", ribbonColor = Color.RED, gravity = ColorRibbonFilter.Gravity.BOTTOM)
+            ),
+        )
+
+        assertThat(expected).hasContent(
+            """
+            |<?xml version="1.0" encoding="utf-8"?>
+            |<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            |
+            |    <item android:drawable="@drawable/easy_icon_resource" />
+            |
+            |    <item
+            |        android:width="16dp"
+            |        android:height="16dp"
+            |        android:drawable="@drawable/colorribbonfilter_0_output"
+            |        android:gravity="center"
+            |        />
+            |
+            |    <item
+            |        android:width="16dp"
+            |        android:height="16dp"
+            |        android:drawable="@drawable/colorribbonfilter_1_output"
+            |        android:gravity="center"
+            |        />
             |
             |</layer-list>
             |""".trimMargin()
