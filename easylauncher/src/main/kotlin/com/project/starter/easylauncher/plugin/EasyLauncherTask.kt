@@ -39,6 +39,7 @@ open class EasyLauncherTask : DefaultTask() {
             val android = project.extensions.getByType(BaseExtension::class.java)
             val variant = project.findVariants().find { it.name == variantName.get() }
                 ?: throw GradleException("invalid variant name ${variantName.get()}")
+            val minSdkVersion = (variant.mergedFlavor.minSdkVersion ?: android.defaultConfig.minSdkVersion)?.apiLevel ?: 1
 
             val names = (iconsNames.orNull?.takeIf { it.isNotEmpty() } ?: android.getLauncherIconNames(variant)).toSet()
             logger.info("will process icons: ${names.joinToString()}")
@@ -51,7 +52,7 @@ open class EasyLauncherTask : DefaultTask() {
                     val outputFile = iconFile.getOutputFile()
                     iconFile.transformPng(outputFile, filters.get(), adaptive = false)
                 } else {
-                    variant.processIcon(adaptiveIcon)
+                    variant.processIcon(adaptiveIcon, minSdkVersion)
                 }
             }
         }
@@ -63,14 +64,14 @@ open class EasyLauncherTask : DefaultTask() {
         sourceSets.flatMap { sourceSet -> sourceSet.resDirectories }
             .filterNot { resDirectory -> resDirectory == outputDir.asFile.get() }
 
-    private fun BaseVariant.processIcon(adaptiveIcon: AdaptiveIcon) {
+    private fun BaseVariant.processIcon(adaptiveIcon: AdaptiveIcon, minSdkVersion: Int) {
         getAllSourceSets().forEach { resDir ->
             val icons = resDir.getIconFiles(adaptiveIcon.foreground)
             icons.forEach { iconFile ->
                 logger.info("found foreground at: ${project.relativePath(iconFile.path)}")
                 val outputFile = iconFile.getOutputFile()
                 if (iconFile.extension == "xml") {
-                    iconFile.transformXml(outputFile, filters.get())
+                    iconFile.transformXml(outputFile, minSdkVersion, filters.get())
                 } else {
                     iconFile.transformPng(outputFile, filters.get(), adaptive = true)
                 }
