@@ -13,8 +13,9 @@ fun File.buildScript(androidBlock: () -> String, easylauncherBlock: () -> String
                     }
                     
                     repositories {
-                        jcenter()
+                        mavenCentral()
                         google()
+                        jcenter()
                     }
                     
                     android {
@@ -47,8 +48,9 @@ fun File.libraryBuildscript(androidBlock: () -> String, easylauncherBlock: () ->
                     }
                     
                     repositories {
-                        jcenter()
+                        mavenCentral()
                         google()
+                        jcenter()
                     }
                     
                     android {
