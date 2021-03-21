@@ -25,6 +25,7 @@ jobs:
         uses: burrunan/gradle-cache-action@v1
         with:
           job-id: build-plugin
+          gradle-distribution-sha-256-sum-warning: false
       - name: Code style check
         run: ./gradlew projectCodestyle --stacktrace
       - name: Assemble
@@ -71,6 +72,7 @@ jobs:
         uses: burrunan/gradle-cache-action@v1
         with:
           job-id: build-all-sample-apps
+          gradle-distribution-sha-256-sum-warning: false
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
       - uses: eskatos/gradle-command-action@v1
@@ -100,6 +102,7 @@ jobs:
         uses: burrunan/gradle-cache-action@v1
         with:
           job-id: icons
+          gradle-distribution-sha-256-sum-warning: false
       - name: Set up Python
         uses: actions/setup-python@v2
         with:

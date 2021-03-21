@@ -21,6 +21,8 @@ jobs:
           java-version: 8
       - name: Cache .gradle
         uses: burrunan/gradle-cache-action@v1
+        with:
+          gradle-distribution-sha-256-sum-warning: false
       - name: Build app with Gradle
         run: ./gradlew assemble
       - name: Publish to Github Package Registry
