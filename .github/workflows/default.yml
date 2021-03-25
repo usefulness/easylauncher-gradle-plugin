@@ -59,6 +59,8 @@ jobs:
             agp: 4.1.3
           - gradle: 6.1.1
             agp: 7.0.0-alpha10
+          - gradle: rc
+            agp: 4.0.0
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
     steps:
       - uses: actions/checkout@v2
