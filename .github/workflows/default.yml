@@ -53,12 +53,12 @@ jobs:
       fail-fast: false
       matrix:
         gradle: [ 6.1.1, current, rc ]
-        agp: [ 4.0.0, 4.1.3, 7.0.0-alpha10 ]
+        agp: [ 4.0.0, 4.1.3, 7.0.0-alpha11 ]
         exclude:
           - gradle: 6.1.1
             agp: 4.1.3
           - gradle: 6.1.1
-            agp: 7.0.0-alpha10
+            agp: 7.0.0-alpha11
           - gradle: rc
             agp: 4.0.0
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
