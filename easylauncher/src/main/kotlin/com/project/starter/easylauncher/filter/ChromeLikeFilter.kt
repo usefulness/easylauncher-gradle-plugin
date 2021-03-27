@@ -55,7 +55,7 @@ class ChromeLikeFilter(
         // draw the ribbon
         graphics.color = ribbonColor
         if (!adaptive) {
-            graphics.composite = AlphaComposite.getInstance(AlphaComposite.SRC_IN, 1f)
+            graphics.composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1f)
         }
         when (gravity) {
             Gravity.TOP -> graphics.fillRect(0, 0, image.width, backgroundHeight)
