@@ -1,8 +1,8 @@
 package com.project.starter.easylauncher.plugin
 
 import com.project.starter.easylauncher.plugin.models.AdaptiveIcon
-import groovy.util.XmlSlurper
-import groovy.util.slurpersupport.GPathResult
+import groovy.xml.XmlSlurper
+import groovy.xml.slurpersupport.GPathResult
 import java.io.File
 
 internal fun File.getLauncherIcons(manifestPlaceholders: Map<String, Any> = emptyMap()): Set<String> {

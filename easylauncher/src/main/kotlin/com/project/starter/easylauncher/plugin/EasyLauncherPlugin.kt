@@ -6,6 +6,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
+import java.util.Locale
 
 class EasyLauncherPlugin : Plugin<Project> {
 
@@ -53,7 +54,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                             (global + variantSpecific).toSet()
                         }
 
-                        val name = "${EasyLauncherTask.NAME}${variant.name.capitalize()}"
+                        val name = "${EasyLauncherTask.NAME}${variant.name.capitalize(Locale.ROOT)}"
                         val task = tasks.register(name, EasyLauncherTask::class.java) {
                             it.variantName.set(variant.name)
                             it.outputDir.set(generatedResDir)
@@ -63,7 +64,7 @@ class EasyLauncherPlugin : Plugin<Project> {
 
                         easyLauncherTasks.add(task)
 
-                        tasks.named("generate${variant.name.capitalize()}Resources") { it.dependsOn(task) }
+                        tasks.named("generate${variant.name.capitalize(Locale.ROOT)}Resources") { it.dependsOn(task) }
                     }
                 } else {
                     logger.info("disabled for ${variant.name}")

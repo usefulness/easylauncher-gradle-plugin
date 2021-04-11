@@ -68,7 +68,7 @@ open class EasyLauncherConfig @Inject constructor(
             label = name,
             ribbonColor = ribbonColor,
             labelColor = labelColor,
-            gravity = ColorRibbonFilter.Gravity.valueOf(position.toUpperCase()),
+            gravity = ColorRibbonFilter.Gravity.valueOf(position.toUpperCase(Locale.ROOT)),
             textSizeRatio = textSizeRatio,
         )
     }
@@ -183,7 +183,9 @@ open class EasyLauncherConfig @Inject constructor(
     )
 
     fun chromeLike(properties: Map<String, Any>): ChromeLikeFilter {
-        val gravity = properties["gravity"]?.toString()?.toUpperCase()?.let { ChromeLikeFilter.Gravity.valueOf(it) }
+        val gravity = properties["gravity"]?.toString()
+            ?.toUpperCase(Locale.ROOT)
+            ?.let { ChromeLikeFilter.Gravity.valueOf(it) }
         val ribbonText = properties["label"]?.toString()
         val background = properties["ribbonColor"]?.toString()
         val labelColor = properties["labelColor"]?.toString()
