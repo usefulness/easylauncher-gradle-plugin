@@ -204,8 +204,8 @@ easylauncher {
 
 ## Requirements
 Minimal requirements for the plugin are: 
-- Gradle: **6.1.1** 
-- Android Gradle Plugin: **4.0.0**
+- Gradle: **6.5** 
+- Android Gradle Plugin: **4.1.0**
 - minSdkVersion: **21** _(theoretically there should be no lower boundary - it just hasn't been tested)_
 
 ## Project Structure
