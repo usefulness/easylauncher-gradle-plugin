@@ -3,7 +3,7 @@ plugins {
     id 'com.gradle.plugin-publish' version '0.14.0'
     id 'com.starter.library.kotlin'
     id 'com.starter.publishing'
-    id 'pl.droidsonroids.jacoco.testkit' version '1.0.7'
+    id 'pl.droidsonroids.jacoco.testkit' version '1.0.8'
 }
 
 repositories {
