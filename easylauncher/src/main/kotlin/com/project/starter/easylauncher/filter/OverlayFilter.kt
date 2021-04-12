@@ -1,5 +1,6 @@
 package com.project.starter.easylauncher.filter
 
+import org.slf4j.LoggerFactory
 import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
@@ -9,12 +10,15 @@ import javax.imageio.ImageIO
 @Suppress("MagicNumber")
 class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
 
+    private val logger
+        get() = LoggerFactory.getLogger(this::class.java)
+
     override fun apply(image: BufferedImage, adaptive: Boolean) {
-        var fgImage: Image? = null
-        try {
-            fgImage = ImageIO.read(fgFile)
+        val fgImage = try {
+            ImageIO.read(fgFile)
         } catch (e: IOException) {
-            e.printStackTrace()
+            logger.error("Failed to load overlay ${fgFile.name}", e)
+            return
         }
         if (fgImage != null) {
             val width = image.width.toFloat()
