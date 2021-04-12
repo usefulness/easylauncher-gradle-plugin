@@ -2,7 +2,7 @@ buildscript {
     repositories.google()
 }
 plugins {
-    id "com.starter.config" version '0.23.0'
+    id "com.starter.config" version '0.24.0'
     id "com.starter.versioning" version '0.23.0'
 }
 
