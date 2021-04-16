@@ -3,7 +3,7 @@ buildscript {
 }
 plugins {
     id "com.starter.config" version '0.25.0'
-    id "com.starter.versioning" version '0.24.0'
+    id "com.starter.versioning" version '0.25.0'
 }
 
 commonConfig {
