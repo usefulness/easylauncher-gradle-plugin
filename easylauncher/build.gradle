@@ -45,6 +45,7 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
 }
 
 dependencies {
+    implementation 'org.codehaus.groovy:groovy-xml:3.0.7'
     compileOnly "com.android.tools.build:gradle:4.1.3"
 
     testImplementation gradleTestKit()
