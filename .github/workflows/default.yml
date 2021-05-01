@@ -18,15 +18,13 @@ jobs:
           access_token: ${{ github.token }}
 
   build:
-    env:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: set up JDK 1.8
+      - name: set up JDK
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -68,10 +66,10 @@ jobs:
       fail-fast: false
       matrix:
         gradle: [ 6.5, current, rc ]
-        agp: [ 4.1.0, 4.1.3, 7.0.0-alpha14 ]
+        agp: [ 4.1.0, 4.1.3, 7.0.0-alpha15 ]
         exclude:
           - gradle: 6.5
-            agp: 7.0.0-alpha14
+            agp: 7.0.0-alpha15
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
     steps:

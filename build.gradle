@@ -1,6 +1,8 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    id "com.starter.config" version "0.25.0"
-    id "com.starter.versioning" version "0.25.0"
+    id "com.starter.config" version "0.26.3"
+    id "com.starter.versioning" version "0.26.3"
 }
 
 commonConfig {
@@ -8,17 +10,16 @@ commonConfig {
 }
 
 allprojects {
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    tasks.withType(KotlinCompile).configureEach {
         kotlinOptions {
             useIR = true
         }
     }
 
     configurations.configureEach {
-        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-            def requested = details.requested
-            if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith("kotlin")) {
-                details.useVersion "1.4.32"
+        resolutionStrategy.eachDependency {
+            if (group == 'org.jetbrains.kotlin' && name.startsWith("kotlin")) {
+                useVersion "1.5.0"
             }
         }
     }
