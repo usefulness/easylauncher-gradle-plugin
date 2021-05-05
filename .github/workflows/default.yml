@@ -65,11 +65,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        gradle: [ 6.5, current, rc ]
+        gradle: [ 6.5, 6.7.1, current, rc ]
         agp: [ 4.1.0, 4.2.0, 7.0.0-alpha15 ]
         exclude:
           - gradle: 6.5
             agp: 7.0.0-alpha15
+          - gradle: 6.7.1
+            agp: 7.0.0-alpha15
+          - gradle: 6.5
+            agp: 4.2.0
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
     steps:
@@ -91,12 +95,6 @@ jobs:
 
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
-      - uses: eskatos/gradle-command-action@v1
-        with:
-          build-root-directory: sample
-          gradle-version: ${{ matrix.gradle }}
-          dependencies-cache-enabled: true
-          arguments: projectCode -PuseMavenLocal -PagpVersion=${{ matrix.agp }} --stacktrace
 
       - uses: eskatos/gradle-command-action@v1
         with:
