@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id "com.starter.config" version "0.27.1"
-    id "com.starter.versioning" version "0.27.1"
+    id "com.starter.config"
+    id "com.starter.versioning"
 }
 
 commonConfig {
@@ -10,16 +10,26 @@ commonConfig {
 }
 
 allprojects {
+    pluginManager.withPlugin("kotlin") { plugin ->
+        def kotlinVersion = plugins.getPlugin("kotlin").kotlinPluginVersion
+        configurations.configureEach {
+            resolutionStrategy.eachDependency {
+                if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith("kotlin")) {
+                    useVersion kotlinVersion
+                }
+            }
+        }
+    }
     tasks.withType(KotlinCompile).configureEach {
         kotlinOptions {
             useIR = true
         }
     }
 
-    configurations.configureEach {
-        resolutionStrategy.eachDependency {
-            if (group == 'org.jetbrains.kotlin' && name.startsWith("kotlin")) {
-                useVersion "1.5.0"
+    pluginManager.withPlugin("java") {
+        java {
+            toolchain {
+                languageVersion.set(JavaLanguageVersion.of(8))
             }
         }
     }
