@@ -10,6 +10,7 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-gradle-plugin"
+    implementation "com.project.starter:jvm:0.27.2"
 }
 
 gradlePlugin {
