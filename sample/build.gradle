@@ -21,6 +21,14 @@ buildscript {
         } else {
             classpath "com.project.starter:easylauncher"
         }
+        def agpVersion = project.properties["agpVersion"]?.toString()
+        if (agpVersion != null) {
+            classpath("com.android.tools.build:gradle") {
+                version {
+                    strictly(agpVersion)
+                }
+            }
+        }
     }
 }
 
