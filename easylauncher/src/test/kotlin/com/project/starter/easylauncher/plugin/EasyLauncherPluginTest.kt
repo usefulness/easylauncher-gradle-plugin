@@ -140,6 +140,35 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
     }
 
     @Test
+    fun `tasks are cacheable`() {
+        moduleRoot.resolve("build.gradle").buildScript(
+            androidBlock = { "" },
+            easylauncherBlock = {
+                """
+                productFlavors {
+                    debug {
+                        filters(
+                            grayRibbonFilter(),
+                            greenRibbonFilter(),
+                            orangeRibbonFilter(),
+                            yellowRibbonFilter(),
+                            redRibbonFilter(),
+                            blueRibbonFilter(),
+                            chromeLike()
+                        )
+                    }
+                }
+                """.trimIndent()
+            }
+        )
+        val cleanRun = runTask("assembleDebug")
+        assertThat(cleanRun.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.SUCCESS)
+
+        val secondRun = runTask("assembleDebug")
+        assertThat(secondRun.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.UP_TO_DATE)
+    }
+
+    @Test
     fun `generates proper tasks`() {
         moduleRoot.resolve("build.gradle").buildScript(
             androidBlock = {
