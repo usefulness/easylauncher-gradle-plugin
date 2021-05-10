@@ -2,8 +2,10 @@ package com.project.starter.easylauncher.plugin
 
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.api.BaseVariant
+import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.util.Locale
@@ -45,22 +47,18 @@ class EasyLauncherPlugin : Plugin<Project> {
                     }
 
                     if (filters.isNotEmpty()) {
-                        val generatedResDir = getGeneratedResDir(variant)
-                        android.sourceSets.getByName(variant.name).res.srcDir(generatedResDir)
-
                         val customIconNames = provider {
                             val global = extension.iconNames.orNull.orEmpty()
                             val variantSpecific = configs.flatMap { config -> config.iconNames.orNull.orEmpty() }
                             (global + variantSpecific).toSet()
                         }
 
-                        val name = "${EasyLauncherTask.NAME}${variant.name.capitalize(Locale.ROOT)}"
-                        val task = tasks.register(name, EasyLauncherTask::class.java) {
-                            it.variantName.set(variant.name)
-                            it.outputDir.set(generatedResDir)
-                            it.filters.set(filters)
-                            it.iconsNames.set(customIconNames)
-                        }
+                        val task = registerTask(
+                            android = android,
+                            variant = variant,
+                            customIconNames = customIconNames,
+                            filters = filters,
+                        )
 
                         easyLauncherTasks.add(task)
 
@@ -75,6 +73,38 @@ class EasyLauncherPlugin : Plugin<Project> {
         }
     }
 
+    private fun Project.registerTask(
+        android: BaseExtension,
+        variant: BaseVariant,
+        customIconNames: Provider<Set<String>>,
+        filters: Set<EasyLauncherFilter>,
+    ): TaskProvider<EasyLauncherTask> {
+        val generatedResDir = getGeneratedResDir(variant)
+        android.sourceSets.getByName(variant.name).res.srcDir(generatedResDir)
+
+        val icons = provider {
+            val names = (customIconNames.get().takeIf { it.isNotEmpty() } ?: android.getLauncherIconNames(variant)).toSet()
+            logger.info("will process icons: ${names.joinToString()}")
+
+            variant.getAllResDirectories(except = generatedResDir).flatMap { resDir ->
+                names.flatMap { objects.getIconFiles(parent = resDir, iconName = it) }
+            }
+        }
+        val minSdkVersion = provider {
+            (variant.mergedFlavor.minSdkVersion ?: android.defaultConfig.minSdkVersion)?.apiLevel ?: 1
+        }
+
+        val name = "${EasyLauncherTask.NAME}${variant.name.capitalize(Locale.ROOT)}"
+
+        return tasks.register(name, EasyLauncherTask::class.java) {
+            it.outputDir.set(generatedResDir)
+            it.filters.set(filters)
+            it.minSdkVersion.set(minSdkVersion)
+            it.icons.from(icons)
+            it.resourceDirectories.from(variant.getAllResDirectories(except = generatedResDir))
+        }
+    }
+
     private fun findConfigs(
         variant: BaseVariant,
         ribbonProductFlavors: Iterable<EasyLauncherConfig>,
@@ -85,4 +115,20 @@ class EasyLauncherPlugin : Plugin<Project> {
 
     private fun Project.getGeneratedResDir(variant: BaseVariant) =
         File(project.buildDir, "generated/easylauncher/res/${variant.name}")
+
+    private fun BaseExtension.getLauncherIconNames(variant: BaseVariant) =
+        getAndroidManifestFiles(variant)
+            .flatMap { manifestFile -> manifestFile.getLauncherIcons(variant.mergedFlavor.manifestPlaceholders) }
+
+    private fun BaseVariant.getAllResDirectories(except: File) =
+        sourceSets.flatMap { sourceSet -> sourceSet.resDirectories }
+            .filterNot { resDirectory -> resDirectory == except }
+
+    private fun BaseExtension.getAndroidManifestFiles(variant: BaseVariant): Iterable<File> {
+        return listOf("main", variant.name, variant.buildType.name, variant.flavorName)
+            .filter { it.isNotEmpty() }
+            .distinct()
+            .map { name -> sourceSets.getByName(name).manifest.srcFile }
+            .filter { it.exists() }
+    }
 }

@@ -1,33 +1,45 @@
 package com.project.starter.easylauncher.plugin
 
-import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.api.BaseVariant
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import com.project.starter.easylauncher.plugin.models.AdaptiveIcon
 import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import java.io.File
+import javax.inject.Inject
 import kotlin.system.measureTimeMillis
 
-open class EasyLauncherTask : DefaultTask() {
-
-    @Input
-    val variantName: Property<String> = property<String>()
+@CacheableTask
+open class EasyLauncherTask @Inject constructor(
+    private val objectFactory: ObjectFactory,
+) : DefaultTask() {
 
     @OutputDirectory
-    val outputDir: RegularFileProperty = project.objects.fileProperty()
+    val outputDir: RegularFileProperty = objectFactory.fileProperty()
 
     @Input
     val filters: ListProperty<EasyLauncherFilter> = listProperty<EasyLauncherFilter>()
 
     @Input
-    val iconsNames: ListProperty<String> = listProperty<String>()
+    val minSdkVersion: Property<Int> = property(default = null)
+
+    @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
+    val resourceDirectories: ConfigurableFileCollection = objectFactory.fileCollection()
+
+    @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
+    val icons: ConfigurableFileCollection = objectFactory.fileCollection()
 
     @TaskAction
     fun run() {
@@ -36,23 +48,13 @@ open class EasyLauncherTask : DefaultTask() {
         }
 
         val taskExecutionTime = measureTimeMillis {
-            val android = project.extensions.getByType(BaseExtension::class.java)
-            val variant = project.findVariants().find { it.name == variantName.get() }
-                ?: throw GradleException("invalid variant name ${variantName.get()}")
-            val minSdkVersion = (variant.mergedFlavor.minSdkVersion ?: android.defaultConfig.minSdkVersion)?.apiLevel ?: 1
-
-            val names = (iconsNames.orNull?.takeIf { it.isNotEmpty() } ?: android.getLauncherIconNames(variant)).toSet()
-            logger.info("will process icons: ${names.joinToString()}")
-            val icons = variant.getAllSourceSets().flatMap { resDir ->
-                names.flatMap { resDir.getIconFiles(it) }
-            }
             icons.forEach { iconFile ->
                 val adaptiveIcon = iconFile.asAdaptiveIcon()
                 if (adaptiveIcon == null) {
                     val outputFile = iconFile.getOutputFile()
                     iconFile.transformPng(outputFile, filters.get(), adaptive = false)
                 } else {
-                    variant.processIcon(adaptiveIcon, minSdkVersion)
+                    processIcon(adaptiveIcon, minSdkVersion.get())
                 }
             }
         }
@@ -60,15 +62,10 @@ open class EasyLauncherTask : DefaultTask() {
         logger.info("task finished in $taskExecutionTime ms")
     }
 
-    private fun BaseVariant.getAllSourceSets() =
-        sourceSets.flatMap { sourceSet -> sourceSet.resDirectories }
-            .filterNot { resDirectory -> resDirectory == outputDir.asFile.get() }
-
-    private fun BaseVariant.processIcon(adaptiveIcon: AdaptiveIcon, minSdkVersion: Int) {
-        getAllSourceSets().forEach { resDir ->
-            val icons = resDir.getIconFiles(adaptiveIcon.foreground)
+    private fun processIcon(adaptiveIcon: AdaptiveIcon, minSdkVersion: Int) {
+        resourceDirectories.forEach { resDir ->
+            val icons = objectFactory.getIconFiles(parent = resDir, iconName = adaptiveIcon.foreground)
             icons.forEach { iconFile ->
-                logger.info("found foreground at: ${project.relativePath(iconFile.path)}")
                 val outputFile = iconFile.getOutputFile()
                 if (iconFile.extension == "xml") {
                     iconFile.transformXml(outputFile, minSdkVersion, filters.get())
@@ -79,37 +76,13 @@ open class EasyLauncherTask : DefaultTask() {
         }
     }
 
-    private fun File.getIconFiles(iconName: String): Iterable<File> =
-        project.fileTree(this) { it.include(resourceFilePattern(iconName)) }
-
-    private fun resourceFilePattern(name: String): String {
-        return if (name.startsWith("@")) {
-            val (baseResType, fileName) = name.substring(1).split("/".toRegex(), 2)
-            "$baseResType*/$fileName.*"
-        } else {
-            name
-        }
-    }
-
-    private fun BaseExtension.getLauncherIconNames(variant: BaseVariant) =
-        getAndroidManifestFiles(variant)
-            .flatMap { manifestFile -> manifestFile.getLauncherIcons(variant.mergedFlavor.manifestPlaceholders) }
-
-    private fun BaseExtension.getAndroidManifestFiles(variant: BaseVariant): Iterable<File> {
-        return listOf("main", variant.name, variant.buildType.name, variant.flavorName)
-            .filter { it.isNotEmpty() }
-            .distinct()
-            .map { name -> project.file(sourceSets.getByName(name).manifest.srcFile) }
-            .filter { it.exists() }
-    }
-
-    private inline fun <reified T> DefaultTask.listProperty(default: Iterable<T> = emptyList()) =
-        project.objects.listProperty(T::class.java).apply {
+    private inline fun <reified T> listProperty(default: Iterable<T> = emptyList()) =
+        objectFactory.listProperty(T::class.java).apply {
             set(default)
         }
 
-    private inline fun <reified T> DefaultTask.property(default: T? = null) =
-        project.objects.property(T::class.java).apply {
+    private inline fun <reified T> property(default: T? = null) =
+        objectFactory.property(T::class.java).apply {
             set(default)
         }
 
