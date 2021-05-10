@@ -103,6 +103,36 @@ jobs:
           dependencies-cache-enabled: true
           arguments: assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }} --stacktrace
 
+  build-sample-apps-with-confgiuration-cache:
+    runs-on: ubuntu-latest
+    name: Test configuration cache
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 15
+
+      - name: Cache .gradle
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          job-id: build-configuration-cache-jdk15
+          gradle-distribution-sha-256-sum-warning: false
+
+      - name: Pre-compile plugin
+        run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
+
+      - uses: eskatos/gradle-command-action@v1
+        with:
+          build-root-directory: sample
+          gradle-version: current
+          dependencies-cache-enabled: true
+          arguments: assembleDebug --configuration-cache
+
   icons-test:
     runs-on: macos-latest
     strategy:
