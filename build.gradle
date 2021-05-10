@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id "com.starter.config"
     id "com.starter.versioning"
@@ -18,11 +16,6 @@ allprojects {
                     useVersion kotlinVersion
                 }
             }
-        }
-    }
-    tasks.withType(KotlinCompile).configureEach {
-        kotlinOptions {
-            useIR = true
         }
     }
 
