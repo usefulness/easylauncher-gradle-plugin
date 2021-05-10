@@ -7,32 +7,31 @@ fun File.buildScript(androidBlock: () -> String, easylauncherBlock: () -> String
     @Language("groovy")
     val buildScript =
         """
-                    plugins {
-                        id 'com.android.application'
-                        id 'com.starter.easylauncher' 
-                    }
-                    
-                    repositories {
-                        mavenCentral()
-                        google()
-                        jcenter()
-                    }
-                    
-                    android {
-                        defaultConfig {
-                            compileSdkVersion 29
-                            minSdkVersion 23
-                        }
-                        ${androidBlock()}
-                    }
-                    
-                    easylauncher {
-                        ${easylauncherBlock()}
-                    }
-                    
-                    dependencies {
-                        testImplementation 'junit:junit:4.13'
-                    }
+        plugins {
+            id 'com.android.application'
+            id 'com.starter.easylauncher' 
+        }
+        
+        repositories {
+            mavenCentral()
+            google()
+        }
+        
+        android {
+            defaultConfig {
+                compileSdkVersion 29
+                minSdkVersion 23
+            }
+            ${androidBlock()}
+        }
+        
+        easylauncher {
+            ${easylauncherBlock()}
+        }
+        
+        dependencies {
+            testImplementation 'junit:junit:4.13'
+        }
                     
         """.trimIndent()
     writeText(buildScript)
@@ -42,33 +41,33 @@ fun File.libraryBuildscript(androidBlock: () -> String, easylauncherBlock: () ->
     @Language("groovy")
     val buildScript =
         """
-                    plugins {
-                        id 'com.android.library'
-                        id 'com.starter.easylauncher' 
-                    }
-                    
-                    repositories {
-                        mavenCentral()
-                        google()
-                        jcenter()
-                    }
-                    
-                    android {
-                        defaultConfig {
-                            compileSdkVersion 29
-                            minSdkVersion 23
-                        }
-                        ${androidBlock()}
-                    }
-                    
-                    easylauncher {
-                        ${easylauncherBlock()}
-                    }
-                    
-                    dependencies {
-                        testImplementation 'junit:junit:4.13'
-                    }
-                    
+        plugins {
+            id 'com.android.library'
+            id 'com.starter.easylauncher' 
+        }
+        
+        repositories {
+            mavenCentral()
+            google()
+            jcenter()
+        }
+        
+        android {
+            defaultConfig {
+                compileSdkVersion 29
+                minSdkVersion 23
+            }
+            ${androidBlock()}
+        }
+        
+        easylauncher {
+            ${easylauncherBlock()}
+        }
+        
+        dependencies {
+            testImplementation 'junit:junit:4.13'
+        }
+        
         """.trimIndent()
     writeText(buildScript)
 }
