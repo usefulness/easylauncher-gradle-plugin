@@ -31,7 +31,7 @@ jobs:
           java-version: 8
 
       - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v1.10
         with:
           job-id: build-plugin
           gradle-distribution-sha-256-sum-warning: false
@@ -88,7 +88,7 @@ jobs:
           java-version: 11
 
       - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v1.10
         with:
           job-id: build-all-sample-apps
           gradle-distribution-sha-256-sum-warning: false
@@ -116,7 +116,7 @@ jobs:
           fetch-depth: 0
 
       - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v1.10
         with:
           job-id: icons
           gradle-distribution-sha-256-sum-warning: false
