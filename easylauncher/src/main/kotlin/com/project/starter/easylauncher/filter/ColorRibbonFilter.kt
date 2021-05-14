@@ -72,7 +72,7 @@ class ColorRibbonFilter(
         // draw the ribbon
         graphics.color = ribbonColor
         if (drawingOptions.contains(DrawingOption.IGNORE_TRANSPARENT_PIXELS) && !adaptive) {
-            graphics.composite = AlphaComposite.getInstance(AlphaComposite.SRC_IN, 1f)
+            graphics.composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1f)
         }
 
         if (gravity == Gravity.TOP || gravity == Gravity.BOTTOM) {
