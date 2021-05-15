@@ -31,7 +31,8 @@ class ChromeLikeFilter(
     private val labelColor = labelColor ?: Color.WHITE
     private val font = fontResource?.takeIf { it.exists() }
         ?.let { Font.createFont(Font.TRUETYPE_FONT, it) }
-        ?: Font(fontName, Font.PLAIN, 1)
+        ?: fontName?.let { Font(it, Font.PLAIN, 1) }
+        ?: DEFAULT_EASYLAUNCHER_FONT
     private val overlayHeight = overlayHeight ?: OVERLAY_HEIGHT
     private val gravity = gravity ?: Gravity.BOTTOM
 
