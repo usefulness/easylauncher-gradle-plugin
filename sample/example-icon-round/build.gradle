@@ -10,6 +10,29 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "transparentPixels"
+    productFlavors {
+        keep {
+            dimension "transparentPixels"
+        }
+        ignore {
+            dimension "transparentPixels"
+        }
+    }
+}
+
+easylauncher {
+    productFlavors {
+        ignore {
+            filters = customRibbon(
+                    label: "debug",
+                    ribbonColor: "#99007200",
+                    position: "topLeft",
+                    drawingOptions: ["IgnoreTransparentPixels"],
+            )
+        }
+    }
 }
 
 dependencies {
