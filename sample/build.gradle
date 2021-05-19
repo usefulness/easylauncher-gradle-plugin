@@ -97,6 +97,7 @@ subprojects {
             useJUnitPlatform()
         }
         screenshots {
+            addDeps = false
             failureDir = "${buildDir}/failedScreenshots"
         }
 
