@@ -38,7 +38,8 @@ class ColorRibbonFilter(
     private val gravity = gravity ?: Gravity.TOPLEFT
     private val font = fontResource?.takeIf { it.exists() }
         ?.let { Font.createFont(Font.TRUETYPE_FONT, it) }
-        ?: Font(fontName, Font.PLAIN, 1)
+        ?: fontName?.let { Font(it, Font.PLAIN, 1) }
+        ?: DEFAULT_EASYLAUNCHER_FONT
 
     @Suppress("ComplexMethod")
     override fun apply(image: BufferedImage, adaptive: Boolean) {
