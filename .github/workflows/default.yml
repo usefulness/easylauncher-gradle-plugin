@@ -66,14 +66,14 @@ jobs:
       fail-fast: false
       matrix:
         gradle: [ 6.5, 6.7.1, current, rc ]
-        agp: [ 4.1.0, 4.2.0, 7.0.0-alpha15 ]
+        agp: [ 4.1.0, 4.2.1, 7.0.0-alpha15 ]
         exclude:
           - gradle: 6.5
             agp: 7.0.0-alpha15
           - gradle: 6.7.1
             agp: 7.0.0-alpha15
           - gradle: 6.5
-            agp: 4.2.0
+            agp: 4.2.1
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
     steps:
@@ -115,6 +115,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
       - name: Cache .gradle
         uses: burrunan/gradle-cache-action@v1
         with:
@@ -124,18 +130,21 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 2.7
 
       - name: Install dependencies
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install --upgrade Pillow
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade Pillow
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.apiVersion }}
           profile: pixel_xl
+          target: google_apis
+          arch: x86
+          disable-spellchecker: true
           script: cd sample && ./icon_check.sh
 
       - name: Upload failed screenshots

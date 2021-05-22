@@ -36,16 +36,16 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
         moduleRoot.resolve("build.gradle").buildScript(
             androidBlock = {
                 """
-            buildTypes {
-                debug { }
-                superType { }
-                release { }
-            }
-            flavorDimensions "version"
-            productFlavors {
-                demo { dimension "version" }
-                full { dimension "version" }
-            }
+                buildTypes {
+                    debug { }
+                    superType { }
+                    release { }
+                }
+                flavorDimensions "version"
+                productFlavors {
+                    demo { dimension "version" }
+                    full { dimension "version" }
+                }
                 """.trimIndent()
             }
         )
@@ -83,26 +83,26 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
         moduleRoot.resolve("build.gradle").buildScript(
             androidBlock = {
                 """
-            buildTypes {
-                debug { }
-                superType { debuggable false }
-                release { }
-            }
+                buildTypes {
+                    debug { }
+                    superType { debuggable false }
+                    release { }
+                }
                 """.trimIndent()
             },
             easylauncherBlock = {
                 """
-                    buildTypes {
-                        superType {
-                            filters = customRibbon(
-                                label: "Custom name",
-                                ribbonColor: "#00ff00",
-                                labelColor: "#ff00ff",
-                                position: "top",
-                                textSizeRatio: "0.7"
-                            )              
-                        }
+                buildTypes {
+                    superType {
+                        filters = customRibbon(
+                            label: "Custom name",
+                            ribbonColor: "#00ff00",
+                            labelColor: "#ff00ff",
+                            position: "top",
+                            textSizeRatio: "0.7"
+                        )              
                     }
+                }
                 """.trimIndent()
             }
         )
@@ -117,19 +117,19 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
             androidBlock = { "" },
             easylauncherBlock = {
                 """
-                    productFlavors {
-                        debug {
-                            filters(
-                                grayRibbonFilter(),
-                                greenRibbonFilter(),
-                                orangeRibbonFilter(),
-                                yellowRibbonFilter(),
-                                redRibbonFilter(),
-                                blueRibbonFilter(),
-                                chromeLike()
-                            )
-                        }
+                productFlavors {
+                    debug {
+                        filters(
+                            grayRibbonFilter(),
+                            greenRibbonFilter(),
+                            orangeRibbonFilter(),
+                            yellowRibbonFilter(),
+                            redRibbonFilter(),
+                            blueRibbonFilter(),
+                            chromeLike()
+                        )
                     }
+                }
                 """.trimIndent()
             }
         )
@@ -144,7 +144,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
         moduleRoot.resolve("build.gradle").buildScript(
             androidBlock = {
                 """
-             buildTypes {
+                 buildTypes {
                     debug {
                         //Debuggable, will get a default ribbon in the launcher icon
                     }
@@ -171,37 +171,37 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
             },
             easylauncherBlock = {
                 """
-                     productFlavors {
-                        local {}
-                        qa {
-                            // Add one more filter to all `qa` variants
-                            filters = redRibbonFilter()
-                        }
-                        staging {}
-                        production {}
+                 productFlavors {
+                    local {}
+                    qa {
+                        // Add one more filter to all `qa` variants
+                        filters = redRibbonFilter()
                     }
-                    
-                    buildTypes {
-                        beta {
-                            // Add two more filters to all `beta` variants
-                            filters = [
-                                    customColorRibbonFilter("#0000FF"),
-                                    overlayFilter(new File("example-custom/launcherOverlay/beta.png"))
-                            ]
-                        }
-                        canary {
-                            // Remove ALL filters to `canary` variants
-                            enable false
-                        }
-                        release {}
+                    staging {}
+                    production {}
+                }
+                
+                buildTypes {
+                    beta {
+                        // Add two more filters to all `beta` variants
+                        filters = [
+                                customColorRibbonFilter("#0000FF"),
+                                overlayFilter(new File("example-custom/launcherOverlay/beta.png"))
+                        ]
                     }
-                    
-                    variants {
-                        productionDebug {
-                            // OVERRIDE all previous filters defined for `productionDebug` variant
-                            filters = orangeRibbonFilter("custom")
-                        }
+                    canary {
+                        // Remove ALL filters to `canary` variants
+                        enable false
                     }
+                    release {}
+                }
+                
+                variants {
+                    productionDebug {
+                        // OVERRIDE all previous filters defined for `productionDebug` variant
+                        filters = orangeRibbonFilter("custom")
+                    }
+                }
                 """.trimIndent()
             }
         )

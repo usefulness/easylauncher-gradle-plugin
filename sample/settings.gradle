@@ -1,11 +1,13 @@
-include ':example-simple'
-include ':example-custom'
-include ':example-vector'
-include ':example-scripted'
 include ':example-activity-alias'
-include ':example-library'
+include ':example-custom'
 include ':example-icon-round'
+include ':example-library'
 include ':example-manifest-placeholder'
+include ':example-scripted'
+include ':example-simple'
+include ':example-vector'
+
+// utilities
 include ':adaptive-support'
 include ':screenshot-test-helpers'
 
