@@ -1,7 +1,6 @@
 plugins {
     id "com.starter.config"
     id "com.starter.versioning"
-    id("dev.zacsweers.kgp-150-leak-patcher") version "1.1.0"
 }
 
 commonConfig {
