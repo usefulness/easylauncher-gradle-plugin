@@ -66,12 +66,12 @@ jobs:
       fail-fast: false
       matrix:
         gradle: [ 6.5, 6.7.1, current, rc ]
-        agp: [ 4.1.0, 4.2.1, 7.0.0-beta02 ]
+        agp: [ 4.1.0, 4.2.1, 7.0.0-beta03 ]
         exclude:
           - gradle: 6.5
-            agp: 7.0.0-beta02
+            agp: 7.0.0-beta03
           - gradle: 6.7.1
-            agp: 7.0.0-beta02
+            agp: 7.0.0-beta03
           - gradle: 6.5
             agp: 4.2.1
 
