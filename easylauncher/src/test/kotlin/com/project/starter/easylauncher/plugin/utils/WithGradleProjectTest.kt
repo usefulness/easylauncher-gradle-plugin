@@ -5,6 +5,7 @@ import java.io.InputStream
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.io.TempDir
 
+@Suppress("UnnecessaryAbstractClass")
 internal abstract class WithGradleProjectTest {
 
     @TempDir
