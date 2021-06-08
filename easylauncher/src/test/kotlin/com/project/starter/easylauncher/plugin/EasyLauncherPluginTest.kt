@@ -206,9 +206,11 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
     }
 
     @Test
+    @Suppress("LongMethod")
     fun `generates proper tasks`() {
         moduleRoot.resolve("build.gradle").buildScript(
             androidBlock = {
+                // language=groovy
                 """
                  buildTypes {
                     debug {
@@ -236,6 +238,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                 """.trimIndent()
             },
             easylauncherBlock = {
+                // language=groovy
                 """
                  productFlavors {
                     local {}
