@@ -45,7 +45,7 @@ jobs:
 
       - run: ./gradlew projectCoverage --stacktrace
 
-      - uses: codecov/codecov-action@v2.0.1
+      - uses: codecov/codecov-action@v2
 
       - name: Upload test results
         if: ${{ always() }}
