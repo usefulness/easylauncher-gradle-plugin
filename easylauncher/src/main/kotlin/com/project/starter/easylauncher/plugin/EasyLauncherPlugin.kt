@@ -94,7 +94,7 @@ class EasyLauncherPlugin : Plugin<Project> {
             (variant.mergedFlavor.minSdkVersion ?: android.defaultConfig.minSdkVersion)?.apiLevel ?: 1
         }
 
-        val name = "${EasyLauncherTask.NAME}${variant.name.capitalize(Locale.ROOT)}"
+        val name = "${EasyLauncherTask.NAME}${variant.name.replaceFirstChar(Char::titlecase)}"
 
         return tasks.register(name, EasyLauncherTask::class.java) {
             it.outputDir.set(generatedResDir)

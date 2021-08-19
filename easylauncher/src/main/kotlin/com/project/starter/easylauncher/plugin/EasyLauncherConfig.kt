@@ -12,7 +12,6 @@ import org.gradle.api.tasks.Nested
 import java.awt.Color
 import java.io.File
 import java.io.Serializable
-import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -68,7 +67,7 @@ open class EasyLauncherConfig @Inject constructor(
             label = name,
             ribbonColor = ribbonColor,
             labelColor = labelColor,
-            gravity = ColorRibbonFilter.Gravity.valueOf(position.toUpperCase(Locale.ROOT)),
+            gravity = ColorRibbonFilter.Gravity.valueOf(position.uppercase()),
             textSizeRatio = textSizeRatio,
         )
     }
@@ -78,7 +77,7 @@ open class EasyLauncherConfig @Inject constructor(
         val ribbonColor = properties["ribbonColor"]?.toString()
         val labelColor = properties["labelColor"]?.toString()
         val position = properties["position"]?.toString()
-            ?.toUpperCase(Locale.ENGLISH)
+            ?.uppercase()
             ?.let(ColorRibbonFilter.Gravity::valueOf)
         val textSizeRatio = properties["textSizeRatio"]?.toString()?.toFloatOrNull()
         val drawingOptions = (properties["drawingOptions"] as? Iterable<*>).toDrawingOptions()
@@ -184,7 +183,7 @@ open class EasyLauncherConfig @Inject constructor(
 
     fun chromeLike(properties: Map<String, Any>): ChromeLikeFilter {
         val gravity = properties["gravity"]?.toString()
-            ?.toUpperCase(Locale.ROOT)
+            ?.uppercase()
             ?.let { ChromeLikeFilter.Gravity.valueOf(it) }
         val ribbonText = properties["label"]?.toString()
         val background = properties["ribbonColor"]?.toString()

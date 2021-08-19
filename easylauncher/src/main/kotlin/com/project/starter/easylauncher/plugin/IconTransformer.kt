@@ -25,7 +25,7 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
     val drawableRoot = outputFile.parentFile // eg. debug/drawable/
 
     val layers = filters.mapIndexed { index, filter ->
-        val filterId = "${filter::class.java.simpleName.toLowerCase(Locale.ROOT)}_$index"
+        val filterId = "${filter::class.java.simpleName.lowercase()}_$index"
         val resourceName = "${filterId}_${outputFile.nameWithoutExtension}"
 
         densities.forEach { (qualifier, multiplier) ->
