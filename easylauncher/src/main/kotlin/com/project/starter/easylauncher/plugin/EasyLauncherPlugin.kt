@@ -2,6 +2,7 @@ package com.project.starter.easylauncher.plugin
 
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.tasks.ExtractDeepLinksTask
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -95,6 +96,16 @@ class EasyLauncherPlugin : Plugin<Project> {
         }
 
         val name = "${EasyLauncherTask.NAME}${variant.name.capitalize(Locale.ROOT)}"
+
+        // They don't care: https://issuetracker.google.com/issues/187096666 🤷‍
+        // Discussion: https://github.com/usefulness/easylauncher-gradle-plugin/issues/165
+        tasks.withType(ExtractDeepLinksTask::class.java).configureEach {
+            val easylauncherTaskName = name.replace("extractDeepLinks", "easylauncher")
+            // Workaround for: https://github.com/gradle/gradle/issues/8057
+            if (tasks.names.contains(easylauncherTaskName)) {
+                it.dependsOn(easylauncherTaskName)
+            }
+        }
 
         return tasks.register(name, EasyLauncherTask::class.java) {
             it.outputDir.set(generatedResDir)

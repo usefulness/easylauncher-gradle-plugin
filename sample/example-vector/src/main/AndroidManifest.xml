@@ -8,5 +8,4 @@
         android:icon="@mipmap/ic_launcher"
         android:label="${appName}"
         />
-
 </manifest>
