@@ -5,7 +5,7 @@
     >
 
     <application
-        android:icon="@mipmap/ic_launcher_webp"
+        android:icon="@mipmap/ic_webp_launcher"
         android:label="${appName}"
         />
 </manifest>

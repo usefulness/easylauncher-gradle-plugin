@@ -4,6 +4,7 @@ import android.Manifest
 import androidx.test.rule.GrantPermissionRule
 import com.example.custom.adaptive.MainActivity
 import com.example.webp.BuildConfig
+import com.example.webp.R
 import com.starter.easylauncher.recordScreenshot
 import org.junit.Rule
 import org.junit.Test
@@ -15,6 +16,6 @@ internal class IconsTest {
 
     @Test
     fun doScreenshot() {
-        recordScreenshot<MainActivity>(BuildConfig.BUILD_TYPE)
+        recordScreenshot<MainActivity>(BuildConfig.BUILD_TYPE, iconName = R.mipmap.ic_webp_launcher)
     }
 }

@@ -6,15 +6,14 @@ import com.project.starter.easylauncher.plugin.models.toSize
 import groovy.xml.XmlSlurper
 import java.awt.image.BufferedImage
 import java.io.File
-import java.util.Locale
 import javax.imageio.ImageIO
 import kotlin.math.roundToInt
 
-internal fun File.transformPng(outputFile: File, filters: List<EasyLauncherFilter>, adaptive: Boolean) {
-    val image = ImageIO.read(this)
+internal fun File.transformImage(outputFile: File, filters: List<EasyLauncherFilter>, adaptive: Boolean) {
+    val image = ImageIO.read(this) ?: error("Unsupported image format at $path")
     filters.forEach { it.apply(image, adaptive = adaptive) }
     outputFile.parentFile.mkdirs()
-    ImageIO.write(image, "png", outputFile)
+    ImageIO.write(image, extension, outputFile)
 }
 
 internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: List<EasyLauncherFilter>) {
