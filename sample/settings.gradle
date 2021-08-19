@@ -6,6 +6,7 @@ include ':example-manifest-placeholder'
 include ':example-scripted'
 include ':example-simple'
 include ':example-vector'
+include ':example-webp'
 
 // utilities
 include ':adaptive-support'

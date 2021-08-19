@@ -1,0 +1,17 @@
+apply plugin: 'com.starter.application.android'
+apply plugin: 'com.starter.easylauncher'
+
+android {
+    defaultConfig {
+        minSdkVersion 23
+    }
+    buildTypes {
+        named("release") {
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+dependencies {
+    implementation project(":adaptive-support")
+}
