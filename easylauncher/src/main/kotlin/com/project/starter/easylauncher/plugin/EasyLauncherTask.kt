@@ -52,9 +52,9 @@ open class EasyLauncherTask @Inject constructor(
                 val adaptiveIcon = iconFile.asAdaptiveIcon()
                 if (adaptiveIcon == null) {
                     val outputFile = iconFile.getOutputFile()
-                    iconFile.transformPng(outputFile, filters.get(), adaptive = false)
+                    iconFile.transformImage(outputFile, filters.get(), adaptive = false)
                 } else {
-                    processIcon(adaptiveIcon, minSdkVersion.get())
+                    processIcon(adaptiveIcon)
                 }
             }
         }
@@ -62,15 +62,15 @@ open class EasyLauncherTask @Inject constructor(
         logger.info("task finished in $taskExecutionTime ms")
     }
 
-    private fun processIcon(adaptiveIcon: AdaptiveIcon, minSdkVersion: Int) {
+    private fun processIcon(adaptiveIcon: AdaptiveIcon) {
         resourceDirectories.forEach { resDir ->
             val icons = objectFactory.getIconFiles(parent = resDir, iconName = adaptiveIcon.foreground)
             icons.forEach { iconFile ->
                 val outputFile = iconFile.getOutputFile()
                 if (iconFile.extension == "xml") {
-                    iconFile.transformXml(outputFile, minSdkVersion, filters.get())
+                    iconFile.transformXml(outputFile, minSdkVersion.get(), filters.get())
                 } else {
-                    iconFile.transformPng(outputFile, filters.get(), adaptive = true)
+                    iconFile.transformImage(outputFile, filters.get(), adaptive = true)
                 }
             }
         }

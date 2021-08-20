@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: 8
+          java-version: 11
 
       - name: Cache .gradle
         uses: burrunan/gradle-cache-action@v1
@@ -66,14 +66,18 @@ jobs:
       fail-fast: false
       matrix:
         gradle: [ 6.5, 6.7.1, current, rc ]
-        agp: [ 4.1.0, 4.2.2, 7.0.0-beta05 ]
+        agp: [ 4.1.0, 7.0.1, 7.1.0-alpha08 ]
         exclude:
           - gradle: 6.5
-            agp: 7.0.0-beta05
-          - gradle: 6.7.1
-            agp: 7.0.0-beta05
-          - gradle: 6.5
             agp: 4.2.2
+          - gradle: 6.5
+            agp: 7.0.1
+          - gradle: 6.7.1
+            agp: 7.0.1
+          - gradle: 6.5
+            agp: 7.1.0-alpha08
+          - gradle: 6.7.1
+            agp: 7.1.0-alpha08
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
     steps:

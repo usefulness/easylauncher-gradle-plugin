@@ -16,10 +16,13 @@ java {
     withSourcesJar()
 }
 
-tasks.named("test") {
+tasks.withType(Test).configureEach {
     useJUnitPlatform()
     testLogging {
         events "skipped", "failed"
+    }
+    doLast {
+        Thread.sleep(2000) // https://github.com/gradle/gradle/issues/16603
     }
 }
 
@@ -46,7 +49,8 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
 
 dependencies {
     implementation "org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}"
-    compileOnly "com.android.tools.build:gradle:4.2.2"
+    runtimeOnly "com.github.gotson:webp-imageio:0.2.1"
+    compileOnly "com.android.tools.build:gradle:7.0.1"
 
     testImplementation gradleTestKit()
     testImplementation "org.assertj:assertj-core:3.20.2"
