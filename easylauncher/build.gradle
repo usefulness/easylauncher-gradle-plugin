@@ -21,6 +21,9 @@ tasks.withType(Test).configureEach {
     testLogging {
         events "skipped", "failed"
     }
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(11) // AGP 7.0 requires java 11
+    }
     doLast {
         Thread.sleep(2000) // https://github.com/gradle/gradle/issues/16603
     }
@@ -49,7 +52,7 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
 
 dependencies {
     implementation "org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}"
-    runtimeOnly "com.github.gotson:webp-imageio:0.2.1"
+    runtimeOnly "com.github.gotson:webp-imageio:0.2.2"
     compileOnly "com.android.tools.build:gradle:7.0.1"
 
     testImplementation gradleTestKit()
