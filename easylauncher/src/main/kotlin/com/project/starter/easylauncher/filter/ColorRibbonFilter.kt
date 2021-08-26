@@ -36,10 +36,10 @@ class ColorRibbonFilter(
     private val ribbonColor = ribbonColor ?: Color(0, 0x72, 0, 0x99)
     private val labelColor = labelColor ?: Color.WHITE
     private val gravity = gravity ?: Gravity.TOPLEFT
-    private val font = fontResource?.takeIf { it.exists() }
-        ?.let { Font.createFont(Font.TRUETYPE_FONT, it) }
-        ?: fontName?.let { Font(it, Font.PLAIN, 1) }
-        ?: DEFAULT_EASYLAUNCHER_FONT
+    private val font = getFont(
+        resource = fontResource,
+        name = fontName
+    )
 
     @Suppress("ComplexMethod")
     override fun apply(image: BufferedImage, adaptive: Boolean) {

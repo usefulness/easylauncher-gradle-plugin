@@ -3,7 +3,7 @@ package com.project.starter.easylauncher.plugin.utils
 import org.intellij.lang.annotations.Language
 import java.io.File
 
-fun File.buildScript(androidBlock: () -> String, easylauncherBlock: () -> String = { "" }) {
+fun File.buildScript(androidBlock: () -> String = { "" }, easylauncherBlock: () -> String = { "" }) {
     @Language("groovy")
     val buildScript =
         """
@@ -37,7 +37,7 @@ fun File.buildScript(androidBlock: () -> String, easylauncherBlock: () -> String
     writeText(buildScript)
 }
 
-fun File.libraryBuildscript(androidBlock: () -> String, easylauncherBlock: () -> String = { "" }) {
+fun File.libraryBuildscript(androidBlock: () -> String = { "" }, easylauncherBlock: () -> String = { "" }) {
     @Language("groovy")
     val buildScript =
         """

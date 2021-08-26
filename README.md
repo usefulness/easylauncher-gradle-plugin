@@ -183,6 +183,19 @@ easylauncher {
 | Custom font (locally installed) | `customRibbon(position: "top", font: "ComicSansMs")` | ![](icons/ribbon_custom_font.png) |
 | Custom font (using font pack) | `customRibbon(position: "top", font: file("fonts/CustomFont.ttf"))` | ![](icons/ribbon_custom_font.png) |
 
+<details>
+  <summary>Troubleshooting on "Problem reading font data."</summary>
+
+When using docker or a _minimalistic_ environment one might encounter above error message when loading Fonts.  
+The solution is to make sure font support was installed i.e. by calling:
+```
+apk add --no-cache freetype fontconfig ttf-dejavu
+```
+
+See [related issue](https://github.com/usefulness/easylauncher-gradle-plugin/issues/201) for more information.
+
+</details>  
+
 ## Chrome-like filters
 
 | Filter | Command | Result |
