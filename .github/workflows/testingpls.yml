@@ -1,0 +1,16 @@
+name: Build project
+
+on:
+  push:
+
+jobs:
+  testing_things:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - run: docker build -t android:test .
+
+      - run: docker run --rm -v `pwd`:/project  android:test bash -c 'cd /project; ./gradlew test --stacktrace'
