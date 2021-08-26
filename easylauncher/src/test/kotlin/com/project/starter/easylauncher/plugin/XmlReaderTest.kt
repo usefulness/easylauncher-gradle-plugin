@@ -1,5 +1,6 @@
 package com.project.starter.easylauncher.plugin
 
+import com.project.starter.easylauncher.filter.DEFAULT_EASYLAUNCHER_FONT
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -9,6 +10,13 @@ internal class XmlReaderTest {
 
     @TempDir
     lateinit var tempDir: File
+
+    @Test
+    fun problematicFont() {
+        val font = DEFAULT_EASYLAUNCHER_FONT
+        font.deriveFont(20f)
+        assertThat(font.name).isEqualTo("Roboto")
+    }
 
     @Test
     fun `getLauncherIcon without 'roundIcon'`() {
