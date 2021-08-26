@@ -15,6 +15,9 @@ jobs:
 
       - run: docker run --rm -v `pwd`:/project  android:test bash -c 'cd /project; ./gradlew test --stacktrace'
 
+      - run: "sudo find ~ -type d -user root -exec sudo chown -R $USER: {} +"
+        if: ${{ always() }}
+
       - name: Upload test results
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
