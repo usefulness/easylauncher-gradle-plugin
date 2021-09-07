@@ -5,6 +5,7 @@ plugins {
 
 commonConfig {
     javaFilesAllowed false
+    javaVersion JavaVersion.VERSION_1_8
 }
 
 allprojects {
@@ -15,14 +16,6 @@ allprojects {
                 if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith("kotlin")) {
                     useVersion kotlinVersion
                 }
-            }
-        }
-    }
-
-    pluginManager.withPlugin("java") {
-        java {
-            toolchain {
-                languageVersion.set(JavaLanguageVersion.of(8))
             }
         }
     }
