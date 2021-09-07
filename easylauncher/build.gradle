@@ -21,9 +21,6 @@ tasks.withType(Test).configureEach {
     testLogging {
         events "skipped", "failed"
     }
-    javaLauncher = javaToolchains.launcherFor {
-        languageVersion = JavaLanguageVersion.of(11) // AGP 7.0 requires java 11
-    }
     doLast {
         Thread.sleep(2000) // https://github.com/gradle/gradle/issues/16603
     }
