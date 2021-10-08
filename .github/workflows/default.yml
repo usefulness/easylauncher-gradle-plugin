@@ -100,7 +100,7 @@ jobs:
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
 
-      - uses: gradle/gradle-command-action@v1
+      - uses: gradle/gradle-command-action@v2
         with:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
@@ -130,7 +130,7 @@ jobs:
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
 
-      - uses: gradle/gradle-command-action@v1
+      - uses: gradle/gradle-command-action@v2
         with:
           build-root-directory: sample
           gradle-version: current
