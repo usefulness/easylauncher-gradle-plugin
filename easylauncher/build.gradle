@@ -50,7 +50,7 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
 dependencies {
     implementation "org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}"
     runtimeOnly "com.github.gotson:webp-imageio:0.2.2"
-    compileOnly "com.android.tools.build:gradle:7.0.2"
+    compileOnly "com.android.tools.build:gradle:7.0.3"
 
     testImplementation gradleTestKit()
     testImplementation "org.assertj:assertj-core:3.21.0"
