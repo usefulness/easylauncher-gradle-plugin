@@ -4,7 +4,7 @@ apply plugin: 'com.facebook.testing.screenshot'
 
 android {
     defaultConfig {
-        minSdkVersion(26)
+        minSdk 26
         testInstrumentationRunner "com.starter.easylauncher.ScreenshotsRunner"
     }
 

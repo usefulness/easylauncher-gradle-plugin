@@ -65,19 +65,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        gradle: [ 6.5, 6.7.1, current, rc ]
-        agp: [ 4.1.0, 7.0.2, 7.1.0-alpha10 ]
+        gradle: [ 6.5, 6.7.1, current, release-candidate ]
+        agp: [ 4.1.0, 7.0.3, 7.2.0-alpha02 ]
         exclude:
           - gradle: 6.5
             agp: 4.2.2
           - gradle: 6.5
-            agp: 7.0.2
+            agp: 7.0.3
           - gradle: 6.7.1
-            agp: 7.0.2
+            agp: 7.0.3
           - gradle: 6.5
-            agp: 7.1.0-alpha10
+            agp: 7.2.0-alpha02
           - gradle: 6.7.1
-            agp: 7.1.0-alpha10
+            agp: 7.2.0-alpha02
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
     steps:
@@ -104,7 +104,6 @@ jobs:
         with:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
-          dependencies-cache-enabled: true
           arguments: assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }} --stacktrace
 
   build-sample-apps-with-confgiuration-cache:
@@ -134,8 +133,7 @@ jobs:
         with:
           build-root-directory: sample
           gradle-version: current
-          dependencies-cache-enabled: true
-          arguments: assembleDebug --configuration-cache
+          arguments: assembleDebug --configuration-cache --stacktrace
 
   icons-test:
     runs-on: macos-latest
