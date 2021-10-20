@@ -96,7 +96,7 @@ You could customize the plugin's behaviour like this:
 
 ```groovy
 easylauncher {
-    defaultFlavorNaming = true // Use flavor name for default ribbon, instead of the type name
+    defaultFlavorNaming true // Use flavor name for default ribbon, instead of the type name
     
     productFlavors {
         local {}
