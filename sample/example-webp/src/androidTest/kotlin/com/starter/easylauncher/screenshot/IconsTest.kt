@@ -16,6 +16,6 @@ internal class IconsTest {
 
     @Test
     fun doScreenshot() {
-        recordScreenshot<MainActivity>(BuildConfig.BUILD_TYPE, iconName = R.mipmap.ic_webp_launcher)
+        recordScreenshot<MainActivity>(BuildConfig.FLAVOR, iconName = R.mipmap.ic_webp_launcher)
     }
 }

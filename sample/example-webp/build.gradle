@@ -1,5 +1,7 @@
-apply plugin: 'com.starter.application.android'
-apply plugin: 'com.starter.easylauncher'
+plugins {
+    id("com.starter.application.android")
+    id("com.starter.easylauncher")
+}
 
 android {
     defaultConfig {
@@ -8,6 +10,27 @@ android {
     buildTypes {
         named("release") {
             signingConfig signingConfigs.debug
+        }
+    }
+    flavorDimensions "reportedBugs"
+    productFlavors {
+        register("androidStudioGenerated") {
+            dimension "reportedBugs"
+        }
+        register("otherWebpFormat") {
+            dimension "reportedBugs"
+        }
+    }
+}
+
+
+easylauncher {
+    productFlavors {
+        androidStudioGenerated {
+            filters grayRibbonFilter()
+        }
+        otherWebpFormat {
+            filters orangeRibbonFilter()
         }
     }
 }
