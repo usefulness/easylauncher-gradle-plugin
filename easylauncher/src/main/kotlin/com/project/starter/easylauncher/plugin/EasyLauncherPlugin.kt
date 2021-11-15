@@ -116,7 +116,7 @@ class EasyLauncherPlugin : Plugin<Project> {
     private fun findConfigs(
         variant: BaseVariant,
         ribbonProductFlavors: Iterable<EasyLauncherConfig>,
-        ribbonBuildTypes: Iterable<EasyLauncherConfig>
+        ribbonBuildTypes: Iterable<EasyLauncherConfig>,
     ): List<EasyLauncherConfig> =
         ribbonProductFlavors.filter { config -> variant.productFlavors.any { config.name == it.name } } +
             ribbonBuildTypes.filter { it.name == variant.buildType.name }

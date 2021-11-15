@@ -35,7 +35,7 @@ internal class IconTransformerTest {
             minSdkVersion = 21,
             filters = listOf(
                 ColorRibbonFilter(label = "test1", ribbonColor = Color.BLUE),
-                ColorRibbonFilter(label = "test2", ribbonColor = Color.RED, gravity = ColorRibbonFilter.Gravity.BOTTOM)
+                ColorRibbonFilter(label = "test2", ribbonColor = Color.RED, gravity = ColorRibbonFilter.Gravity.BOTTOM),
             ),
         )
 
@@ -61,7 +61,7 @@ internal class IconTransformerTest {
             |        />
             |
             |</layer-list>
-            |""".trimMargin()
+            |""".trimMargin(),
         )
     }
 
@@ -73,7 +73,7 @@ internal class IconTransformerTest {
             minSdkVersion = 26,
             filters = listOf(
                 ColorRibbonFilter(label = "test1", ribbonColor = Color.BLUE),
-                ColorRibbonFilter(label = "test2", ribbonColor = Color.RED, gravity = ColorRibbonFilter.Gravity.BOTTOM)
+                ColorRibbonFilter(label = "test2", ribbonColor = Color.RED, gravity = ColorRibbonFilter.Gravity.BOTTOM),
             ),
         )
 
@@ -99,7 +99,7 @@ internal class IconTransformerTest {
             |        />
             |
             |</layer-list>
-            |""".trimMargin()
+            |""".trimMargin(),
         )
     }
 }

@@ -38,7 +38,7 @@ class ColorRibbonFilter(
     private val gravity = gravity ?: Gravity.TOPLEFT
     private val font = getFont(
         resource = fontResource,
-        name = fontName
+        name = fontName,
     )
 
     @Suppress("ComplexMethod")
@@ -50,7 +50,7 @@ class ColorRibbonFilter(
             Gravity.TOPRIGHT -> graphics.transform = AffineTransform.getRotateInstance(
                 Math.toRadians(45.0),
                 image.width.toDouble(),
-                0.0
+                0.0,
             )
             Gravity.TOPLEFT -> graphics.transform = AffineTransform.getRotateInstance(Math.toRadians(-45.0))
         }
@@ -91,19 +91,19 @@ class ColorRibbonFilter(
             graphics.drawString(
                 label,
                 image.width / 2 - textBounds.width.toInt() / 2,
-                yGravity + fm.ascent
+                yGravity + fm.ascent,
             )
         } else if (gravity == Gravity.TOPRIGHT) {
             graphics.drawString(
                 label,
                 image.width - textBounds.width.toInt() / 2,
-                yGravity + fm.ascent
+                yGravity + fm.ascent,
             )
         } else {
             graphics.drawString(
                 label,
                 (-textBounds.width).toInt() / 2,
-                yGravity + fm.ascent
+                yGravity + fm.ascent,
             )
         }
         graphics.dispose()

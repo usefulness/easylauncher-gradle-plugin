@@ -31,7 +31,7 @@ class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
             val fgImageScaled = fgImage.getScaledInstance(
                 (fgImage.getWidth(null) * scale).toInt(),
                 (fgImage.getWidth(null) * scale).toInt(),
-                Image.SCALE_SMOOTH
+                Image.SCALE_SMOOTH,
             )
             val graphics = image.createGraphics()
 

@@ -13,7 +13,7 @@ internal fun File.getLauncherIcons(manifestPlaceholders: Map<String, Any> = empt
 
     return listOfNotNull(
         icon?.takeIf { it.isNotBlank() },
-        roundIcon?.takeIf { it.isNotBlank() }
+        roundIcon?.takeIf { it.isNotBlank() },
     ).toSet()
 }
 
@@ -37,7 +37,7 @@ internal fun File.asAdaptiveIcon(): AdaptiveIcon? {
         AdaptiveIcon(
             file = this,
             background = backgroundDrawable,
-            foreground = foregroundDrawable
+            foreground = foregroundDrawable,
         )
     } else {
         null

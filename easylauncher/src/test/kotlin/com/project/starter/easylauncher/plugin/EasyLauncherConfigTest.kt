@@ -20,7 +20,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                 """
                     <manifest package="com.example.app" />
                 
-                """.trimIndent()
+                """.trimIndent(),
             )
         }
     }
@@ -42,7 +42,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                         }
                     }
                 """.trimIndent()
-            }
+            },
         )
 
         runTask("assembleDebug")
@@ -65,7 +65,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                         }
                     }
                 """.trimIndent()
-            }
+            },
         )
 
         runTask("assembleDebug")
@@ -85,7 +85,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                         }
                     }
                 """.trimIndent()
-            }
+            },
         )
 
         val result = runTask("assembleDebug", shouldFail = true)
@@ -112,7 +112,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                         }
                     }
                 """.trimIndent()
-            }
+            },
         )
 
         runTask("assembleDebug")
@@ -129,7 +129,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                         }
                     }
                 """.trimIndent()
-            }
+            },
         )
 
         runTask("assembleDebug")
@@ -147,7 +147,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                         }
                     }
                 """.trimIndent()
-            }
+            },
         )
 
         val nonExistentFontResult = runTask("assembleDebug")
@@ -163,7 +163,7 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
                         }
                     }
                 """.trimIndent()
-            }
+            },
         )
 
         val invalidFontFile = runTask("assembleDebug", shouldFail = true)
