@@ -25,7 +25,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                         """
                         <manifest package="com.example.app" />
                         
-                        """.trimIndent()
+                        """.trimIndent(),
                     )
                 }
             }
@@ -48,7 +48,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                     full { dimension "version" }
                 }
                 """.trimIndent()
-            }
+            },
         )
         val result = runTask("assembleDemoDebug")
 
@@ -71,7 +71,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                 full { dimension "version" }
             }
                 """.trimIndent()
-            }
+            },
         )
         val result = runTask("assembleDemoRelease", "assembleFullSuperType")
 
@@ -105,7 +105,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                     }
                 }
                 """.trimIndent()
-            }
+            },
         )
         val result = runTask("assembleSuperType")
 
@@ -132,7 +132,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                     }
                 }
                 """.trimIndent()
-            }
+            },
         )
 
         val result = runTask("assembleDebug")
@@ -160,7 +160,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                     }
                 }
                 """.trimIndent()
-            }
+            },
         )
         val cleanRun = runTask("assembleDebug")
         assertThat(cleanRun.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.SUCCESS)
@@ -171,7 +171,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
 
     @Disabled(
         "https://docs.gradle.org/current/userguide/configuration_cache.html" +
-            "#config_cache:not_yet_implemented:testkit_build_with_java_agent"
+            "#config_cache:not_yet_implemented:testkit_build_with_java_agent",
     )
     @Test
     fun `plugin is compatible with configuration cache`() {
@@ -193,7 +193,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                     }
                 }
                 """.trimIndent()
-            }
+            },
         )
 
         val cleanRun = runTask("assembleDebug", "--configuration-cache")
@@ -272,7 +272,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                     }
                 }
                 """.trimIndent()
-            }
+            },
         )
         val result = runTask("easylauncher")
 
@@ -286,7 +286,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                 "easylauncherQaDebug",
                 "easylauncherQaRelease",
                 "easylauncherStagingBeta",
-                "easylauncherStagingDebug"
+                "easylauncherStagingDebug",
             ).forEach { taskName ->
                 softly.assertThat(result.task(":app:$taskName")).isNotNull()
             }
@@ -299,7 +299,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                 "easylauncherProductionRelease",
                 "easylauncherQaCanary",
                 "easylauncherStagingCanary",
-                "easylauncherStagingRelease"
+                "easylauncherStagingRelease",
             ).forEach { taskName ->
                 softly.assertThat(result.task(":app:$taskName")).isNull()
             }

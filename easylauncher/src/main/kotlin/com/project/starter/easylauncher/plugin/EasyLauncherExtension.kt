@@ -7,7 +7,7 @@ import org.gradle.api.provider.Property
 import javax.inject.Inject
 
 open class EasyLauncherExtension @Inject constructor(
-    objectFactory: ObjectFactory
+    objectFactory: ObjectFactory,
 ) {
 
     /**

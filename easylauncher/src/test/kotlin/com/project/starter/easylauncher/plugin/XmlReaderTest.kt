@@ -30,7 +30,7 @@ internal class XmlReaderTest {
                     android:theme="@style/AppTheme" >
                 </application>
             </manifest>
-            """.trimIndent()
+            """.trimIndent(),
         )
 
         val icon = manifest.getLauncherIcons()
@@ -57,7 +57,7 @@ internal class XmlReaderTest {
                     android:theme="@style/AppTheme" >
                 </application>
             </manifest>
-            """.trimIndent()
+            """.trimIndent(),
         )
 
         val icon = manifest.getLauncherIcons()
@@ -86,7 +86,7 @@ internal class XmlReaderTest {
                     android:theme="@style/AppTheme" >
                 </application>
             </manifest>
-            """.trimIndent()
+            """.trimIndent(),
         )
 
         val icon = manifest.getLauncherIcons()
@@ -115,7 +115,7 @@ internal class XmlReaderTest {
                     android:theme="@style/AppTheme" >
                 </application>
             </manifest>
-            """.trimIndent()
+            """.trimIndent(),
         )
 
         val icon = manifest.getLauncherIcons()
@@ -144,7 +144,7 @@ internal class XmlReaderTest {
                     android:theme="@style/AppTheme" >
                 </application>
             </manifest>
-            """.trimIndent()
+            """.trimIndent(),
         )
 
         val icon = manifest.getLauncherIcons(mapOf("has_placeholder" to "@mipmap/ic_launcher"))
@@ -172,7 +172,7 @@ internal class XmlReaderTest {
                     android:label="@drawable/ic_launcher"
                     android:theme="@style/AppTheme" />
             </manifest>
-            """.trimIndent()
+            """.trimIndent(),
         )
 
         val icon = manifest.getLauncherIcons(mapOf("cat_image" to "cat", "dog_image" to "dog"))
@@ -191,7 +191,7 @@ internal class XmlReaderTest {
                 <foreground android:drawable="@mipmap/ic_launcher_foreground" />
             </adaptive-icon>
 
-            """.trimIndent()
+            """.trimIndent(),
         )
 
         val icon = adaptiveIcon.asAdaptiveIcon()
@@ -212,7 +212,7 @@ internal class XmlReaderTest {
                 <foreground android:drawable="@drawable/ic_launcher_foreground" />
             </adaptive-icon>
 
-            """.trimIndent()
+            """.trimIndent(),
         )
 
         val icon = adaptiveIcon.asAdaptiveIcon()

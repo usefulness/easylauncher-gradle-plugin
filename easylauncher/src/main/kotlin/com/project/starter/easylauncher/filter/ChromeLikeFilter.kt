@@ -31,7 +31,7 @@ class ChromeLikeFilter(
     private val labelColor = labelColor ?: Color.WHITE
     private val font = getFont(
         resource = fontResource,
-        name = fontName
+        name = fontName,
     )
     private val overlayHeight = overlayHeight ?: OVERLAY_HEIGHT
     private val gravity = gravity ?: Gravity.BOTTOM
@@ -46,7 +46,7 @@ class ChromeLikeFilter(
             imageHeight = image.height,
             maxLabelWidth = (image.width * ADAPTIVE_CONTENT_SCALE).roundToInt(),
             maxLabelHeight = (backgroundHeight * ADAPTIVE_CONTENT_SCALE).roundToInt(),
-            frc = frc
+            frc = frc,
         )
         val textBounds = graphics.font.getStringBounds(label, frc)
 
@@ -73,13 +73,13 @@ class ChromeLikeFilter(
                 graphics.drawString(
                     label,
                     image.width / 2 - textBounds.width.toInt() / 2,
-                    backgroundHeight - fm.descent - (labelPadding ?: 0)
+                    backgroundHeight - fm.descent - (labelPadding ?: 0),
                 )
             Gravity.BOTTOM ->
                 graphics.drawString(
                     label,
                     image.width / 2 - textBounds.width.toInt() / 2,
-                    yGravity + fm.ascent + (labelPadding ?: 0)
+                    yGravity + fm.ascent + (labelPadding ?: 0),
                 )
         }
         graphics.dispose()

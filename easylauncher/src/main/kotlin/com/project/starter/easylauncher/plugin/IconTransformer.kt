@@ -31,7 +31,7 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
             val overlay = BufferedImage(
                 (width.value * multiplier).roundToInt(),
                 (height.value * multiplier).roundToInt(),
-                BufferedImage.TYPE_INT_ARGB
+                BufferedImage.TYPE_INT_ARGB,
             )
             filter.apply(overlay, adaptive = true)
 
@@ -65,7 +65,7 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
         |
         |$layers
         |</layer-list>
-        |""".trimMargin()
+        |""".trimMargin(),
     )
 }
 
@@ -95,5 +95,5 @@ private val densities = mapOf(
     "hdpi" to 1.5,
     "xhdpi" to 2.00,
     "xxhdpi" to 3.00,
-    "xxxhdpi" to 4.00
+    "xxxhdpi" to 4.00,
 )
