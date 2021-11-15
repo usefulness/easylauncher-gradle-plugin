@@ -66,7 +66,7 @@ jobs:
       fail-fast: false
       matrix:
         gradle: [ 6.5, 6.7.1, current, release-candidate ]
-        agp: [ 4.1.0, 7.0.3, 7.2.0-alpha02 ]
+        agp: [ 4.1.0, 7.0.3, 7.2.0-alpha04 ]
         exclude:
           - gradle: 6.5
             agp: 4.2.2
@@ -75,9 +75,9 @@ jobs:
           - gradle: 6.7.1
             agp: 7.0.3
           - gradle: 6.5
-            agp: 7.2.0-alpha02
+            agp: 7.2.0-alpha04
           - gradle: 6.7.1
-            agp: 7.2.0-alpha02
+            agp: 7.2.0-alpha04
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
     steps:
