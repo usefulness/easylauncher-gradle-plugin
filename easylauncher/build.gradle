@@ -43,8 +43,12 @@ gradlePlugin {
     }
 }
 
+configurations {
+    testRuntimeDependencies.extendsFrom compileOnly
+}
+
 tasks.withType(PluginUnderTestMetadata).configureEach {
-    pluginClasspath.from(configurations.compileOnly)
+    pluginClasspath.from(configurations.testRuntimeDependencies)
 }
 
 dependencies {
