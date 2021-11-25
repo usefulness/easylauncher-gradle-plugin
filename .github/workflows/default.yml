@@ -27,8 +27,8 @@ jobs:
       - name: set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: 15
+          distribution: 'temurin'
+          java-version: 17
 
       - name: Cache .gradle
         uses: burrunan/gradle-cache-action@v1
@@ -88,8 +88,8 @@ jobs:
       - name: set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: 15
+          distribution: 'temurin'
+          java-version: 17
 
       - name: Cache .gradle
         uses: burrunan/gradle-cache-action@v1
@@ -109,6 +109,11 @@ jobs:
   build-sample-apps-with-confgiuration-cache:
     runs-on: ubuntu-latest
     name: Test configuration cache
+    strategy:
+      fail-fast: false
+      matrix:
+        javaVersion: [ 11, 17 ]
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -117,8 +122,8 @@ jobs:
       - name: set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: 15
+          distribution: 'temurin'
+          java-version: ${{ matrix.javaVersion }}
 
       - name: Cache .gradle
         uses: burrunan/gradle-cache-action@v1
@@ -150,8 +155,8 @@ jobs:
       - name: set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: 15
+          distribution: 'temurin'
+          java-version: 17
 
       - name: Cache .gradle
         uses: burrunan/gradle-cache-action@v1
