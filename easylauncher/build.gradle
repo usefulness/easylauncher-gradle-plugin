@@ -51,6 +51,15 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
     pluginClasspath.from(configurations.testRuntimeDependencies)
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.release.set(JavaVersion.VERSION_1_8.majorVersion.toInteger())
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(JavaVersion.VERSION_17.toString())
+    }
+}
+
 dependencies {
     implementation "org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}"
     runtimeOnly "com.github.gotson:webp-imageio:0.2.2"
