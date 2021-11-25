@@ -27,13 +27,22 @@ class ChromeLikeFilter(
         TOP, BOTTOM
     }
 
+    @Transient
     private val ribbonColor = ribbonColor ?: Color.DARK_GRAY
+
+    @Transient
     private val labelColor = labelColor ?: Color.WHITE
+
+    @Transient
     private val font = getFont(
         resource = fontResource,
         name = fontName,
     )
+
+    @Transient
     private val overlayHeight = overlayHeight ?: OVERLAY_HEIGHT
+
+    @Transient
     private val gravity = gravity ?: Gravity.BOTTOM
 
     override fun apply(image: BufferedImage, adaptive: Boolean) {

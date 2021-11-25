@@ -33,9 +33,16 @@ class ColorRibbonFilter(
         ADD_EXTRA_PADDING,
     }
 
+    @Transient
     private val ribbonColor = ribbonColor ?: Color(0, 0x72, 0, 0x99)
+
+    @Transient
     private val labelColor = labelColor ?: Color.WHITE
+
+    @Transient
     private val gravity = gravity ?: Gravity.TOPLEFT
+
+    @Transient
     private val font = getFont(
         resource = fontResource,
         name = fontName,
