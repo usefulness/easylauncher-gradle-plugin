@@ -65,21 +65,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        gradle: [ 6.5, 6.7.1, current, release-candidate ]
-        agp: [ 4.1.0, 7.0.3, 7.2.0-alpha05 ]
-        exclude:
-          - gradle: 6.5
-            agp: 4.2.2
-          - gradle: 6.5
+        javaVersion: [ 17 ]
+        gradle: [ 7.3, current, release-candidate ]
+        agp: [ 7.0.3, 7.2.0-alpha05 ]
+        include:
+          - javaVersion: 11
+            gradle: 6.5
+            agp: 4.1.0
+          - javaVersion: 11
+            gradle: 6.7.1
+            agp: 4.1.0
+          - javaVersion: 11
+            gradle: 7.0.2
             agp: 7.0.3
-          - gradle: 6.7.1
+          - javaVersion: 11
+            gradle: current
             agp: 7.0.3
-          - gradle: 6.5
-            agp: 7.2.0-alpha05
-          - gradle: 6.7.1
-            agp: 7.2.0-alpha05
 
-    name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}
+    name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}, Java-${{ matrix.javaVersion }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -89,7 +92,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: ${{ matrix.javaVersion }}
 
       - name: Cache .gradle
         uses: burrunan/gradle-cache-action@v1
@@ -108,7 +111,7 @@ jobs:
 
   build-sample-apps-with-confgiuration-cache:
     runs-on: ubuntu-latest
-    name: Test configuration cache
+    name: Test configuration cache Java-${{ matrix.javaVersion }}
     strategy:
       fail-fast: false
       matrix:
