@@ -1,0 +1,9 @@
+{
+  "assignees": [
+    "mateuszkwiecinski"
+  ],
+  "extends": [
+    "config:base",
+    ":disableDependencyDashboard"
+  ]
+}
