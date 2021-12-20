@@ -1,5 +1,5 @@
 {
-  "assignees": ["mateuszkwiecinski"]
+  "assignees": [ "mateuszkwiecinski" ],
   "extends": [
     "config:base"
   ]
