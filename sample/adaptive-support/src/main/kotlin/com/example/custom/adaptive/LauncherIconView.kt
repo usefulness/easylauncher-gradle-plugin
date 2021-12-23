@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 
 class LauncherIconView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
@@ -29,7 +30,7 @@ class LauncherIconView(context: Context, attrs: AttributeSet?) : FrameLayout(con
 
     private fun getAdaptiveIcon(@DrawableRes iconResource: Int): AdaptiveIconDrawable? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.getDrawable(iconResource) as? AdaptiveIconDrawable
+            ContextCompat.getDrawable(context, iconResource) as? AdaptiveIconDrawable
         } else {
             null
         }
