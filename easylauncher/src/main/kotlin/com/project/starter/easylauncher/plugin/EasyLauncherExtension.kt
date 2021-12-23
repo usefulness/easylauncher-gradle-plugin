@@ -13,9 +13,6 @@ open class EasyLauncherExtension @Inject constructor(
     /**
      * True to use flavor name for default ribbons, false to use type name
      */
-    /**
-     * @param isDefaultFlavorNaming true to use flavor name for default ribbons, false to use type name
-     */
     var isDefaultFlavorNaming: Property<Boolean> = objectFactory.property(Boolean::class.java).apply {
         set(false)
     }

@@ -46,19 +46,9 @@ internal class IconTransformerTest {
             |
             |    <item android:drawable="@drawable/easy_icon_resource" />
             |
-            |    <item
-            |        android:width="16dp"
-            |        android:height="16dp"
-            |        android:drawable="@drawable/colorribbonfilter_0_output"
-            |        android:gravity="center"
-            |        />
+            |    <item android:drawable="@drawable/colorribbonfilter_0_output" />
             |
-            |    <item
-            |        android:width="16dp"
-            |        android:height="16dp"
-            |        android:drawable="@drawable/colorribbonfilter_1_output"
-            |        android:gravity="center"
-            |        />
+            |    <item android:drawable="@drawable/colorribbonfilter_1_output" />
             |
             |</layer-list>
             |""".trimMargin(),
@@ -84,19 +74,9 @@ internal class IconTransformerTest {
             |
             |    <item android:drawable="@drawable/easy_icon_resource" />
             |
-            |    <item
-            |        android:width="16dp"
-            |        android:height="16dp"
-            |        android:drawable="@drawable/colorribbonfilter_0_output"
-            |        android:gravity="center"
-            |        />
+            |    <item android:drawable="@drawable/colorribbonfilter_0_output" />
             |
-            |    <item
-            |        android:width="16dp"
-            |        android:height="16dp"
-            |        android:drawable="@drawable/colorribbonfilter_1_output"
-            |        android:gravity="center"
-            |        />
+            |    <item android:drawable="@drawable/colorribbonfilter_1_output" />
             |
             |</layer-list>
             |""".trimMargin(),

@@ -7,7 +7,6 @@ import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.font.FontRenderContext
-import java.awt.image.BufferedImage
 import java.io.File
 import kotlin.math.roundToInt
 
@@ -45,22 +44,23 @@ class ChromeLikeFilter(
     @Transient
     private val gravity = gravity ?: Gravity.BOTTOM
 
-    override fun apply(image: BufferedImage, adaptive: Boolean) {
-        val graphics = image.graphics as Graphics2D
+    override fun apply(canvas: Canvas, adaptive: Boolean) {
+        canvas.use { graphics ->
+            apply(canvas, graphics, adaptive)
+        }
+    }
 
+    private fun apply(canvas: Canvas, graphics: Graphics2D, adaptive: Boolean) {
         val frc = FontRenderContext(graphics.transform, true, true)
         // calculate the rectangle where the label is rendered
-        val backgroundHeight = (image.height * overlayHeight).roundToInt()
+        val backgroundHeight = (canvas.height * overlayHeight).roundToInt()
         graphics.font = getFont(
-            imageHeight = image.height,
-            maxLabelWidth = (image.width * ADAPTIVE_CONTENT_SCALE).roundToInt(),
+            imageHeight = canvas.height,
+            maxLabelWidth = (canvas.width * ADAPTIVE_CONTENT_SCALE).roundToInt(),
             maxLabelHeight = (backgroundHeight * ADAPTIVE_CONTENT_SCALE).roundToInt(),
             frc = frc,
         )
         val textBounds = graphics.font.getStringBounds(label, frc)
-
-        // update y gravity after calculating font size
-        val yGravity = image.height - backgroundHeight
 
         // draw the ribbon
         graphics.color = ribbonColor
@@ -68,8 +68,18 @@ class ChromeLikeFilter(
             graphics.composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1f)
         }
         when (gravity) {
-            Gravity.TOP -> graphics.fillRect(0, 0, image.width, backgroundHeight)
-            Gravity.BOTTOM -> graphics.fillRect(0, yGravity, image.width, backgroundHeight)
+            Gravity.TOP -> graphics.fillRect(
+                -canvas.paddingLeft,
+                -canvas.paddingTop,
+                canvas.fullWidth,
+                canvas.paddingTop + backgroundHeight,
+            )
+            Gravity.BOTTOM -> graphics.fillRect(
+                -canvas.paddingLeft,
+                canvas.height - backgroundHeight,
+                canvas.fullWidth,
+                canvas.paddingBottom + backgroundHeight,
+            )
         }
 
         // draw the label
@@ -81,17 +91,16 @@ class ChromeLikeFilter(
             Gravity.TOP ->
                 graphics.drawString(
                     label,
-                    image.width / 2 - textBounds.width.toInt() / 2,
+                    canvas.width / 2 - textBounds.width.toInt() / 2,
                     backgroundHeight - fm.descent - (labelPadding ?: 0),
                 )
             Gravity.BOTTOM ->
                 graphics.drawString(
                     label,
-                    image.width / 2 - textBounds.width.toInt() / 2,
-                    yGravity + fm.ascent + (labelPadding ?: 0),
+                    canvas.width / 2 - textBounds.width.toInt() / 2,
+                    canvas.height - backgroundHeight + fm.ascent + (labelPadding ?: 0),
                 )
         }
-        graphics.dispose()
     }
 
     private fun getFont(imageHeight: Int, maxLabelWidth: Int, maxLabelHeight: Int, frc: FontRenderContext): Font {

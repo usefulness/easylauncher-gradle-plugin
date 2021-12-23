@@ -62,15 +62,13 @@ open class EasyLauncherConfig @Inject constructor(
         labelColor: String = "#FFFFFF",
         position: String = "topleft",
         textSizeRatio: Float? = null,
-    ): ColorRibbonFilter {
-        return customRibbon(
-            label = name,
-            ribbonColor = ribbonColor,
-            labelColor = labelColor,
-            gravity = ColorRibbonFilter.Gravity.valueOf(position.uppercase()),
-            textSizeRatio = textSizeRatio,
-        )
-    }
+    ): ColorRibbonFilter = customRibbon(
+        label = name,
+        ribbonColor = ribbonColor,
+        labelColor = labelColor,
+        gravity = ColorRibbonFilter.Gravity.valueOf(position.uppercase()),
+        textSizeRatio = textSizeRatio,
+    )
 
     fun customRibbon(properties: Map<String, Any>): ColorRibbonFilter {
         val label = properties["label"]?.toString()

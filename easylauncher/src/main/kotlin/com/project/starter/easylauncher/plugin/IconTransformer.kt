@@ -1,7 +1,7 @@
 package com.project.starter.easylauncher.plugin
 
+import com.project.starter.easylauncher.filter.Canvas
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
-import com.project.starter.easylauncher.plugin.models.Size
 import com.project.starter.easylauncher.plugin.models.toSize
 import groovy.xml.XmlSlurper
 import java.awt.image.BufferedImage
@@ -11,7 +11,10 @@ import kotlin.math.roundToInt
 
 internal fun File.transformImage(outputFile: File, filters: List<EasyLauncherFilter>, adaptive: Boolean) {
     val image = ImageIO.read(this) ?: error("Unsupported image format at $path")
-    filters.forEach { it.apply(image, adaptive = adaptive) }
+    filters.forEach {
+        val canvas = Canvas(image, adaptive = false)
+        it.apply(canvas, adaptive = adaptive)
+    }
     outputFile.parentFile.mkdirs()
     ImageIO.write(image, extension, outputFile)
 }
@@ -33,7 +36,8 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
                 (height.value * multiplier).roundToInt(),
                 BufferedImage.TYPE_INT_ARGB,
             )
-            filter.apply(overlay, adaptive = true)
+            val canvas = Canvas(overlay, adaptive = true)
+            filter.apply(canvas, adaptive = true)
 
             val qualifiedRoot = drawableRoot.parentFile.resolve("${drawableRoot.normalizedName}-$qualifier")
             val qualifiedOverlayFile = qualifiedRoot.resolve("$resourceName.png").also { it.mkdirs() }
@@ -44,12 +48,7 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
     }
         .joinToString(separator = "\n") {
             """
-            |    <item
-            |        android:width="${width.androidSize}"
-            |        android:height="${height.androidSize}"
-            |        android:drawable="@${outputFile.parentFile.normalizedName}/$it"
-            |        android:gravity="center"
-            |        />
+            |    <item android:drawable="@${outputFile.parentFile.normalizedName}/$it" />
             |""".trimMargin()
         }
     val versionSuffix = if (minSdkVersion >= ANDROID_OREO) "" else "-v26"
@@ -80,10 +79,6 @@ private val File.normalizedName
         else -> name
     }
 
-private val Size.androidSize: String
-    get() = "${(value * ADAPTIVE_SCALE).roundToInt()}$unit"
-
-internal const val ADAPTIVE_SCALE = 72 / 108f
 internal const val ADAPTIVE_CONTENT_SCALE = 56 / 108f
 
 internal const val ANDROID_OREO = 26
