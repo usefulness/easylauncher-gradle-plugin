@@ -36,7 +36,7 @@ class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
                 )
             }
         } catch (e: IOException) {
-            logger.error("Failed to load overlay ${fgFile.name}", e)
+            logger.error("Failed to load overlay '${fgFile.absolutePath}'.", e)
             return
         }
     }

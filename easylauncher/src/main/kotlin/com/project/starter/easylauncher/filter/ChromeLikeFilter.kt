@@ -16,7 +16,7 @@ class ChromeLikeFilter(
     labelColor: Color? = null,
     private val labelPadding: Int? = null,
     overlayHeight: Float? = null,
-    gravity: Gravity?,
+    gravity: Gravity? = null,
     private val textSizeRatio: Float? = null,
     fontName: String? = null,
     fontResource: File? = null,
