@@ -45,6 +45,9 @@ android {
             applicationIdSuffix = ".app.dev"
             versionName = "1.0.4"
         }
+        register("allFilters") {
+            dimension "reportedBugs"
+        }
     }
 }
 
@@ -93,6 +96,11 @@ easylauncher {
         }
         register("usingAndroidVersion") {
             filters customRibbon(label: "DEV ${android.productFlavors.usingAndroidVersion.versionName}")
+        }
+        register("allFilters") {
+            filters customRibbon(label: "local"),
+                    chromeLike(label: "aaa"),
+                    overlayFilter(new File(projectDir, "launcherOverlay/beta.png"))
         }
     }
 }

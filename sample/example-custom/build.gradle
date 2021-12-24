@@ -98,7 +98,7 @@ easylauncher {
             // Add two more filters to all `beta` variants
             filters = [
                     customColorRibbonFilter("#0000FF"),
-                    overlayFilter(new File("example-custom/launcherOverlay/beta.png"))
+                    overlayFilter(new File(projectDir, "launcherOverlay/beta.png"))
             ]
         }
         canary {
@@ -115,6 +115,13 @@ easylauncher {
         }
         localBbbCanary {
             filters = chromeLike(label: "api<26", ribbonColor: "#0B3954", labelColor: "#FF6663")
+        }
+        localAaaDebug {
+            filters = [
+                    customRibbon(label: "local"),
+                    chromeLike(label: "aaa"),
+                    overlayFilter(new File(projectDir, "launcherOverlay/beta.png")),
+            ]
         }
     }
 }
