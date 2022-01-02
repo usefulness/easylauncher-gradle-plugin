@@ -202,13 +202,6 @@ subprojects {
             }
         }
 
-        tasks.register("installAll") {
-            group = 'install'
-            android.libraryVariants.configureEach { variant ->
-                dependsOn("install${variant.name.capitalize()}")
-            }
-        }
-
         tasks.withType(Test).configureEach {
             useJUnitPlatform()
         }
