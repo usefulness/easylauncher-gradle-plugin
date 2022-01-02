@@ -113,7 +113,7 @@ easylauncher {
             // Add two more filters to all `beta` variants
             filters = [
                     customRibbon(ribbonColor: "#0000FF"),
-                    overlayFilter(new File("example-custom/launcherOverlay/beta.png"))
+                    overlayFilter(file("example-custom/launcherOverlay/beta.png"))
             ]
         }
         canary {
@@ -155,7 +155,7 @@ easylauncher {
 
 | Command | Result |
 | --- | --- |
-| `overlayFilter(new File("example-custom/launcherOverlay/beta.png"))` | ![](icons/overlay.png) |
+| `overlayFilter(file("example-custom/launcherOverlay/beta.png"))` | ![](icons/overlay.png) |
 
 ## Ribbon filters
 

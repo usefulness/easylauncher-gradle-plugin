@@ -255,7 +255,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                         // Add two more filters to all `beta` variants
                         filters = [
                                 customColorRibbonFilter("#0000FF"),
-                                overlayFilter(new File("example-custom/launcherOverlay/beta.png"))
+                                overlayFilter(file("example-custom/launcherOverlay/beta.png"))
                         ]
                     }
                     canary {
