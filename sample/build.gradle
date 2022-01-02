@@ -78,11 +78,12 @@ subprojects {
             }
 
             lintOptions {
-                disable("VectorPath", "HardcodedText", "IconDuplicates")
+                disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
                 // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
                 disable("IconLauncherShape")
                 warningsAsErrors = true
+                checkReleaseBuilds = false
             }
         }
 
@@ -160,7 +161,7 @@ subprojects {
             }
 
             lintOptions {
-                disable("VectorPath", "HardcodedText", "IconDuplicates")
+                disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
                 // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
                 disable("IconLauncherShape")
