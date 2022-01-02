@@ -2,10 +2,10 @@ package com.project.starter.easylauncher.filter
 
 import org.slf4j.LoggerFactory
 import java.awt.Image
-import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
+import kotlin.math.roundToInt
 
 @Suppress("MagicNumber")
 class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
@@ -13,36 +13,31 @@ class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
     private val logger
         get() = LoggerFactory.getLogger(this::class.java)
 
-    override fun apply(image: BufferedImage, adaptive: Boolean) {
-        val fgImage = try {
-            ImageIO.read(fgFile)
-        } catch (e: IOException) {
-            logger.error("Failed to load overlay ${fgFile.name}", e)
-            return
-        }
-        if (fgImage != null) {
-            val width = image.width.toFloat()
-            val height = image.width.toFloat()
-            var scale =
-                (width / fgImage.getWidth(null).toFloat()).coerceAtMost(height / fgImage.getHeight(null))
-            if (adaptive) {
-                scale *= (72f / 108)
-            }
-            val fgImageScaled = fgImage.getScaledInstance(
-                (fgImage.getWidth(null) * scale).toInt(),
-                (fgImage.getWidth(null) * scale).toInt(),
-                Image.SCALE_SMOOTH,
-            )
-            val graphics = image.createGraphics()
+    override fun apply(canvas: Canvas, adaptive: Boolean) {
+        try {
+            val fgImage = ImageIO.read(fgFile)
+            val fgWidth = fgImage.getWidth(null).toFloat()
+            val fgHeight = fgImage.getHeight(null).toFloat()
 
-            // TODO allow to choose the gravity for the overlay
-            // TODO allow to choose the scaling type
-            if (adaptive) {
-                graphics.drawImage(fgImageScaled, (width * (1 - 72f / 108) / 2).toInt(), (height * (1 - 72f / 108) / 2).toInt(), null)
-            } else {
-                graphics.drawImage(fgImageScaled, 0, 0, null)
+            val scale = if (adaptive) ADAPTIVE_SCALE else 1f
+            val imageScale = scale * (canvas.width / fgWidth).coerceAtMost(canvas.height / fgHeight)
+            val scaledWidth = (fgWidth * imageScale).roundToInt()
+            val scaledHeight = (fgHeight * imageScale).roundToInt()
+            val fgImageScaled = fgImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH)
+
+            canvas.use { graphics ->
+                // TODO allow to choose the gravity for the overlay
+                // TODO allow to choose the scaling type
+                graphics.drawImage(
+                    fgImageScaled,
+                    ((canvas.width - scaledWidth) / 2f).roundToInt(),
+                    ((canvas.height - scaledHeight) / 2f).roundToInt(),
+                    null,
+                )
             }
-            graphics.dispose()
+        } catch (e: IOException) {
+            logger.error("Failed to load overlay '${fgFile.absolutePath}'.", e)
+            return
         }
     }
 }

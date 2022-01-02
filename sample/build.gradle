@@ -49,6 +49,15 @@ subprojects {
             }
         }
     }
+
+    pluginManager.withPlugin("com.starter.library.android") {
+        android {
+            defaultConfig {
+                testInstrumentationRunner "com.starter.easylauncher.ScreenshotsRunner"
+            }
+        }
+    }
+
     pluginManager.withPlugin("com.android.application") {
         pluginManager.apply("com.facebook.testing.screenshot")
 
@@ -76,18 +85,42 @@ subprojects {
                 warningsAsErrors = true
             }
         }
+
+        tasks.register("recordAll", Copy) {
+            group = 'screenshot test'
+            from "build/screenshots_tmp/"
+            into "screenshots/"
+
+            doLast {
+                file("build/screenshots_tmp/").deleteDir()
+            }
+        }
+
+        android.applicationVariants.configureEach { variant ->
+            def recordTask = tasks.findByName("record${variant.name.capitalize()}AndroidTestScreenshotTest")
+
+            if (recordTask != null) {
+                def recordAndCopyTask = "recordAndCopy${variant.name.capitalize()}AndroidTestScreenshotTest"
+
+                tasks.register(recordAndCopyTask, Copy) {
+                    from "screenshots/"
+                    into "build/screenshots_tmp/"
+                    dependsOn recordTask
+                }
+
+                tasks.recordAll.dependsOn recordAndCopyTask
+            }
+        }
+
         tasks.register("verifyAll") {
+            group = 'screenshot test'
             android.applicationVariants.configureEach { variant ->
                 dependsOn("verify${variant.flavorName.capitalize()}DebugAndroidTestScreenshotTest")
             }
         }
-        tasks.register("recordAll") {
-            android.applicationVariants.configureEach { variant ->
-                dependsOn("record${variant.flavorName.capitalize()}DebugAndroidTestScreenshotTest")
-            }
-        }
 
         tasks.register("installAll") {
+            group = 'install'
             android.applicationVariants.configureEach { variant ->
                 dependsOn("install${variant.name.capitalize()}")
             }
@@ -96,6 +129,89 @@ subprojects {
         tasks.withType(Test).configureEach {
             useJUnitPlatform()
         }
+
+        screenshots {
+            addDeps = false
+            failureDir = "${buildDir}/failedScreenshots"
+        }
+
+        dependencies {
+            androidTestImplementation project(":screenshot-test-helpers")
+        }
+    }
+
+    pluginManager.withPlugin("com.android.library") {
+        pluginManager.apply("com.facebook.testing.screenshot")
+
+        android {
+            testOptions.unitTests.includeAndroidResources true
+
+            packagingOptions {
+                exclude "META-INF/LICENSE*"
+            }
+
+            testVariants.configureEach { variant ->
+                variant.mergedFlavor.applicationIdSuffix = variant.name
+                if (variant.flavorName == "") {
+                    variant.mergedFlavor.manifestPlaceholders += [appName: "$project.name"]
+                } else {
+                    variant.mergedFlavor.manifestPlaceholders += [appName: "$variant.flavorName"]
+                }
+            }
+
+            lintOptions {
+                disable("VectorPath", "HardcodedText", "IconDuplicates")
+
+                // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
+                disable("IconLauncherShape")
+                warningsAsErrors = true
+            }
+        }
+
+        tasks.register("recordAll", Copy) {
+            group = 'screenshot test'
+            from "build/screenshots_tmp/"
+            into "screenshots/"
+
+            doLast {
+                file("build/screenshots_tmp/").deleteDir()
+            }
+        }
+
+        android.libraryVariants.configureEach { variant ->
+            def recordTask = tasks.findByName("record${variant.name.capitalize()}AndroidTestScreenshotTest")
+
+            if (recordTask != null) {
+                def recordAndCopyTask = "recordAndCopy${variant.name.capitalize()}AndroidTestScreenshotTest"
+
+                tasks.register(recordAndCopyTask, Copy) {
+                    from "screenshots/"
+                    into "build/screenshots_tmp/"
+                    dependsOn recordTask
+                }
+
+                tasks.recordAll.dependsOn recordAndCopyTask
+            }
+        }
+
+        tasks.register("verifyAll") {
+            group = 'screenshot test'
+            android.libraryVariants.configureEach { variant ->
+                dependsOn("verify${variant.flavorName.capitalize()}DebugAndroidTestScreenshotTest")
+            }
+        }
+
+        tasks.register("installAll") {
+            group = 'install'
+            android.libraryVariants.configureEach { variant ->
+                dependsOn("install${variant.name.capitalize()}")
+            }
+        }
+
+        tasks.withType(Test).configureEach {
+            useJUnitPlatform()
+        }
+
         screenshots {
             addDeps = false
             failureDir = "${buildDir}/failedScreenshots"

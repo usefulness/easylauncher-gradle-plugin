@@ -19,6 +19,7 @@
             android:layout_gravity="center_horizontal"
             android:scaleX="1.5"
             android:scaleY="1.5"
+            tools:ignore="ContentDescription"
             />
 
         <ImageView
@@ -28,6 +29,7 @@
             android:layout_gravity="center_horizontal"
             android:scaleX="1.5"
             android:scaleY="1.5"
+            tools:ignore="ContentDescription"
             />
     </FrameLayout>
 
@@ -38,5 +40,6 @@
         android:src="@mipmap/ic_launcher"
         android:visibility="gone"
         tools:visibility="visible"
+        tools:ignore="ContentDescription"
         />
 </merge>
