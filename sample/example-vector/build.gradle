@@ -100,7 +100,7 @@ easylauncher {
         register("allFilters") {
             filters customRibbon(label: "local"),
                     chromeLike(label: "aaa"),
-                    overlayFilter(new File(projectDir, "launcherOverlay/beta.png"))
+                    overlayFilter(file("launcherOverlay/beta.png"))
         }
     }
 }
