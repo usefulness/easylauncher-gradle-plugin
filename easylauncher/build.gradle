@@ -66,6 +66,6 @@ dependencies {
     compileOnly "com.android.tools.build:gradle:7.0.4"
 
     testImplementation gradleTestKit()
-    testImplementation "org.assertj:assertj-core:3.21.0"
+    testImplementation "org.assertj:assertj-core:3.22.0"
     testImplementation "org.junit.jupiter:junit-jupiter:5.8.2"
 }
