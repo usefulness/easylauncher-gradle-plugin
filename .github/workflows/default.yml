@@ -66,8 +66,8 @@ jobs:
       fail-fast: false
       matrix:
         javaVersion: [ 17 ]
-        gradle: [ 7.3, current, release-candidate ]
-        agp: [ 7.0.4, 7.2.0-alpha06 ]
+        gradle: [ 7.4, current, release-candidate ]
+        agp: [ 7.1.1, 7.3.0-alpha03 ]
         include:
           - javaVersion: 11
             gradle: 6.5

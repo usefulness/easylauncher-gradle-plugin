@@ -68,4 +68,6 @@ dependencies {
     testImplementation gradleTestKit()
     testImplementation "org.assertj:assertj-core:3.22.0"
     testImplementation "org.junit.jupiter:junit-jupiter:5.8.2"
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+    testImplementation "org.apache.commons:commons-lang3:3.12.0"
 }

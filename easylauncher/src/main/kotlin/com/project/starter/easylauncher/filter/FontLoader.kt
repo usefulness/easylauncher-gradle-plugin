@@ -14,7 +14,7 @@ private val EASYLAUNCHER_DEFAULT_FONT by lazy {
         }
 }
 
-internal fun getFont(
+internal fun findFontFile(
     resource: File?,
     name: String?,
 ): Font {

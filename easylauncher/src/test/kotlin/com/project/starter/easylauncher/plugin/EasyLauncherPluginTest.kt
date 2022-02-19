@@ -1,7 +1,10 @@
 package com.project.starter.easylauncher.plugin
 
 import com.project.starter.easylauncher.plugin.utils.WithGradleProjectTest
+import com.project.starter.easylauncher.plugin.utils.adaptiveIcon
+import com.project.starter.easylauncher.plugin.utils.androidManifest
 import com.project.starter.easylauncher.plugin.utils.buildScript
+import com.project.starter.easylauncher.plugin.utils.vectorFile
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.gradle.testkit.runner.TaskOutcome
@@ -20,14 +23,9 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
             resolve("settings.gradle").writeText("""include ":app" """)
 
             moduleRoot = resolve("app") {
-                resolve("src/main/AndroidManifest.xml") {
-                    writeText(
-                        """
-                        <manifest package="com.example.app" />
-                        
-                        """.trimIndent(),
-                    )
-                }
+                resolve("src/main/AndroidManifest.xml") { writeText(androidManifest()) }
+                resolve("src/main/res/mipmap-v26/ic_launcher.xml") { writeText(adaptiveIcon()) }
+                resolve("src/main/res/drawable/ic_foreground.xml") { writeText(vectorFile()) }
             }
         }
     }
@@ -170,8 +168,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
     }
 
     @Disabled(
-        "https://docs.gradle.org/current/userguide/configuration_cache.html" +
-            "#config_cache:not_yet_implemented:testkit_build_with_java_agent",
+        "https://docs.gradle.org/current/userguide/configuration_cache.html#config_cache:not_yet_implemented:testkit_build_with_java_agent",
     )
     @Test
     fun `plugin is compatible with configuration cache`() {
