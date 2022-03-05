@@ -26,11 +26,6 @@ class ChromeLikeFilter(
         TOP, BOTTOM
     }
 
-    private val _ribbonColor get() = ribbonColor ?: Color.DARK_GRAY
-    private val _labelColor get() = labelColor ?: Color.WHITE
-    private val _overlayHeight get() = overlayHeight ?: OVERLAY_HEIGHT
-    private val _gravity get() = gravity ?: Gravity.BOTTOM
-
     override fun apply(canvas: Canvas, adaptive: Boolean) {
         canvas.use { graphics ->
             apply(canvas, graphics, adaptive)
@@ -38,6 +33,11 @@ class ChromeLikeFilter(
     }
 
     private fun apply(canvas: Canvas, graphics: Graphics2D, adaptive: Boolean) {
+        val _ribbonColor = ribbonColor ?: Color.DARK_GRAY
+        val _labelColor = labelColor ?: Color.WHITE
+        val _overlayHeight = overlayHeight ?: OVERLAY_HEIGHT
+        val _gravity = gravity ?: Gravity.BOTTOM
+
         val frc = FontRenderContext(graphics.transform, true, true)
         // calculate the rectangle where the label is rendered
         val backgroundHeight = (canvas.height * _overlayHeight).roundToInt()

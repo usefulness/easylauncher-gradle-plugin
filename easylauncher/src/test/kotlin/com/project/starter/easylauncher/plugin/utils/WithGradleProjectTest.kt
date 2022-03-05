@@ -11,13 +11,15 @@ internal abstract class WithGradleProjectTest {
     @TempDir
     lateinit var rootDirectory: File
 
-    protected fun runTask(vararg taskName: String, shouldFail: Boolean = false) =
+    protected fun runTask(vararg taskName: String, shouldFail: Boolean = false, skipJacoco: Boolean = false) =
         GradleRunner.create().apply {
             forwardOutput()
             withPluginClasspath()
             withArguments(*taskName)
             withProjectDir(rootDirectory)
-            withJaCoCo()
+            if (!skipJacoco) {
+                withJaCoCo()
+            }
         }.run {
             if (shouldFail) {
                 buildAndFail()

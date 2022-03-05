@@ -31,9 +31,6 @@ class ColorRibbonFilter(
         ADD_EXTRA_PADDING,
     }
 
-    private val _ribbonColor get() = ribbonColor ?: Color(0, 0x72, 0, 0x99)
-    private val _labelColor get() = labelColor ?: Color.WHITE
-    private val _gravity get() = gravity ?: Gravity.TOPLEFT
 
     override fun apply(canvas: Canvas, adaptive: Boolean) {
         canvas.use { graphics ->
@@ -43,6 +40,9 @@ class ColorRibbonFilter(
 
     private fun apply(canvas: Canvas, graphics: Graphics2D, adaptive: Boolean) {
         val applyLargePadding = adaptive || drawingOptions.contains(DrawingOption.ADD_EXTRA_PADDING)
+        val _gravity = gravity ?: Gravity.TOPLEFT
+        val _ribbonColor = ribbonColor ?: Color(0, 0x72, 0, 0x99)
+        val _labelColor = labelColor ?: Color.WHITE
 
         // rotate canvas if needed
         if (_gravity == Gravity.TOPLEFT) {

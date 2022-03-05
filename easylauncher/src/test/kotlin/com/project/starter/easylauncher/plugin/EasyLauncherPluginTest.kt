@@ -167,9 +167,6 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
         assertThat(secondRun.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.UP_TO_DATE)
     }
 
-    @Disabled(
-        "https://docs.gradle.org/current/userguide/configuration_cache.html#config_cache:not_yet_implemented:testkit_build_with_java_agent",
-    )
     @Test
     fun `plugin is compatible with configuration cache`() {
         moduleRoot.resolve("build.gradle").buildScript(
@@ -185,7 +182,9 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                             yellowRibbonFilter(),
                             redRibbonFilter(),
                             blueRibbonFilter(),
-                            chromeLike()
+                            customRibbon(label: "second", ribbonColor: "#6600CC", labelColor: "#FFFFFF", position: "bottom"),
+                            chromeLike(),
+                            chromeLike(label: "JP2", ribbonColor: "#723D46", labelColor: "#EEFFFEE", labelPadding: 25, overlayHeight: 0.6, textSizeRatio: 0.15),
                         )
                     }
                 }
@@ -193,11 +192,11 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
             },
         )
 
-        val cleanRun = runTask("assembleDebug", "--configuration-cache")
+        val cleanRun = runTask("assembleDebug", "--configuration-cache", skipJacoco = true)
         assertThat(cleanRun.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.SUCCESS)
         assertThat(cleanRun.output).contains("Calculating task graph as no configuration cache is available for tasks")
 
-        val secondRun = runTask("assembleDebug", "--configuration-cache")
+        val secondRun = runTask("assembleDebug", "--configuration-cache", skipJacoco = true)
         assertThat(secondRun.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.UP_TO_DATE)
         assertThat(secondRun.output).contains("Configuration cache entry reused")
     }
