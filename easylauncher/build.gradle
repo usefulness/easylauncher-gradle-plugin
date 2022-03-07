@@ -63,7 +63,7 @@ java {
 dependencies {
     implementation "org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}"
     runtimeOnly "com.github.gotson:webp-imageio:0.2.2"
-    compileOnly "com.android.tools.build:gradle:7.0.4"
+    compileOnly "com.android.tools.build:gradle:7.1.2"
 
     testImplementation gradleTestKit()
     testImplementation "org.assertj:assertj-core:3.22.0"
