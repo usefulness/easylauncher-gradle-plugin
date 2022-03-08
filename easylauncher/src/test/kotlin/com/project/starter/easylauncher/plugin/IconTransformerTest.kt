@@ -8,7 +8,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
-import java.awt.Color
 import java.io.File
 
 internal class IconTransformerTest {
@@ -36,8 +35,8 @@ internal class IconTransformerTest {
             outputFile = output,
             minSdkVersion = 21,
             filters = listOf(
-                ColorRibbonFilter(label = "test1", ribbonColor = Color.BLUE),
-                ColorRibbonFilter(label = "test2", ribbonColor = Color.RED, gravity = ColorRibbonFilter.Gravity.BOTTOM),
+                ColorRibbonFilter(label = "test1", ribbonColor = "#0000ff"),
+                ColorRibbonFilter(label = "test2", ribbonColor = "#ff00000", gravity = ColorRibbonFilter.Gravity.BOTTOM),
                 ChromeLikeFilter(label = "test3"),
                 OverlayFilter(fgFile = File("src/test/resources/beta.png")),
             ),
@@ -70,8 +69,8 @@ internal class IconTransformerTest {
             outputFile = output,
             minSdkVersion = 26,
             filters = listOf(
-                ColorRibbonFilter(label = "test1", ribbonColor = Color.BLUE),
-                ColorRibbonFilter(label = "test2", ribbonColor = Color.RED, gravity = ColorRibbonFilter.Gravity.BOTTOM),
+                ColorRibbonFilter(label = "test1", ribbonColor = "#0000ff"),
+                ColorRibbonFilter(label = "test2", ribbonColor = "#ff0000", gravity = ColorRibbonFilter.Gravity.BOTTOM),
                 ChromeLikeFilter(label = "test3"),
                 OverlayFilter(fgFile = File("src/test/resources/beta.png")),
             ),

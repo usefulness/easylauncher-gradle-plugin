@@ -1,6 +1,7 @@
 package com.project.starter.easylauncher.filter
 
 import com.project.starter.easylauncher.plugin.ADAPTIVE_CONTENT_SCALE
+import com.project.starter.easylauncher.plugin.toColor
 import java.awt.AlphaComposite
 import java.awt.Color
 import java.awt.Font
@@ -12,8 +13,8 @@ import kotlin.math.roundToInt
 
 class ChromeLikeFilter(
     private val label: String,
-    private val ribbonColor: Color? = null,
-    private val labelColor: Color? = null,
+    private val ribbonColor: String? = null,
+    private val labelColor: String? = null,
     private val labelPadding: Int? = null,
     private val overlayHeight: Float? = null,
     private val gravity: Gravity? = null,
@@ -26,6 +27,11 @@ class ChromeLikeFilter(
         TOP, BOTTOM
     }
 
+    private val _ribbonColor get() = ribbonColor?.toColor() ?: Color.DARK_GRAY
+    private val _labelColor get() = labelColor?.toColor() ?: Color.WHITE
+    private val _overlayHeight get() = overlayHeight ?: OVERLAY_HEIGHT
+    private val _gravity get() = gravity ?: Gravity.BOTTOM
+
     override fun apply(canvas: Canvas, adaptive: Boolean) {
         canvas.use { graphics ->
             apply(canvas, graphics, adaptive)
@@ -33,11 +39,6 @@ class ChromeLikeFilter(
     }
 
     private fun apply(canvas: Canvas, graphics: Graphics2D, adaptive: Boolean) {
-        val _ribbonColor = ribbonColor ?: Color.DARK_GRAY
-        val _labelColor = labelColor ?: Color.WHITE
-        val _overlayHeight = overlayHeight ?: OVERLAY_HEIGHT
-        val _gravity = gravity ?: Gravity.BOTTOM
-
         val frc = FontRenderContext(graphics.transform, true, true)
         // calculate the rectangle where the label is rendered
         val backgroundHeight = (canvas.height * _overlayHeight).roundToInt()

@@ -9,7 +9,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -184,7 +183,14 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                             blueRibbonFilter(),
                             customRibbon(label: "second", ribbonColor: "#6600CC", labelColor: "#FFFFFF", position: "bottom"),
                             chromeLike(),
-                            chromeLike(label: "JP2", ribbonColor: "#723D46", labelColor: "#EEFFFEE", labelPadding: 25, overlayHeight: 0.6, textSizeRatio: 0.15),
+                            chromeLike(
+                                label: "JP2", 
+                                ribbonColor: "#723D46", 
+                                labelColor: "#EEFFFEE", 
+                                labelPadding: 25, 
+                                overlayHeight: 0.6, 
+                                textSizeRatio: 0.15
+                            ),
                         )
                     }
                 }

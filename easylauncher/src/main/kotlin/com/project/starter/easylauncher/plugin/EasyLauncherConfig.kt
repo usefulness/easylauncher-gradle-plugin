@@ -120,8 +120,8 @@ open class EasyLauncherConfig @Inject constructor(
         drawingOptions: Set<ColorRibbonFilter.DrawingOption> = emptySet(),
     ) = ColorRibbonFilter(
         label = label ?: name,
-        ribbonColor = ribbonColor?.toColor(),
-        labelColor = labelColor?.toColor(),
+        ribbonColor = ribbonColor,
+        labelColor = labelColor,
         gravity = gravity,
         textSizeRatio = textSizeRatio,
         fontName = fontName,
@@ -131,27 +131,27 @@ open class EasyLauncherConfig @Inject constructor(
 
     @JvmOverloads
     fun grayRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0x60, 0x60, 0x60, 0x99))
+        ColorRibbonFilter(label ?: this.name, Color(0x60, 0x60, 0x60, 0x99).toHexString())
 
     @JvmOverloads
     fun greenRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0, 0x72, 0, 0x99))
+        ColorRibbonFilter(label ?: this.name, Color(0, 0x72, 0, 0x99).toHexString())
 
     @JvmOverloads
     fun orangeRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0xff, 0x76, 0, 0x99))
+        ColorRibbonFilter(label ?: this.name, Color(0xff, 0x76, 0, 0x99).toHexString())
 
     @JvmOverloads
     fun yellowRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0xff, 251, 0, 0x99))
+        ColorRibbonFilter(label ?: this.name, Color(0xff, 251, 0, 0x99).toHexString())
 
     @JvmOverloads
     fun redRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0xff, 0, 0, 0x99))
+        ColorRibbonFilter(label ?: this.name, Color(0xff, 0, 0, 0x99).toHexString())
 
     @JvmOverloads
     fun blueRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0, 0, 255, 0x99))
+        ColorRibbonFilter(label ?: this.name, Color(0, 0, 255, 0x99).toHexString())
 
     fun overlayFilter(fgFile: File) =
         OverlayFilter(fgFile)
@@ -169,8 +169,8 @@ open class EasyLauncherConfig @Inject constructor(
         gravity: ChromeLikeFilter.Gravity? = null,
     ) = ChromeLikeFilter(
         label ?: this.name,
-        ribbonColor = ribbonColor?.toColor(),
-        labelColor = labelColor?.toColor(),
+        ribbonColor = ribbonColor,
+        labelColor = labelColor,
         labelPadding = labelPadding,
         gravity = gravity,
         fontName = fontName,
@@ -220,30 +220,33 @@ open class EasyLauncherConfig @Inject constructor(
         )
     }
 
-    private fun String.toColor(): Color {
-        val value = java.lang.Long.decode(this)
-
-        return when (length) {
-            "#AARRGGBB".length -> {
-                val alpha = (value shr 24 and 0xFF).toInt()
-                val red = (value shr 16 and 0xFF).toInt()
-                val green = (value shr 8 and 0xFF).toInt()
-                val blue = (value and 0xFF).toInt()
-
-                Color(red, green, blue, alpha)
-            }
-            "#RRGGBB".length -> {
-                val red = (value shr 16 and 0xFF).toInt()
-                val green = (value shr 8 and 0xFF).toInt()
-                val blue = (value and 0xFF).toInt()
-                Color(red, green, blue)
-            }
-            else -> Color.decode(this)
-        }
-    }
-
     companion object {
         private const val serialVersionUID = 1L
+    }
+}
+
+internal fun Color.toHexString() =
+    "#%02x%02x%02x%02x".format(alpha, red, green, blue)
+
+internal fun String.toColor(): Color {
+    val value = java.lang.Long.decode(this)
+
+    return when (length) {
+        "#AARRGGBB".length -> {
+            val alpha = (value shr 24 and 0xFF).toInt()
+            val red = (value shr 16 and 0xFF).toInt()
+            val green = (value shr 8 and 0xFF).toInt()
+            val blue = (value and 0xFF).toInt()
+
+            Color(red, green, blue, alpha)
+        }
+        "#RRGGBB".length -> {
+            val red = (value shr 16 and 0xFF).toInt()
+            val green = (value shr 8 and 0xFF).toInt()
+            val blue = (value and 0xFF).toInt()
+            Color(red, green, blue)
+        }
+        else -> Color.decode(this)
     }
 }
 

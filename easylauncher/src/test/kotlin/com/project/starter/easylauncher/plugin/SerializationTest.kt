@@ -6,7 +6,6 @@ import com.project.starter.easylauncher.filter.OverlayFilter
 import org.apache.commons.lang3.SerializationUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import java.awt.Color
 import java.io.File
 import java.io.Serializable
 
@@ -18,8 +17,8 @@ class SerializationTest {
             ChromeLikeFilter(
                 label = "fixture-label",
                 gravity = ChromeLikeFilter.Gravity.TOP,
-                labelColor = Color.MAGENTA,
-                ribbonColor = Color.YELLOW,
+                labelColor = "#ff00ff",
+                ribbonColor = "#00ff00",
                 labelPadding = 10,
                 overlayHeight = 0.6f,
                 textSizeRatio = 0.2f,
@@ -36,8 +35,8 @@ class SerializationTest {
             ColorRibbonFilter(
                 label = "fixture-label",
                 gravity = ColorRibbonFilter.Gravity.BOTTOM,
-                ribbonColor = Color.CYAN,
-                labelColor = Color(1, 2, 3),
+                ribbonColor = "#00ffff",
+                labelColor = "#010203",
                 textSizeRatio = 0.2f,
                 fontName = "ComicSans",
                 drawingOptions = setOf(ColorRibbonFilter.DrawingOption.IGNORE_TRANSPARENT_PIXELS),

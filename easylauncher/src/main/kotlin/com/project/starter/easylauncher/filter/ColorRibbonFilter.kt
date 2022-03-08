@@ -1,5 +1,6 @@
 package com.project.starter.easylauncher.filter
 
+import com.project.starter.easylauncher.plugin.toColor
 import java.awt.AlphaComposite
 import java.awt.Color
 import java.awt.Font
@@ -13,8 +14,8 @@ import kotlin.math.sqrt
 @Suppress("MagicNumber")
 class ColorRibbonFilter(
     private val label: String,
-    private val ribbonColor: Color? = null,
-    private val labelColor: Color? = null,
+    private val ribbonColor: String? = null,
+    private val labelColor: String? = null,
     private val gravity: Gravity? = null,
     private val textSizeRatio: Float? = null,
     private val fontName: String? = null,
@@ -31,6 +32,9 @@ class ColorRibbonFilter(
         ADD_EXTRA_PADDING,
     }
 
+    private val _gravity get() = gravity ?: Gravity.TOPLEFT
+    private val _ribbonColor get() = ribbonColor?.toColor() ?: Color(0, 0x72, 0, 0x99)
+    private val _labelColor get() = labelColor?.toColor() ?: Color.WHITE
 
     override fun apply(canvas: Canvas, adaptive: Boolean) {
         canvas.use { graphics ->
@@ -40,9 +44,6 @@ class ColorRibbonFilter(
 
     private fun apply(canvas: Canvas, graphics: Graphics2D, adaptive: Boolean) {
         val applyLargePadding = adaptive || drawingOptions.contains(DrawingOption.ADD_EXTRA_PADDING)
-        val _gravity = gravity ?: Gravity.TOPLEFT
-        val _ribbonColor = ribbonColor ?: Color(0, 0x72, 0, 0x99)
-        val _labelColor = labelColor ?: Color.WHITE
 
         // rotate canvas if needed
         if (_gravity == Gravity.TOPLEFT) {
