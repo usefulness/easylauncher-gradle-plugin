@@ -14,7 +14,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.project.starter:android:0.42.0"
+        classpath "com.project.starter:android:0.41.0"
         classpath "com.facebook.testing.screenshot:plugin:0.15.0"
         if (project.hasProperty("useMavenLocal")) {
             classpath "com.project.starter.local:easylauncher:+"
@@ -36,6 +36,9 @@ apply plugin: "com.starter.config"
 
 commonConfig {
     javaFilesAllowed false
+    versioningPlugin {
+        enabled false
+    }
 }
 
 subprojects {
