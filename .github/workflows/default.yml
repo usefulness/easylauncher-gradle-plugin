@@ -66,8 +66,8 @@ jobs:
       fail-fast: false
       matrix:
         javaVersion: [ 17 ]
-        gradle: [ 7.3, current, release-candidate ]
-        agp: [ 7.0.4, 7.2.0-alpha06 ]
+        gradle: [ current, release-candidate ]
+        agp: [ 7.1.2, 7.3.0-alpha05 ]
         include:
           - javaVersion: 11
             gradle: 6.5
@@ -79,7 +79,10 @@ jobs:
             gradle: 7.0.2
             agp: 7.0.4
           - javaVersion: 11
-            gradle: current
+            gradle: 7.3.3
+            agp: 7.0.4
+          - javaVersion: 17
+            gradle: 7.4
             agp: 7.0.4
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}, Java-${{ matrix.javaVersion }}
@@ -168,7 +171,7 @@ jobs:
           gradle-distribution-sha-256-sum-warning: false
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: 2.7
 

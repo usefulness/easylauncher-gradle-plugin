@@ -1,8 +1,11 @@
 package com.project.starter.easylauncher.plugin
 
 import com.project.starter.easylauncher.plugin.utils.WithGradleProjectTest
+import com.project.starter.easylauncher.plugin.utils.adaptiveIcon
+import com.project.starter.easylauncher.plugin.utils.androidManifest
 import com.project.starter.easylauncher.plugin.utils.buildScript
 import com.project.starter.easylauncher.plugin.utils.libraryBuildscript
+import com.project.starter.easylauncher.plugin.utils.vectorFile
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
@@ -15,13 +18,10 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
 
     @BeforeEach
     fun setUp() {
-        rootDirectory.resolve("src/main/AndroidManifest.xml") {
-            writeText(
-                """
-                    <manifest package="com.example.app" />
-                
-                """.trimIndent(),
-            )
+        rootDirectory.apply {
+            resolve("src/main/AndroidManifest.xml") { writeText(androidManifest()) }
+            resolve("src/main/res/mipmap-v26/ic_launcher.xml") { writeText(adaptiveIcon()) }
+            resolve("src/main/res/drawable/ic_foreground.xml") { writeText(vectorFile()) }
         }
     }
 
