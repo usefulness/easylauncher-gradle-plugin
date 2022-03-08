@@ -49,13 +49,13 @@ jobs:
 
       - name: Upload test results
         if: ${{ always() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-results
           path: "${{ github.workspace }}/**/build/reports/tests"
 
       - name: Upload jacoco report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
           path: "${{ github.workspace }}/**/build/reports/jacoco"
@@ -192,13 +192,13 @@ jobs:
 
       - name: Upload failed screenshots
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: failedScreenshots
           path: "${{ github.workspace }}/**/build/failedScreenshots"
 
       - name: Upload screenshot tests result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: screenshots
           path: "${{ github.workspace }}/**/build/*AndroidTest/"
