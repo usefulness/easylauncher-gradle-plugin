@@ -49,7 +49,8 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
         .joinToString(separator = "\n") {
             """
             |    <item android:drawable="@${outputFile.parentFile.normalizedName}/$it" />
-            |""".trimMargin()
+            |
+            """.trimMargin()
         }
     val versionSuffix = if (minSdkVersion >= ANDROID_OREO) "" else "-v26"
     val v26DrawableRoot = drawableRoot.parentFile.resolve("${drawableRoot.normalizedName}-anydpi$versionSuffix")
@@ -64,7 +65,8 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
         |
         |$layers
         |</layer-list>
-        |""".trimMargin(),
+        |
+        """.trimMargin(),
     )
 }
 
