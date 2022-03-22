@@ -29,7 +29,7 @@ jobs:
         with:
           configuration: 'runtimeClasspath'
           project: 'easylauncher'
-      - uses: peter-evans/find-comment@v1
+      - uses: peter-evans/find-comment@v2
         id: find_comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
