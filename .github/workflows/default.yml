@@ -30,11 +30,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          job-id: build-plugin
-          gradle-distribution-sha-256-sum-warning: false
+      - uses: gradle/gradle-build-action@v2
 
       - name: Code style check
         run: ./gradlew projectCodestyle --stacktrace
@@ -97,16 +93,12 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.javaVersion }}
 
-      - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          job-id: build-all-sample-apps
-          gradle-distribution-sha-256-sum-warning: false
+      - uses: gradle/gradle-build-action@v2
 
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
 
-      - uses: gradle/gradle-command-action@v2
+      - uses: gradle/gradle-build-action@v2
         with:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
@@ -131,16 +123,12 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.javaVersion }}
 
-      - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          job-id: build-configuration-cache-jdk15
-          gradle-distribution-sha-256-sum-warning: false
+      - uses: gradle/gradle-build-action@v2
 
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
 
-      - uses: gradle/gradle-command-action@v2
+      - uses: gradle/gradle-build-action@v2
         with:
           build-root-directory: sample
           gradle-version: current
@@ -164,11 +152,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          job-id: icons
-          gradle-distribution-sha-256-sum-warning: false
+      - uses: gradle/gradle-build-action@v2
 
       - name: Set up Python
         uses: actions/setup-python@v3

@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.repository == 'usefulness/easylauncher-gradle-plugin'
     steps:
       - uses: actions/checkout@v3
         with:
@@ -16,8 +17,10 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
-          java-version: 15
+          distribution: 'temurin'
+          java-version: 17
+
+      - uses: gradle/gradle-build-action@v2
 
       - name: Build app with Gradle
         run: ./gradlew build
