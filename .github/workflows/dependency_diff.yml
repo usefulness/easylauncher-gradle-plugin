@@ -18,10 +18,7 @@ jobs:
           distribution: 'adopt'
           java-version: 15
 
-      - name: Cache .gradle
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          gradle-distribution-sha-256-sum-warning: false
+      - uses: gradle/gradle-build-action@v2
 
       - id: dependency-diff
         name: Generate dependency diff
