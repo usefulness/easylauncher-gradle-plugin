@@ -15,7 +15,7 @@ jobs:
       - name: set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: 15
 
       - uses: gradle/gradle-build-action@v2
