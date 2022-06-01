@@ -9,6 +9,6 @@ android {
 }
 
 dependencies {
-    api("com.google.android.material:material:1.6.0")
+    api("com.google.android.material:material:1.6.1")
     api("androidx.core:core-ktx:1.7.0")
 }
