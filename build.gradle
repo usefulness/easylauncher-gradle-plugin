@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
+
 plugins {
     id "com.starter.config"
     id "com.starter.versioning"
@@ -10,7 +12,7 @@ commonConfig {
 
 allprojects {
     pluginManager.withPlugin("kotlin") { plugin ->
-        def kotlinVersion = plugins.getPlugin("kotlin").kotlinPluginVersion
+        def kotlinVersion = KotlinPluginWrapperKt.getKotlinPluginVersion(project)
         configurations.configureEach {
             resolutionStrategy.eachDependency {
                 if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith("kotlin")) {
