@@ -124,10 +124,10 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.javaVersion }}
 
-      - uses: gradle/gradle-build-action@v2
-
       - name: Pre-compile plugin
-        run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publishToMavenLocal -Pgroup=com.project.starter.local
 
       - uses: gradle/gradle-build-action@v2
         with:
