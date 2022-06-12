@@ -105,12 +105,13 @@ jobs:
           arguments: assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }} --stacktrace
 
   build-sample-apps-with-confgiuration-cache:
-    runs-on: ubuntu-latest
-    name: Test configuration cache Java-${{ matrix.javaVersion }}
+    runs-on: ${{ matrix.os }}
+    name: Configuration Cache Java-${{ matrix.javaVersion }} OS-${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         javaVersion: [ 11, 17 ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
       - uses: actions/checkout@v3
