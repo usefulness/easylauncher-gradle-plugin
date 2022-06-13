@@ -63,7 +63,7 @@ jobs:
       matrix:
         javaVersion: [ 17 ]
         gradle: [ current, release-candidate ]
-        agp: [ 7.1.3, 7.3.0-alpha09 ]
+        agp: [ 7.2.1, 7.4.0-alpha03 ]
         include:
           - javaVersion: 11
             gradle: 6.5
@@ -105,12 +105,13 @@ jobs:
           arguments: assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }} --stacktrace
 
   build-sample-apps-with-confgiuration-cache:
-    runs-on: ubuntu-latest
-    name: Test configuration cache Java-${{ matrix.javaVersion }}
+    runs-on: ${{ matrix.os }}
+    name: Configuration Cache Java-${{ matrix.javaVersion }} OS-${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         javaVersion: [ 11, 17 ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
       - uses: actions/checkout@v3
@@ -123,10 +124,10 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.javaVersion }}
 
-      - uses: gradle/gradle-build-action@v2
-
       - name: Pre-compile plugin
-        run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publishToMavenLocal -Pgroup=com.project.starter.local
 
       - uses: gradle/gradle-build-action@v2
         with:

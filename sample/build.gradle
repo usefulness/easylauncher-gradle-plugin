@@ -8,6 +8,7 @@ buildscript {
                 includeGroupByRegex "com\\.google.*"
             }
         }
+        mavenCentral()
         gradlePluginPortal()
         if (project.hasProperty("useMavenLocal")) {
             mavenLocal()

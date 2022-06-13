@@ -62,7 +62,7 @@ java {
 
 dependencies {
     implementation "org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}"
-    runtimeOnly "com.github.gotson:webp-imageio:0.2.2"
+    runtimeOnly "com.github.usefulness:webp-imageio:0.2.1"
     compileOnly "com.android.tools.build:gradle:7.2.1"
 
     testImplementation gradleTestKit()
