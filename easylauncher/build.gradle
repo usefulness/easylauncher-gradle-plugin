@@ -12,10 +12,6 @@ repositories {
     google()
 }
 
-java {
-    withSourcesJar()
-}
-
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
     testLogging {
