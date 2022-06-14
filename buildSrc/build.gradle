@@ -1,18 +1,14 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
     id 'java-gradle-plugin'
-    id "org.jmailen.kotlinter" version "3.10.0"
-    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
-}
-
-repositories {
-    gradlePluginPortal()
+    alias(libs.plugins.jmailen.kotlinter)
+    alias(libs.plugins.kotlin.jvm)
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin"
-    implementation "com.project.starter:jvm:0.45.0"
+    implementation(libs.kotlin.gradle)
+    implementation(libs.starter.gradle)
 }
 
 tasks.withType(KotlinCompile).configureEach {

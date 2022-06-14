@@ -1,15 +1,9 @@
 plugins {
     id "java-gradle-plugin"
-    id 'com.gradle.plugin-publish' version '0.21.0'
     id 'com.starter.library.kotlin'
-    id 'pl.droidsonroids.jacoco.testkit' version '1.0.9'
     id 'com.starter.publishing'
-}
-
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-    google()
+    alias(libs.plugins.gradle.publishplugin)
+    alias(libs.plugins.droidsonroids.jacocotestkit)
 }
 
 tasks.withType(Test).configureEach {
@@ -57,13 +51,13 @@ java {
 }
 
 dependencies {
-    implementation "org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}"
-    runtimeOnly "com.github.usefulness:webp-imageio:0.2.1"
-    compileOnly "com.android.tools.build:gradle:7.2.1"
+    implementation("org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}")
+    runtimeOnly(libs.usefulness.webp)
+    compileOnly(libs.agp.gradle)
 
     testImplementation gradleTestKit()
-    testImplementation "org.assertj:assertj-core:3.23.1"
-    testImplementation "org.junit.jupiter:junit-jupiter:5.8.2"
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
-    testImplementation "org.apache.commons:commons-lang3:3.12.0"
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.assertj.core)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.apache.commons.lang3)
 }
