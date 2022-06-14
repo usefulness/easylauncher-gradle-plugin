@@ -1,16 +1,14 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
-plugins {
-    id "com.gradle.enterprise" version "3.10.2"
-}
-
-rootProject.name = "com.project.starter"
-include ':easylauncher'
-
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         gradlePluginPortal()
         google()
+    }
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
     }
 }
