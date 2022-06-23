@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+
 plugins {
     id "java-gradle-plugin"
     id 'com.starter.library.kotlin'
@@ -41,6 +43,13 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
     pluginClasspath.from(configurations.testRuntimeDependencies)
 }
 
+
+tasks.withType(KotlinCompile).configureEach {
+    kotlinOptions {
+        apiVersion = "1.5"
+        languageVersion = "1.5"
+    }
+}
 tasks.withType(JavaCompile).configureEach {
     options.release.set(JavaVersion.VERSION_1_8.majorVersion.toInteger())
 }
