@@ -1,6 +1,6 @@
 [versions]
 gradle-starter = "0.47.0"
-gradle-kotlinter = "3.10.0"
+gradle-kotlinter = "3.11.0"
 gradle-gradlepublish = "0.21.0"
 google-agp = "7.2.1"
 gradle-jacocotestkit = "1.0.9"
