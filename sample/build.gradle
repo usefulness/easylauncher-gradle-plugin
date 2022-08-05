@@ -81,7 +81,7 @@ subprojects {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
                 // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
-                disable("IconLauncherShape")
+                disable("IconLauncherShape", "MonochromeLauncherIcon")
                 warningsAsErrors = true
                 checkReleaseBuilds = false
             }
@@ -165,7 +165,7 @@ subprojects {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
                 // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
-                disable("IconLauncherShape")
+                disable("IconLauncherShape", "MonochromeLauncherIcon")
                 warningsAsErrors = true
             }
         }

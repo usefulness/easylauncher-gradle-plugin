@@ -63,7 +63,7 @@ jobs:
       matrix:
         javaVersion: [ 17 ]
         gradle: [ current, release-candidate ]
-        agp: [ 7.2.1, 7.4.0-alpha03 ]
+        agp: [ 7.2.2, 7.4.0-alpha09 ]
         include:
           - javaVersion: 11
             gradle: 6.5
@@ -158,7 +158,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10.2
+          python-version: 3.10.6
 
       - name: Install dependencies
         run: |
