@@ -42,6 +42,7 @@ commonConfig {
     }
 }
 
+def agpVersion = project.properties["agpVersion"] ?: ""
 subprojects {
     pluginManager.withPlugin("com.starter.application.android") {
         android {
@@ -81,7 +82,12 @@ subprojects {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
                 // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
-                disable("IconLauncherShape", "MonochromeLauncherIcon")
+                disable("IconLauncherShape")
+
+                if (agpVersion.contains("alpha")) {
+                    disable("MonochromeLauncherIcon")
+                }
+
                 warningsAsErrors = true
                 checkReleaseBuilds = false
             }
@@ -165,7 +171,12 @@ subprojects {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
                 // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
-                disable("IconLauncherShape", "MonochromeLauncherIcon")
+                disable("IconLauncherShape")
+
+                if (agpVersion.contains("alpha")) {
+                    disable("MonochromeLauncherIcon")
+                }
+
                 warningsAsErrors = true
             }
         }
