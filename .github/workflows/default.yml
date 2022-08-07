@@ -163,7 +163,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install --upgrade Pillow
+          python -m pip install 'Pillow==9.1.1'
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -173,7 +173,8 @@ jobs:
           target: google_apis
           arch: x86
           disable-spellchecker: true
-          script: cd sample && ./icon_check.sh
+          working-directory: ./sample
+          script: ./icon_check.sh
 
       - name: Upload failed screenshots
         if: ${{ failure() }}
