@@ -139,7 +139,6 @@ subprojects {
 
         screenshots {
             addDeps = false
-            pythonExecutable = "python3"
             failureDir = "${buildDir}/failedScreenshots"
         }
 
@@ -220,7 +219,6 @@ subprojects {
 
         screenshots {
             addDeps = false
-            pythonExecutable = "python3"
             failureDir = "${buildDir}/failedScreenshots"
         }
 
