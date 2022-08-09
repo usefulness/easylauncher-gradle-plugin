@@ -74,6 +74,9 @@ subprojects {
                     variant.mergedFlavor.manifestPlaceholders += [appName: "$variant.flavorName"]
                 }
             }
+            buildTypes.configureEach {
+                matchingFallbacks = ["debug"]
+            }
 
             lintOptions {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")

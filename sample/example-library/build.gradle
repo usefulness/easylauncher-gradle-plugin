@@ -5,6 +5,12 @@ android {
     defaultConfig {
         minSdkVersion(26)
     }
+    testVariants.configureEach { variant ->
+        variant.mergedFlavor.manifestPlaceholders = [appName: ""]
+    }
+    unitTestVariants.configureEach { variant ->
+        variant.mergedFlavor.manifestPlaceholders = [appName: ""]
+    }
 }
 
 dependencies {
