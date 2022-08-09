@@ -5,10 +5,13 @@ set -e
 function addToIndex {
   git status | grep "modified:" | awk '{print $2}' | xargs git add
   # git status | grep "screenshots" | grep -v "new file:"  | grep -v "deleted:" | awk '{print $1}' | xargs git add
-  git commit -m "wip" --allow-empty
+  git commit -m "screenshots" --allow-empty
 }
 
-echo "Mutli Activity Alias start"
+addToIndex
+./../gradlew --stop
+
+echo "Multi Activity Alias start"
 ./../gradlew :example-activity-alias:recordDebugAndroidTestScreenshotTest --no-configuration-cache
 addToIndex
 ./../gradlew :example-activity-alias:recordUnspecifiedAndroidTestScreenshotTest \-PtestBuildType=unspecified --no-configuration-cache

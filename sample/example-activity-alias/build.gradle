@@ -15,6 +15,7 @@ android {
         }
         named("release") {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ["debug"]
         }
     }
 }
