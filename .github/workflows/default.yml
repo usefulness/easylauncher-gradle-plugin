@@ -66,14 +66,14 @@ jobs:
         agp: [ 7.2.2, 7.4.0-alpha09 ]
         include:
           - javaVersion: 11
-            gradle: 7.0.2
-            agp: 7.0.4
+            gradle: 7.2
+            agp: 7.1.0
           - javaVersion: 11
             gradle: 7.3.3
-            agp: 7.0.4
+            agp: 7.1.0
           - javaVersion: 17
             gradle: 7.4
-            agp: 7.0.4
+            agp: 7.1.0
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}, Java-${{ matrix.javaVersion }}
     steps:
