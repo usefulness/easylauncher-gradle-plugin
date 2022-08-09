@@ -3,7 +3,6 @@
     "mateuszkwiecinski"
   ],
   "extends": [
-    "config:base",
-    ":disableDependencyDashboard"
+    "config:base"
   ]
 }
