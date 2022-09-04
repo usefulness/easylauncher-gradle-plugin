@@ -6,7 +6,6 @@ plugins {
 }
 
 commonConfig {
-    javaFilesAllowed false
     javaVersion JavaVersion.VERSION_1_8
 }
 
