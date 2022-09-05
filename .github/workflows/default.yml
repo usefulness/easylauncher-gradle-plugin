@@ -56,14 +56,27 @@ jobs:
           name: jacoco-report
           path: "${{ github.workspace }}/**/build/reports/jacoco"
 
+  provide-agp-version-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      agp-versions: ${{ steps.build-agp-matrix.outputs.agp-versions }}
+    steps:
+      - id: agp-version-finder
+        uses: usefulness/agp-version-finder-action@v1
+
+      - id: build-agp-matrix
+        run: echo '::set-output name=agp-versions::["${{ steps.agp-version-finder.outputs.latest-stable }}", "${{ steps.agp-version-finder.outputs.latest-alpha }}"]'
+
   build-all-sample-apps:
     runs-on: ubuntu-latest
+    needs:
+      - provide-agp-version-matrix
     strategy:
       fail-fast: false
       matrix:
         javaVersion: [ 17 ]
         gradle: [ current, release-candidate ]
-        agp: [ 7.2.2, 7.4.0-alpha10 ]
+        agp: ${{ fromJSON(needs.provide-agp-version-matrix.outputs.agp-versions) }}
         include:
           - javaVersion: 11
             gradle: 7.2
