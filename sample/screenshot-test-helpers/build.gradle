@@ -3,8 +3,9 @@ plugins {
 }
 
 android {
+    namespace "com.example.screenshot.helpers"
     defaultConfig {
-        minSdkVersion(15)
+        minSdkVersion(21)
     }
 }
 
