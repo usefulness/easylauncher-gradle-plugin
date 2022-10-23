@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace "com.example.custom.adaptive"
     defaultConfig {
         minSdkVersion 15
     }

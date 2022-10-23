@@ -2,6 +2,7 @@ apply plugin: 'com.starter.library.android'
 apply plugin: 'com.starter.easylauncher'
 
 android {
+    namespace "com.example.simple"
     defaultConfig {
         minSdkVersion(26)
     }

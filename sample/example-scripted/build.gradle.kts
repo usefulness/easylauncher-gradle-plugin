@@ -1,5 +1,11 @@
-apply(plugin = "com.starter.application.android")
-apply(plugin = "com.starter.easylauncher")
+plugins {
+    id("com.starter.application.android")
+    id("com.starter.easylauncher")
+}
+
+android {
+    namespace = "com.example.scripted"
+}
 
 val implementation by configurations
 
