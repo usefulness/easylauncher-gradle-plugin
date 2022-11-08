@@ -1,7 +1,7 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
 plugins {
-    id "com.gradle.enterprise" version "3.11.3"
+    id "com.gradle.enterprise" version "3.11.4"
 }
 
 rootProject.name = "com.project.starter"
