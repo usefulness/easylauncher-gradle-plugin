@@ -80,7 +80,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                         "main",
                         variant.name,
                         variant.buildType,
-                        variant.flavorName
+                        variant.flavorName,
                     )
 
                     val manifests = manifestBySourceSet

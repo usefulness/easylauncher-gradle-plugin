@@ -19,7 +19,7 @@ import kotlin.system.measureTimeMillis
 
 @CacheableTask
 abstract class EasyLauncherTask @Inject constructor(
-    private val objects: ObjectFactory
+    private val objects: ObjectFactory,
 ) : DefaultTask() {
 
     @get:Input
