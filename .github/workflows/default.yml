@@ -79,7 +79,7 @@ jobs:
         agp: ${{ fromJSON(needs.provide-agp-version-matrix.outputs.agp-versions) }}
         include:
           - javaVersion: 11
-            gradle: 7.3.3
+            gradle: 7.4
             agp: 7.2.2
           - javaVersion: 17
             gradle: 7.4
