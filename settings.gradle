@@ -1,11 +1,23 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
+pluginManagement {
+    repositories { // https://github.com/gradle/gradle/issues/20866
+        gradlePluginPortal()
+        mavenCentral()
+        google()
+    }
+    dependencyResolutionManagement {
+        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+        repositories {
+            mavenCentral()
+            gradlePluginPortal()
+        }
+    }
+}
+
 plugins {
     id "com.gradle.enterprise" version "3.11.4"
 }
-
-rootProject.name = "com.project.starter"
-include ':easylauncher'
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -14,3 +26,7 @@ dependencyResolutionManagement {
         google()
     }
 }
+
+rootProject.name = "com.project.starter"
+include ':easylauncher'
+includeBuild("gradle/plugins")

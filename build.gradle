@@ -1,8 +1,9 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
 
 plugins {
-    id "com.starter.config"
-    id "com.starter.versioning"
+    alias(libs.plugins.starter.config)
+    alias(libs.plugins.starter.versioning)
+    alias(libs.plugins.starter.library.kotlin) apply false
 }
 
 commonConfig {
