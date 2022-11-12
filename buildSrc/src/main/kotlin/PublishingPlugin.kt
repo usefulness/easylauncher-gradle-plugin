@@ -3,7 +3,6 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
 
 class PublishingPlugin : Plugin<Project> {
 
@@ -22,11 +21,6 @@ class PublishingPlugin : Plugin<Project> {
                         username = "mateuszkwiecinski"
                         password = findConfig("GITHUB_TOKEN")
                     }
-                }
-            }
-            with(publications) {
-                register("mavenJava", MavenPublication::class.java) {
-                    it.from(components.getByName("java"))
                 }
             }
         }

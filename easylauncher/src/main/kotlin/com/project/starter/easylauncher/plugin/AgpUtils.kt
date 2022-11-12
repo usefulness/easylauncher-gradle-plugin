@@ -1,28 +1,11 @@
 package com.project.starter.easylauncher.plugin
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.api.BaseVariant
-import org.gradle.api.DomainObjectSet
-import org.gradle.api.Project
+import com.android.build.api.component.analytics.AnalyticsEnabledApplicationVariant
+import com.android.build.api.dsl.AndroidSourceDirectorySet
+import com.android.build.api.variant.Variant
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import org.gradle.api.model.ObjectFactory
 import java.io.File
-
-private val supportedPlugins = listOf(
-    "com.android.application",
-    "com.android.library",
-)
-
-internal fun Project.configureSupportedPlugins(block: (DomainObjectSet<out BaseVariant>) -> Unit) {
-    supportedPlugins.forEach { pluginId ->
-        pluginManager.withPlugin(pluginId) { block(findVariants()) }
-    }
-}
-
-internal fun Project.findVariants(): DomainObjectSet<out BaseVariant> =
-    extensions.findByType(AppExtension::class.java)?.applicationVariants
-        ?: extensions.findByType(LibraryExtension::class.java)?.libraryVariants
-        ?: this.objects.domainObjectSet(BaseVariant::class.java)
 
 internal fun ObjectFactory.getIconFiles(parent: File, iconName: String): Iterable<File> =
     fileTree().from(parent).apply {
@@ -37,3 +20,17 @@ private fun resourceFilePattern(name: String): String {
         name
     }
 }
+
+/**
+ * Workaround for https://issuetracker.google.com/issues/197121905
+ */
+internal val Variant.isDebuggable: Boolean
+    get() = when (this) {
+        is AnalyticsEnabledApplicationVariant -> delegate.isDebuggable
+        is ComponentCreationConfig -> debuggable
+        else -> false
+    }
+
+@Suppress("DEPRECATION") // https://issuetracker.google.com/issues/170650362
+internal val AndroidSourceDirectorySet.srcDirs
+    get() = (this as? com.android.build.gradle.api.AndroidSourceDirectorySet)?.srcDirs.orEmpty()

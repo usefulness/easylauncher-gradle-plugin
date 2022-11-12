@@ -276,7 +276,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                 """.trimIndent()
             },
         )
-        val result = runTask("easylauncher")
+        val result = runTask("assemble")
 
         assertSoftly { softly ->
             listOf(
