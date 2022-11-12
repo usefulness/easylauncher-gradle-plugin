@@ -15,9 +15,10 @@ class EasyLauncherPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         val extension = extensions.create(EasyLauncherExtension.NAME, EasyLauncherExtension::class.java)
 
-        logger.info("Running gradle version: ${gradle.gradleVersion}")
+        log.info { "Running gradle version: ${gradle.gradleVersion}" }
 
-        val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
+        val androidComponents = project.extensions.findByType(AndroidComponentsExtension::class.java)
+            ?: error("'com.starter.easylauncher' has to be applied after Android Gradle Plugin")
 
         val manifestBySourceSet = mutableMapOf<String, File>()
         val resSourceDirectoriesBySourceSet = mutableMapOf<String, Set<File>>()
@@ -58,6 +59,8 @@ class EasyLauncherPlugin : Plugin<Project> {
                         filters.add(EasyLauncherConfig(ribbonText, project.objects).greenRibbonFilter())
                     }
                 }
+
+                log.info { "configuring ${variant.name}, isDebuggable=${variant.isDebuggable}, filters=${filters.size}" }
 
                 if (filters.isNotEmpty()) {
                     val customIconNames = provider {
@@ -108,7 +111,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                         .toCreate(InternalArtifactType.GENERATED_RES)
                 }
             } else {
-                logger.info("disabled for ${variant.name}")
+                log.info { "disabled for ${variant.name}" }
             }
         }
     }

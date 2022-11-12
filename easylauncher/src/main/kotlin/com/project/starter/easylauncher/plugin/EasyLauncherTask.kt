@@ -60,22 +60,20 @@ abstract class EasyLauncherTask @Inject constructor(
             }
         }
 
-        logger.info("task finished in $taskExecutionTime ms")
+        log.info { "task finished in $taskExecutionTime ms" }
     }
 
     private fun getLauncherIconNames(): Set<String> {
         return manifestFiles
             .get()
             .filter { it.exists() }
-            .map {
-                it.getLauncherIcons(manifestPlaceholders.get())
-            }
+            .map { it.getLauncherIcons(manifestPlaceholders.get()) }
             .flatten()
             .toSet()
     }
 
     private fun getIcons(iconNames: Set<String>): List<File> {
-        logger.info("will process icons: ${iconNames.joinToString()}")
+        log.info { "will process icons: ${iconNames.joinToString()}" }
 
         return resourceDirectories
             .get()
