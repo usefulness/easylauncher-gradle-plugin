@@ -4,7 +4,7 @@ apply plugin: 'com.starter.easylauncher'
 android {
     namespace "com.example.simple"
     defaultConfig {
-        minSdkVersion(26)
+        minSdk = 26
     }
     testVariants.configureEach { variant ->
         variant.mergedFlavor.manifestPlaceholders = [appName: ""]
