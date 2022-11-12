@@ -79,9 +79,7 @@ abstract class EasyLauncherTask @Inject constructor(
 
         return resourceDirectories
             .get()
-            .filter {
-                it.exists()
-            }
+            .filter { it.exists() }
             .flatMap { resDir ->
                 iconNames.flatMap {
                     objects.getIconFiles(parent = resDir, iconName = it)

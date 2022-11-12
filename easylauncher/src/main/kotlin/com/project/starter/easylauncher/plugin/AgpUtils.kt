@@ -1,5 +1,6 @@
 package com.project.starter.easylauncher.plugin
 
+import com.android.build.api.component.analytics.AnalyticsEnabledApplicationVariant
 import com.android.build.api.dsl.AndroidSourceDirectorySet
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.internal.component.ComponentCreationConfig
@@ -23,8 +24,9 @@ private fun resourceFilePattern(name: String): String {
 /**
  * Workaround for https://issuetracker.google.com/issues/197121905
  */
-internal val Variant.isDebuggable
+internal val Variant.isDebuggable: Boolean
     get() = when (this) {
+        is AnalyticsEnabledApplicationVariant -> delegate.isDebuggable
         is ComponentCreationConfig -> debuggable
         else -> false
     }

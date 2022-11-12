@@ -217,8 +217,8 @@ See [related issue](https://github.com/usefulness/easylauncher-gradle-plugin/iss
 
 ## Requirements
 Minimal requirements for the plugin are: 
-- Gradle: **7.0.4**
-- Android Gradle Plugin: **7.1.0**
+- Gradle: **7.3.3**
+- Android Gradle Plugin: **7.2.2**
 - Java Version: **8**
 - minSdkVersion: **21** _(theoretically there should be no lower boundary - it just hasn't been tested)_
 
