@@ -1,5 +1,8 @@
 package com.project.starter.easylauncher.plugin
 
+import com.android.build.api.dsl.AndroidSourceDirectorySet
+import com.android.build.api.variant.Variant
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import org.gradle.api.model.ObjectFactory
 import java.io.File
 
@@ -16,3 +19,16 @@ private fun resourceFilePattern(name: String): String {
         name
     }
 }
+
+/**
+ * Workaround for https://issuetracker.google.com/issues/197121905
+ */
+internal val Variant.isDebuggable
+    get() = when (this) {
+        is ComponentCreationConfig -> debuggable
+        else -> false
+    }
+
+@Suppress("DEPRECATION") // https://issuetracker.google.com/issues/170650362
+internal val AndroidSourceDirectorySet.srcDirs
+    get() = (this as? com.android.build.gradle.api.AndroidSourceDirectorySet)?.srcDirs.orEmpty()

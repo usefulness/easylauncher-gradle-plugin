@@ -1,7 +1,7 @@
 package com.project.starter.easylauncher.plugin
 
 import com.android.build.api.variant.AndroidComponentsExtension
-import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
+import com.android.build.api.variant.Variant
 import com.android.build.gradle.internal.api.DefaultAndroidSourceFile
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import org.gradle.api.Plugin
@@ -9,6 +9,7 @@ import org.gradle.api.Project
 import org.gradle.configurationcache.extensions.capitalized
 import java.io.File
 
+@Suppress("UnstableApiUsage")
 class EasyLauncherPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
@@ -23,23 +24,12 @@ class EasyLauncherPlugin : Plugin<Project> {
 
         androidComponents.finalizeDsl { common ->
             common.sourceSets
-                .mapNotNull { sourceSet ->
-                    (sourceSet.manifest as? DefaultAndroidSourceFile)?.srcFile?.let {
-                        Pair(sourceSet.name, it)
-                    }
-                }
-                .forEach {
-                    manifestBySourceSet[it.first] = it.second
-                }
+                .mapNotNull { sourceSet -> (sourceSet.manifest as? DefaultAndroidSourceFile)?.srcFile?.let { sourceSet.name to it } }
+                .forEach { manifestBySourceSet[it.first] = it.second }
 
             common.sourceSets
-                .map { sourceSet ->
-                    val sourceDirs = (sourceSet.res as? DefaultAndroidSourceDirectorySet)?.srcDirs ?: emptySet()
-                    Pair(sourceSet.name, sourceDirs)
-                }
-                .forEach {
-                    resSourceDirectoriesBySourceSet[it.first] = it.second
-                }
+                .map { sourceSet -> sourceSet.name to sourceSet.res.srcDirs }
+                .forEach { resSourceDirectoriesBySourceSet[it.first] = it.second }
         }
 
         androidComponents.onVariants { variant ->
@@ -52,7 +42,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                 val filters = configs.flatMap { it.filters.get() }.toMutableSet()
 
                 // set default ribbon
-                if (filters.isEmpty() /*&& variant.buildType.isDebuggable*/) { // TODO: API does not seem to have any way to query the debug flag of the build type
+                if (filters.isEmpty() && variant.isDebuggable) {
                     val ribbonText = when (extension.isDefaultFlavorNaming.orNull) {
                         true -> variant.flavorName
                         false -> variant.buildType
@@ -124,7 +114,7 @@ class EasyLauncherPlugin : Plugin<Project> {
     }
 
     private fun findConfigs(
-        variant: com.android.build.api.variant.Variant,
+        variant: Variant,
         ribbonProductFlavors: Iterable<EasyLauncherConfig>,
         ribbonBuildTypes: Iterable<EasyLauncherConfig>,
     ): List<EasyLauncherConfig> {

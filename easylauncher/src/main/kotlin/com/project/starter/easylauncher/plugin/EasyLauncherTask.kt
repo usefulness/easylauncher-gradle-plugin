@@ -3,7 +3,7 @@ package com.project.starter.easylauncher.plugin
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import com.project.starter.easylauncher.plugin.models.AdaptiveIcon
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.*
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
