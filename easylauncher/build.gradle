@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
     id "java-gradle-plugin"
-    id 'com.starter.library.kotlin'
     id 'com.starter.publishing'
+    alias(libs.plugins.starter.library.kotlin)
     alias(libs.plugins.gradle.publishplugin)
     alias(libs.plugins.droidsonroids.jacocotestkit)
 }

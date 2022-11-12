@@ -23,7 +23,7 @@ jobs:
       - uses: gradle/gradle-build-action@v2
 
       - name: Build app with Gradle
-        run: ./gradlew build
+        run: ./gradlew assemble
 
       - name: Publish to Gradle Plugin Portal
         run: ./gradlew publishPlugins -Pgradle.publish.key=${{ secrets.gradle_publish_key }} -Pgradle.publish.secret=${{ secrets.gradle_publish_secret }}

@@ -12,7 +12,6 @@ mavencentral-apachecommons="3.12.0"
 mavencentral-usefulnesswebp="0.2.1"
 
 [libraries]
-starter-gradle = { module = "com.project.starter:android", version.ref = "gradle-starter" }
 agp-gradle = { module = "com.android.tools.build:gradle", version.ref = "google-agp" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "mavencentral-kotlin" }
 jmailen-kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "gradle-kotlinter" }
@@ -27,3 +26,6 @@ jmailen-kotlinter = { id = "org.jmailen.kotlinter", version.ref = "gradle-kotlin
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "mavencentral-kotlin" }
 gradle-publishplugin = { id = "com.gradle.plugin-publish", version.ref = "gradle-gradlepublish" }
 droidsonroids-jacocotestkit = { id = "pl.droidsonroids.jacoco.testkit", version.ref = "gradle-jacocotestkit" }
+starter-config = { id = "com.starter.config", version.ref = "gradle-starter" }
+starter-versioning = { id = "com.starter.versioning", version.ref = "gradle-starter" }
+starter-library-kotlin = { id = "com.starter.library.kotlin", version.ref = "gradle-starter" }
