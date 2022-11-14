@@ -1,3 +1,6 @@
+import com.android.build.api.variant.ResValue
+import kotlin.Pair
+
 apply plugin: 'com.starter.application.android'
 apply plugin: 'com.starter.easylauncher'
 
@@ -49,6 +52,16 @@ android {
         register("allFilters") {
             dimension "reportedBugs"
         }
+        register("usingResValues") {
+            dimension "reportedBugs"
+        }
+    }
+}
+
+androidComponents {
+    onVariants(selector().withFlavor(new Pair("reportedBugs", "usingResValues"))) { variant ->
+        def value = new ResValue(variant.applicationId.get(), "Covers https://github.com/usefulness/easylauncher-gradle-plugin/issues/382")
+        variant.resValues.put(variant.makeResValueKey("string", "generated_key"), value)
     }
 }
 
@@ -102,6 +115,9 @@ easylauncher {
             filters customRibbon(label: "local"),
                     chromeLike(label: "aaa"),
                     overlayFilter(file("launcherOverlay/beta.png"))
+        }
+        usingResValues {
+            filters chromeLike(label: "res-values", ribbonColor: "#6600CC", labelColor: "#FFFFFF", position: "bottom")
         }
     }
 }

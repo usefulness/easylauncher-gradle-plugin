@@ -1,8 +1,8 @@
 package com.project.starter.easylauncher.plugin
 
+import com.android.build.api.AndroidPluginVersion
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.Variant
-import com.android.build.gradle.internal.api.DefaultAndroidSourceFile
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -25,7 +25,7 @@ class EasyLauncherPlugin : Plugin<Project> {
 
         androidComponents.finalizeDsl { common ->
             common.sourceSets
-                .mapNotNull { sourceSet -> (sourceSet.manifest as? DefaultAndroidSourceFile)?.srcFile?.let { sourceSet.name to it } }
+                .mapNotNull { sourceSet -> sourceSet.manifest.srcFile?.let { sourceSet.name to it } }
                 .forEach { manifestBySourceSet[it.first] = it.second }
 
             common.sourceSets
@@ -104,11 +104,18 @@ class EasyLauncherPlugin : Plugin<Project> {
                         it.minSdkVersion.set(variant.minSdkVersion.apiLevel)
                     }
 
-                    variant
-                        .artifacts
-                        .use(task)
-                        .wiredWith(EasyLauncherTask::outputDir)
-                        .toCreate(InternalArtifactType.GENERATED_RES)
+                    val apgVersion = androidComponents.pluginVersion
+                    if (apgVersion >= AndroidPluginVersion(7, 4).beta(2)) {
+                        // proper solution, unavailable in 7.3. https://issuetracker.google.com/issues/237303854
+                        variant.sources.res?.addGeneratedSourceDirectory(task, EasyLauncherTask::outputDir)
+                    } else {
+                        // has side-effects, but "works". @see: https://github.com/usefulness/easylauncher-gradle-plugin/issues/382
+                        variant
+                            .artifacts
+                            .use(task)
+                            .wiredWith(EasyLauncherTask::outputDir)
+                            .toCreate(InternalArtifactType.GENERATED_RES)
+                    }
                 }
             } else {
                 log.info { "disabled for ${variant.name}" }
