@@ -61,7 +61,7 @@ android {
 
 
 androidComponents {
-    if (pluginVersion < new AndroidPluginVersion(7, 4).beta(1)) {
+    if (pluginVersion >= new AndroidPluginVersion(7, 3).alpha(1) && pluginVersion < new AndroidPluginVersion(7, 4).beta(2)) {
         tasks.register("agpHasBugs") {
             def resourcesFile = file("src/usingResValues/res/values/generated_strings.xml")
 

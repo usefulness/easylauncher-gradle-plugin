@@ -3,10 +3,9 @@ package com.project.starter.easylauncher.plugin
 import com.android.build.api.AndroidPluginVersion
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.Variant
-import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.configurationcache.extensions.capitalized
 import java.io.File
 
 @Suppress("UnstableApiUsage")
@@ -95,7 +94,8 @@ class EasyLauncherPlugin : Plugin<Project> {
                         }
                         .flatten()
 
-                    val task = project.tasks.register("easylauncher${variant.name.capitalized()}", EasyLauncherTask::class.java) {
+                    val capitalisedVariantName = variant.name.replaceFirstChar(Char::titlecase)
+                    val task = project.tasks.register("easylauncher$capitalisedVariantName", EasyLauncherTask::class.java) {
                         it.manifestFiles.set(manifests)
                         it.manifestPlaceholders.set(variant.manifestPlaceholders)
                         it.resourceDirectories.set(resSourceDirectories)
@@ -108,13 +108,22 @@ class EasyLauncherPlugin : Plugin<Project> {
                     if (apgVersion >= AndroidPluginVersion(7, 4).beta(2)) {
                         // proper solution, unavailable in 7.3. https://issuetracker.google.com/issues/237303854
                         variant.sources.res?.addGeneratedSourceDirectory(task, EasyLauncherTask::outputDir)
-                    } else {
+                    } else if (apgVersion >= AndroidPluginVersion(7, 3).alpha(1)) {
                         // has side-effects, but "works". @see: https://github.com/usefulness/easylauncher-gradle-plugin/issues/382
                         variant
                             .artifacts
                             .use(task)
                             .wiredWith(EasyLauncherTask::outputDir)
-                            .toCreate(InternalArtifactType.GENERATED_RES)
+                            .toCreate(com.android.build.gradle.internal.scope.InternalArtifactType.GENERATED_RES)
+                    } else {
+                        // legacy way to hook up the plugin
+                        val generatedResDir = buildDir.resolve("generated/easylauncher/res/${variant.name}")
+                        task.configure { it.outputDir.set(generatedResDir) }
+                        project.afterEvaluate {
+                            val android = extensions.getByName("android") as BaseExtension
+                            android.sourceSets.getByName(variant.name).res.srcDir(generatedResDir)
+                            tasks.named("generate${capitalisedVariantName}Resources") { it.dependsOn(task) }
+                        }
                     }
                 }
             } else {
