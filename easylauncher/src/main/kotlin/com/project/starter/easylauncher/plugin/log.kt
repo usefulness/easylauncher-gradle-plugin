@@ -10,7 +10,7 @@ internal object log {
 
     fun info(message: () -> String) {
         if (logger.isInfoEnabled) {
-            logger.debug("[$TAG] $message")
+            logger.info("[$TAG] ${message()}")
         }
     }
 }
