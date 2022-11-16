@@ -11,6 +11,18 @@ open class EasyLauncherExtension @Inject constructor(
 ) {
 
     /**
+     * Defines if the plugins should show warnings at configuration time. Disable by adding:
+     * ```
+     * easylauncher {
+     *     showWarnings = false
+     * }
+     * ```
+     */
+    var showWarnings: Property<Boolean> = objectFactory.property(Boolean::class.java).apply {
+        set(true)
+    }
+
+    /**
      * True to use flavor name for default ribbons, false to use type name
      */
     var isDefaultFlavorNaming: Property<Boolean> = objectFactory.property(Boolean::class.java).apply {

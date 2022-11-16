@@ -53,6 +53,34 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
     }
 
     @Test
+    fun `can disable warnings`() {
+        moduleRoot.resolve("build.gradle").buildScript(
+            androidBlock = {
+                """
+                buildTypes {
+                    debug { }
+                    superType { }
+                    release { }
+                }
+                flavorDimensions "version"
+                productFlavors {
+                    demo { dimension "version" }
+                    full { dimension "version" }
+                }
+                """.trimIndent()
+            },
+            easylauncherBlock = {
+                """
+                showWarnings = false
+                """.trimIndent()
+            },
+        )
+        val result = runTask("assembleDemoDebug")
+
+        assertThat(result.output).doesNotContain("[easylauncher]")
+    }
+
+    @Test
     fun `does not add task for non debuggable variants`() {
         moduleRoot.resolve("build.gradle").buildScript(
             androidBlock = {
