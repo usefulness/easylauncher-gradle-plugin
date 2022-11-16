@@ -65,7 +65,7 @@ jobs:
         uses: usefulness/agp-version-finder-action@v1
 
       - id: build-agp-matrix
-        run: echo '::set-output name=agp-versions::["${{ steps.agp-version-finder.outputs.latest-stable }}", "${{ steps.agp-version-finder.outputs.latest-alpha }}"]'
+        run: echo '::set-output name=agp-versions::["${{ steps.agp-version-finder.outputs.latest-stable }}","${{ steps.agp-version-finder.outputs.latest-beta }}", "${{ steps.agp-version-finder.outputs.latest-alpha }}"]'
 
   build-all-sample-apps:
     runs-on: ubuntu-latest
@@ -108,7 +108,7 @@ jobs:
           gradle-version: ${{ matrix.gradle }}
           arguments: assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }}
 
-  build-sample-apps-with-confgiuration-cache:
+  build-sample-apps-with-configuration-cache:
     runs-on: ${{ matrix.os }}
     name: Configuration Cache Java-${{ matrix.javaVersion }} OS-${{ matrix.os }}
     strategy:

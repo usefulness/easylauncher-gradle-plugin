@@ -86,7 +86,7 @@ subprojects {
                 // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
                 disable("IconLauncherShape")
 
-                if (agpVersion.contains("alpha")) {
+                if (agpVersion.contains("alpha") || agpVersion.contains("beta")) {
                     disable("MonochromeLauncherIcon")
                 }
 
@@ -174,7 +174,7 @@ subprojects {
                 // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
                 disable("IconLauncherShape")
 
-                if (agpVersion.contains("alpha")) {
+                if (agpVersion.contains("alpha") || agpVersion.contains("beta")) {
                     disable("MonochromeLauncherIcon")
                 }
 

@@ -80,4 +80,6 @@ addToIndex
 addToIndex
 ./../gradlew :example-vector:recordUsingAndroidVersionDebugAndroidTestScreenshotTest --no-configuration-cache
 addToIndex
+./../gradlew :example-vector:recordUsingResValuesDebugAndroidTestScreenshotTest --no-configuration-cache
+addToIndex
 echo "Completed"

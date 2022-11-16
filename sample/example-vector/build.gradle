@@ -1,3 +1,7 @@
+import com.android.build.api.variant.ResValue
+import com.android.build.api.AndroidPluginVersion
+import kotlin.Pair
+
 apply plugin: 'com.starter.application.android'
 apply plugin: 'com.starter.easylauncher'
 
@@ -48,6 +52,35 @@ android {
         }
         register("allFilters") {
             dimension "reportedBugs"
+        }
+        register("usingResValues") {
+            dimension "reportedBugs"
+        }
+    }
+}
+
+
+androidComponents {
+    if (pluginVersion >= new AndroidPluginVersion(7, 3).alpha(1) && pluginVersion < new AndroidPluginVersion(7, 4).beta(2)) {
+        tasks.register("agpHasBugs") {
+            def resourcesFile = file("src/usingResValues/res/values/generated_strings.xml")
+
+            doLast {
+                resourcesFile.parentFile.mkdirs()
+                resourcesFile.write("""
+<resources>
+    <string name="generated_key">New AGP apis are broken</string>
+</resources>
+""")
+            }
+        }
+        tasks.withType(com.android.build.gradle.tasks.GenerateResValues).configureEach {
+            dependsOn("agpHasBugs")
+        }
+    } else {
+        onVariants(selector().withFlavor(new Pair("reportedBugs", "usingResValues"))) { variant ->
+            def value = new ResValue(variant.applicationId.get(), "Covers https://github.com/usefulness/easylauncher-gradle-plugin/issues/382")
+            variant.resValues.put(variant.makeResValueKey("string", "generated_key"), value)
         }
     }
 }
@@ -102,6 +135,9 @@ easylauncher {
             filters customRibbon(label: "local"),
                     chromeLike(label: "aaa"),
                     overlayFilter(file("launcherOverlay/beta.png"))
+        }
+        usingResValues {
+            filters chromeLike(label: "res-values", ribbonColor: "#6600CC", labelColor: "#FFFFFF", position: "bottom")
         }
     }
 }
