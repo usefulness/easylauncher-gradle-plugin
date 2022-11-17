@@ -14,10 +14,20 @@ class EasyLauncherPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         val extension = extensions.create(EasyLauncherExtension.NAME, EasyLauncherExtension::class.java)
 
-        log.info { "Running gradle version: ${gradle.gradleVersion}" }
-
         val androidComponents = project.extensions.findByType(AndroidComponentsExtension::class.java)
             ?: error("'com.starter.easylauncher' has to be applied after Android Gradle Plugin")
+        val agpVersion = androidComponents.pluginVersion
+        log.info { "Environment: gradle=${gradle.gradleVersion}, agp=$agpVersion" }
+        afterEvaluate {
+            if (extension.showWarnings.orNull == true) {
+                if (agpVersion.hasBrokenResourcesMerging && !agpVersion.canUseNewResources) {
+                    log.warn {
+                        "Plugin runs in compatibility mode, it will replace all resValues. " +
+                            "Visit https://github.com/usefulness/easylauncher-gradle-plugin/issues/382 for more details."
+                    }
+                }
+            }
+        }
 
         val manifestBySourceSet = mutableMapOf<String, File>()
         val resSourceDirectoriesBySourceSet = mutableMapOf<String, Set<File>>()
@@ -104,11 +114,10 @@ class EasyLauncherPlugin : Plugin<Project> {
                         it.minSdkVersion.set(variant.minSdkVersion.apiLevel)
                     }
 
-                    val apgVersion = androidComponents.pluginVersion
-                    if (apgVersion >= AndroidPluginVersion(7, 4).beta(2)) {
+                    if (agpVersion.canUseNewResources) {
                         // proper solution, unavailable in 7.3. https://issuetracker.google.com/issues/237303854
                         variant.sources.res?.addGeneratedSourceDirectory(task, EasyLauncherTask::outputDir)
-                    } else if (apgVersion >= AndroidPluginVersion(7, 3).alpha(1)) {
+                    } else if (agpVersion.hasBrokenResourcesMerging) {
                         // has side-effects, but "works". @see: https://github.com/usefulness/easylauncher-gradle-plugin/issues/382
                         variant
                             .artifacts
@@ -140,4 +149,7 @@ class EasyLauncherPlugin : Plugin<Project> {
         return ribbonProductFlavors.filter { config -> variant.productFlavors.any { config.name == it.second } } +
             ribbonBuildTypes.filter { it.name == variant.buildType }
     }
+
+    private val AndroidPluginVersion.canUseNewResources get() = this >= AndroidPluginVersion(7, 4).beta(2)
+    private val AndroidPluginVersion.hasBrokenResourcesMerging get() = this >= AndroidPluginVersion(7, 3).alpha(1)
 }
