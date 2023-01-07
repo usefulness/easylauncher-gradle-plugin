@@ -1,5 +1,5 @@
 [versions]
-gradle-starter = "0.53.0"
+gradle-starter = "0.54.0"
 gradle-kotlinter = "3.13.0"
 gradle-gradlepublish = "1.1.0"
 google-agp = "7.3.1"
@@ -7,7 +7,7 @@ gradle-jacocotestkit = "1.0.9"
 mavencentral-kotlin = "1.8.0"
 mavencentral-issuechecker = "0.3.0"
 mavencentral-junit = "5.9.1"
-mavencentral-assertj = "3.23.1"
+mavencentral-assertj = "3.24.1"
 mavencentral-apachecommons="3.12.0"
 mavencentral-usefulnesswebp="0.2.1"
 
