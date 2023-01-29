@@ -14,10 +14,15 @@ commonConfig {
 allprojects {
     pluginManager.withPlugin("kotlin") { plugin ->
         def kotlinVersion = KotlinPluginWrapperKt.getKotlinPluginVersion(project)
+        def agp = libs.agp.gradle.get().module
+        def agpVersion = libs.versions.google.agp.get()
         configurations.configureEach {
             resolutionStrategy.eachDependency {
                 if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith("kotlin")) {
                     useVersion kotlinVersion
+                }
+                if (requested.group == agp.group && requested.module == agp.name) {
+                    useVersion agpVersion
                 }
             }
         }
