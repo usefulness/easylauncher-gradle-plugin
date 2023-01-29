@@ -2,6 +2,7 @@
 gradle-starter = "0.54.0"
 gradle-kotlinter = "3.13.0"
 gradle-gradlepublish = "1.1.0"
+gradle-doctor = "0.8.1"
 google-agp = "7.3.1"
 gradle-jacocotestkit = "1.0.9"
 mavencentral-kotlin = "1.8.0"
@@ -29,3 +30,4 @@ droidsonroids-jacocotestkit = { id = "pl.droidsonroids.jacoco.testkit", version.
 starter-config = { id = "com.starter.config", version.ref = "gradle-starter" }
 starter-versioning = { id = "com.starter.versioning", version.ref = "gradle-starter" }
 starter-library-kotlin = { id = "com.starter.library.kotlin", version.ref = "gradle-starter" }
+osacky-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }

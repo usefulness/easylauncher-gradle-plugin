@@ -50,13 +50,8 @@ tasks.withType(KotlinCompile).configureEach {
         languageVersion = "1.5"
     }
 }
-tasks.withType(JavaCompile).configureEach {
-    options.release.set(JavaVersion.VERSION_1_8.majorVersion.toInteger())
-}
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(JavaVersion.VERSION_17.toString())
-    }
+kotlin {
+    jvmToolchain(17)
 }
 
 dependencies {

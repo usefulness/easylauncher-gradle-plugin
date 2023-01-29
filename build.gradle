@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
 plugins {
     alias(libs.plugins.starter.config)
     alias(libs.plugins.starter.versioning)
+    alias(libs.plugins.osacky.doctor)
     alias(libs.plugins.starter.library.kotlin) apply false
 }
 

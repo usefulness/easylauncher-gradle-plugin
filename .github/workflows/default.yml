@@ -30,6 +30,12 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Write Gradle build properties to `~/.gradle/gradle.properties`
+        run: |
+          mkdir -p ~/.gradle
+          printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
+        shell: bash
+
       - uses: gradle/gradle-build-action@v2
 
       - name: Code style check
@@ -75,7 +81,7 @@ jobs:
       fail-fast: false
       matrix:
         javaVersion: [ 17 ]
-        gradle: [ current, release-candidate ]
+        gradle: [ release-candidate ]
         agp: ${{ fromJSON(needs.provide-agp-version-matrix.outputs.agp-versions) }}
         include:
           - javaVersion: 11
@@ -84,6 +90,18 @@ jobs:
           - javaVersion: 17
             gradle: 7.4
             agp: 7.2.2
+          - javaVersion: 17
+            gradle: current
+            agp: 7.3.1
+          - javaVersion: 19
+            gradle: current
+            agp: 7.3.1
+          - javaVersion: 17
+            gradle: release-candidate
+            agp: 7.3.1
+          - javaVersion: 19
+            gradle: release-candidate
+            agp: 7.3.1
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}, Java-${{ matrix.javaVersion }}
     steps:
@@ -97,6 +115,12 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.javaVersion }}
 
+      - name: Write Gradle build properties to `~/.gradle/gradle.properties`
+        run: |
+          mkdir -p ~/.gradle
+          printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
+        shell: bash
+
       - uses: gradle/gradle-build-action@v2
 
       - name: Pre-compile plugin
@@ -106,7 +130,7 @@ jobs:
         with:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
-          arguments: assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }}
+          arguments: assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }} --stacktrace
 
   build-sample-apps-with-configuration-cache:
     runs-on: ${{ matrix.os }}
@@ -114,7 +138,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        javaVersion: [ 11, 17 ]
+        javaVersion: [ 11, 17, 19 ]
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
@@ -127,6 +151,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.javaVersion }}
+
+      - name: Write Gradle build properties to `~/.gradle/gradle.properties`
+        run: |
+          mkdir -p ~/.gradle
+          printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
+        shell: bash
 
       - name: Pre-compile plugin
         uses: gradle/gradle-build-action@v2
@@ -156,6 +186,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
+
+      - name: Write Gradle build properties to `~/.gradle/gradle.properties`
+        run: |
+          mkdir -p ~/.gradle
+          printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
+        shell: bash
 
       - uses: gradle/gradle-build-action@v2
 
