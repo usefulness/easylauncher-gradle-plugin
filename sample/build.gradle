@@ -228,4 +228,10 @@ subprojects {
             androidTestImplementation project(":screenshot-test-helpers")
         }
     }
+
+    pluginManager.withPlugin("kotlin") {
+        kotlin {
+            jvmToolchain(JavaVersion.current().majorVersion.toInteger())
+        }
+    }
 }

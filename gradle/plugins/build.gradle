@@ -4,15 +4,25 @@ plugins {
     id 'java-gradle-plugin'
     alias(libs.plugins.jmailen.kotlinter)
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.osacky.doctor)
 }
 
 dependencies {
     implementation(libs.kotlin.gradle)
 }
 
-tasks.withType(KotlinCompile).configureEach {
-    kotlinOptions.jvmTarget = JavaVersion.current()
+def targetJavaVersion = JavaVersion.VERSION_1_8
+tasks.withType(JavaCompile).configureEach {
+    options.release.set(targetJavaVersion.majorVersion.toInteger())
 }
+tasks.withType(KotlinCompile).configureEach {
+    kotlinOptions.jvmTarget = targetJavaVersion
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
 gradlePlugin {
     plugins {
         publishingPlugin {

@@ -18,6 +18,12 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Write Gradle build properties to `~/.gradle/gradle.properties`
+        run: |
+          mkdir -p ~/.gradle
+          printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
+        shell: bash
+
       - uses: gradle/gradle-build-action@v2
 
       - id: dependency-diff
