@@ -1,6 +1,5 @@
 [versions]
-gradle-starter = "0.54.0"
-gradle-kotlinter = "3.13.0"
+gradle-starter = "0.56.1"
 gradle-gradlepublish = "1.1.0"
 gradle-doctor = "0.8.1"
 google-agp = "7.3.1"
@@ -9,13 +8,12 @@ mavencentral-kotlin = "1.8.0"
 mavencentral-issuechecker = "0.3.0"
 mavencentral-junit = "5.9.2"
 mavencentral-assertj = "3.24.2"
-mavencentral-apachecommons="3.12.0"
-mavencentral-usefulnesswebp="0.2.1"
+mavencentral-apachecommons = "3.12.0"
+mavencentral-usefulnesswebp = "0.2.1"
 
 [libraries]
 agp-gradle = { module = "com.android.tools.build:gradle", version.ref = "google-agp" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "mavencentral-kotlin" }
-jmailen-kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "gradle-kotlinter" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "mavencentral-junit" }
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "mavencentral-junit" }
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "mavencentral-assertj" }
@@ -23,8 +21,6 @@ apache-commons-lang3 = { module = "org.apache.commons:commons-lang3", version.re
 usefulness-webp = { module = "com.github.usefulness:webp-imageio", version.ref = "mavencentral-usefulnesswebp" }
 
 [plugins]
-jmailen-kotlinter = { id = "org.jmailen.kotlinter", version.ref = "gradle-kotlinter" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "mavencentral-kotlin" }
 gradle-publishplugin = { id = "com.gradle.plugin-publish", version.ref = "gradle-gradlepublish" }
 droidsonroids-jacocotestkit = { id = "pl.droidsonroids.jacoco.testkit", version.ref = "gradle-jacocotestkit" }
 starter-config = { id = "com.starter.config", version.ref = "gradle-starter" }
