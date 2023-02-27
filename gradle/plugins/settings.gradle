@@ -1,13 +1,8 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
-pluginManagement {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
 }
-
-rootProject.name = "plugins"
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -21,3 +16,5 @@ dependencyResolutionManagement {
         }
     }
 }
+
+rootProject.name = "plugins"

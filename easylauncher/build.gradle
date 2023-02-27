@@ -18,18 +18,15 @@ tasks.withType(Test).configureEach {
     }
 }
 
-pluginBundle {
-    website = 'https://github.com/mateuszkwiecinski/easylauncher-gradle-plugin/'
-    vcsUrl = 'https://github.com/mateuszkwiecinski/easylauncher-gradle-plugin.git'
-    description = 'Set of plugins that might be useful for Multi-Module Android projects.'
-    tags = ['android', 'launcher', "flavor", "buildType"]
-}
+description = 'Set of plugins that might be useful for Multi-Module Android projects.'
 
 gradlePlugin {
     plugins {
         quality {
             id = 'com.starter.easylauncher'
             displayName = 'Automatically customizes Android laucher icon per each build variant'
+            description = project.description
+            tags.addAll(['android', 'launcher', "flavor", "buildType"])
             implementationClass = 'com.project.starter.easylauncher.plugin.EasyLauncherPlugin'
         }
     }
