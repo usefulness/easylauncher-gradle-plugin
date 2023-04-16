@@ -18,10 +18,12 @@ fun File.buildScript(androidBlock: () -> String = { "" }, easylauncherBlock: () 
         }
         
         android {
+            namespace 'com.project.starter.easylauncher.app'
             defaultConfig {
-                compileSdkVersion 29
+                compileSdkVersion 33
                 minSdkVersion 23
             }
+            
             ${androidBlock()}
         }
         
@@ -30,7 +32,7 @@ fun File.buildScript(androidBlock: () -> String = { "" }, easylauncherBlock: () 
         }
         
         dependencies {
-            testImplementation 'junit:junit:4.13'
+            testImplementation 'junit:junit:4.13.2'
         }
                     
         """.trimIndent()
@@ -53,8 +55,9 @@ fun File.libraryBuildscript(androidBlock: () -> String = { "" }, easylauncherBlo
         }
         
         android {
+            namespace 'com.project.starter.easylauncher.library'
             defaultConfig {
-                compileSdkVersion 29
+                compileSdkVersion 33
                 minSdkVersion 23
             }
             ${androidBlock()}
@@ -65,7 +68,7 @@ fun File.libraryBuildscript(androidBlock: () -> String = { "" }, easylauncherBlo
         }
         
         dependencies {
-            testImplementation 'junit:junit:4.13'
+            testImplementation 'junit:junit:4.13.2'
         }
         
         """.trimIndent()
@@ -100,10 +103,7 @@ internal fun adaptiveIcon() =
 //language=xml
 internal fun androidManifest() = """
     <?xml version="1.0" encoding="utf-8"?>
-    <manifest
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.example.test"
-        >
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android" >
     
         <application
             android:icon="@mipmap/ic_launcher"

@@ -21,7 +21,7 @@ allprojects {
                 if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith("kotlin")) {
                     useVersion kotlinVersion
                 }
-                if (requested.group == agp.group && requested.module == agp.name) {
+                if (requested.group == agp.group && requested.module.name == agp.name) {
                     useVersion agpVersion
                 }
             }
