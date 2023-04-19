@@ -5,7 +5,7 @@ plugins {
     id 'com.starter.publishing'
     alias(libs.plugins.starter.library.kotlin)
     alias(libs.plugins.gradle.publishplugin)
-    alias(libs.plugins.droidsonroids.jacocotestkit)
+//    alias(libs.plugins.droidsonroids.jacocotestkit)
 }
 
 tasks.withType(Test).configureEach {

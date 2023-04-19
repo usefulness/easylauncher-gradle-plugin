@@ -15,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.project.starter:android:0.58.0"
+        classpath "com.project.starter:android:0.59.0"
         classpath "com.facebook.testing.screenshot:plugin:0.15.0"
         if (project.hasProperty("useMavenLocal")) {
             classpath "com.project.starter.local:easylauncher:+"
@@ -64,6 +64,9 @@ subprojects {
         pluginManager.apply("com.facebook.testing.screenshot")
 
         android {
+            buildFeatures {
+                buildConfig = true
+            }
             testOptions.unitTests.includeAndroidResources true
 
             packagingOptions {
@@ -87,7 +90,7 @@ subprojects {
                 // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
                 disable("IconLauncherShape")
 
-                if (agpVersion.contains("alpha") || agpVersion.contains("beta") || agpVersion.startsWith("7.4")) {
+                if (agpVersion.startsWith("7.4") || agpVersion.startsWith("8")) {
                     disable("MonochromeLauncherIcon")
                 }
 
@@ -175,7 +178,7 @@ subprojects {
                 // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
                 disable("IconLauncherShape")
 
-                if (agpVersion.contains("alpha") || agpVersion.contains("beta") || agpVersion.startsWith("7.4")) {
+                if (agpVersion.startsWith("7.4") || agpVersion.startsWith("8")) {
                     disable("MonochromeLauncherIcon")
                 }
 
