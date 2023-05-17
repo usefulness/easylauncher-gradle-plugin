@@ -83,7 +83,9 @@ class EasyLauncherPlugin : Plugin<Project> {
                         variant.name,
                         variant.buildType,
                         variant.flavorName,
-                    )
+                    ) + variant.productFlavors.map { (_, flavor) ->
+                        flavor
+                    }
 
                     val manifests = manifestBySourceSet
                         .mapNotNull { (name, file) ->
