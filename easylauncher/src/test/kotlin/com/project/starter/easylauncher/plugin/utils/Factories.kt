@@ -76,8 +76,7 @@ fun File.libraryBuildscript(androidBlock: () -> String = { "" }, easylauncherBlo
 }
 
 //language=xml
-internal fun vectorFile() =
-    """
+internal fun vectorFile() = """
     <?xml version="1.0" encoding="utf-8"?>
     <vector xmlns:android="http://schemas.android.com/apk/res/android"
         android:width="24dp"
@@ -88,17 +87,16 @@ internal fun vectorFile() =
             android:fillColor="@android:color/black"
             android:pathData="M9,16.2L4.8,12l-1.4,1.4L9,19 21,7l-1.4,-1.4L9,16.2z" />
     </vector>
-    """.trimIndent()
+""".trimIndent()
 
 //language=xml
-internal fun adaptiveIcon() =
-    """
+internal fun adaptiveIcon() = """
     <?xml version="1.0" encoding="utf-8"?>
     <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
         <background android:drawable="@android:drawable/arrow_down_float" />
         <foreground android:drawable="@drawable/ic_foreground" />
     </adaptive-icon>
-    """.trimIndent()
+""".trimIndent()
 
 //language=xml
 internal fun androidManifest() = """

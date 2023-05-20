@@ -44,5 +44,4 @@ internal fun File.asAdaptiveIcon(): AdaptiveIcon? {
     }
 }
 
-internal fun GPathResult.property(key: String) =
-    getProperty(key)?.toString()?.takeIf { it.isNotBlank() }
+internal fun GPathResult.property(key: String) = getProperty(key)?.toString()?.takeIf { it.isNotBlank() }

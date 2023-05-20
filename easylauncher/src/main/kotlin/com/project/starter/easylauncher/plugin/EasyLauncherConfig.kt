@@ -130,31 +130,24 @@ open class EasyLauncherConfig @Inject constructor(
     )
 
     @JvmOverloads
-    fun grayRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0x60, 0x60, 0x60, 0x99).toHexString())
+    fun grayRibbonFilter(label: String? = null) = ColorRibbonFilter(label ?: this.name, Color(0x60, 0x60, 0x60, 0x99).toHexString())
 
     @JvmOverloads
-    fun greenRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0, 0x72, 0, 0x99).toHexString())
+    fun greenRibbonFilter(label: String? = null) = ColorRibbonFilter(label ?: this.name, Color(0, 0x72, 0, 0x99).toHexString())
 
     @JvmOverloads
-    fun orangeRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0xff, 0x76, 0, 0x99).toHexString())
+    fun orangeRibbonFilter(label: String? = null) = ColorRibbonFilter(label ?: this.name, Color(0xff, 0x76, 0, 0x99).toHexString())
 
     @JvmOverloads
-    fun yellowRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0xff, 251, 0, 0x99).toHexString())
+    fun yellowRibbonFilter(label: String? = null) = ColorRibbonFilter(label ?: this.name, Color(0xff, 251, 0, 0x99).toHexString())
 
     @JvmOverloads
-    fun redRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0xff, 0, 0, 0x99).toHexString())
+    fun redRibbonFilter(label: String? = null) = ColorRibbonFilter(label ?: this.name, Color(0xff, 0, 0, 0x99).toHexString())
 
     @JvmOverloads
-    fun blueRibbonFilter(label: String? = null) =
-        ColorRibbonFilter(label ?: this.name, Color(0, 0, 255, 0x99).toHexString())
+    fun blueRibbonFilter(label: String? = null) = ColorRibbonFilter(label ?: this.name, Color(0, 0, 255, 0x99).toHexString())
 
-    fun overlayFilter(fgFile: File) =
-        OverlayFilter(fgFile)
+    fun overlayFilter(fgFile: File) = OverlayFilter(fgFile)
 
     @JvmOverloads
     fun chromeLike(
@@ -225,8 +218,7 @@ open class EasyLauncherConfig @Inject constructor(
     }
 }
 
-internal fun Color.toHexString() =
-    "#%02x%02x%02x%02x".format(alpha, red, green, blue)
+internal fun Color.toHexString() = "#%02x%02x%02x%02x".format(alpha, red, green, blue)
 
 internal fun String.toColor(): Color {
     val value = java.lang.Long.decode(this)
@@ -250,13 +242,11 @@ internal fun String.toColor(): Color {
     }
 }
 
-private fun Iterable<*>?.toDrawingOptions() =
-    this?.map { it.toString() }.orEmpty()
-        .map { rawOption ->
-            val option = ColorRibbonFilter.DrawingOption.values().firstOrNull { rawOption.matchesEnum(it) }
-            checkNotNull(option) { "Unknown option: $rawOption. Use one of ${ColorRibbonFilter.DrawingOption.values().map { it.name }}" }
-        }
-        .toSet()
+private fun Iterable<*>?.toDrawingOptions() = this?.map { it.toString() }.orEmpty()
+    .map { rawOption ->
+        val option = ColorRibbonFilter.DrawingOption.values().firstOrNull { rawOption.matchesEnum(it) }
+        checkNotNull(option) { "Unknown option: $rawOption. Use one of ${ColorRibbonFilter.DrawingOption.values().map { it.name }}" }
+    }
+    .toSet()
 
-private fun <T : Enum<T>> String.matchesEnum(option: T) =
-    replace("_", "").equals(option.name.replace("_", ""), ignoreCase = true)
+private fun <T : Enum<T>> String.matchesEnum(option: T) = replace("_", "").equals(option.name.replace("_", ""), ignoreCase = true)

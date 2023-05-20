@@ -24,7 +24,8 @@ class ChromeLikeFilter(
 ) : EasyLauncherFilter {
 
     enum class Gravity {
-        TOP, BOTTOM
+        TOP,
+        BOTTOM,
     }
 
     private val _ribbonColor get() = ribbonColor?.toColor() ?: Color.DARK_GRAY

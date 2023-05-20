@@ -8,10 +8,9 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import org.gradle.api.model.ObjectFactory
 import java.io.File
 
-internal fun ObjectFactory.getIconFiles(parent: File, iconName: String): Iterable<File> =
-    fileTree().from(parent).apply {
-        include(resourceFilePattern(iconName))
-    }
+internal fun ObjectFactory.getIconFiles(parent: File, iconName: String): Iterable<File> = fileTree().from(parent).apply {
+    include(resourceFilePattern(iconName))
+}
 
 private fun resourceFilePattern(name: String): String {
     return if (name.startsWith("@")) {

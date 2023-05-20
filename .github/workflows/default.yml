@@ -111,8 +111,7 @@ jobs:
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
 
-      - run: yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
-        shell: bash
+      - uses: android-actions/setup-android@v2
 
       - uses: gradle/gradle-build-action@v2
 

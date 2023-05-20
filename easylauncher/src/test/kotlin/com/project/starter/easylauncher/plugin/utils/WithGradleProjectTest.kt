@@ -11,22 +11,21 @@ internal abstract class WithGradleProjectTest {
     @TempDir
     lateinit var rootDirectory: File
 
-    protected fun runTask(vararg taskName: String, shouldFail: Boolean = false, skipJacoco: Boolean = false) =
-        GradleRunner.create().apply {
-            forwardOutput()
-            withPluginClasspath()
-            withArguments(*taskName)
-            withProjectDir(rootDirectory)
-            if (!skipJacoco) {
-                withJaCoCo()
-            }
-        }.run {
-            if (shouldFail) {
-                buildAndFail()
-            } else {
-                build()
-            }
+    protected fun runTask(vararg taskName: String, shouldFail: Boolean = false, skipJacoco: Boolean = false) = GradleRunner.create().apply {
+        forwardOutput()
+        withPluginClasspath()
+        withArguments(*taskName)
+        withProjectDir(rootDirectory)
+        if (!skipJacoco) {
+            withJaCoCo()
         }
+    }.run {
+        if (shouldFail) {
+            buildAndFail()
+        } else {
+            build()
+        }
+    }
 
     private fun GradleRunner.withJaCoCo(): GradleRunner {
         javaClass.classLoader.getResourceAsStream("testkit-gradle.properties")
@@ -40,9 +39,8 @@ internal abstract class WithGradleProjectTest {
         }
     }
 
-    protected fun File.resolve(relative: String, receiver: File.() -> Unit): File =
-        resolve(relative).apply {
-            parentFile.mkdirs()
-            receiver()
-        }
+    protected fun File.resolve(relative: String, receiver: File.() -> Unit): File = resolve(relative).apply {
+        parentFile.mkdirs()
+        receiver()
+    }
 }

@@ -101,6 +101,5 @@ abstract class EasyLauncherTask @Inject constructor(
             }
     }
 
-    private fun File.getOutputFile(): File =
-        File(outputDir.asFile.get(), "${parentFile.name}/$name")
+    private fun File.getOutputFile(): File = File(outputDir.asFile.get(), "${parentFile.name}/$name")
 }
