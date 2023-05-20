@@ -9,7 +9,6 @@ indent_size = 4
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true
 ktlint_standard_property-naming = disabled
-# ktlint_standard_final-newline = fisa
 
 [{*.yml,yaml}]
 indent_size = 2
