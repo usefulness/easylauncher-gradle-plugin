@@ -39,7 +39,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                     superType { }
                     release { }
                 }
-                flavorDimensions "version"
+                flavorDimensions += "version"
                 productFlavors {
                     demo { dimension "version" }
                     full { dimension "version" }
@@ -62,7 +62,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                     superType { }
                     release { }
                 }
-                flavorDimensions "version"
+                flavorDimensions += "version"
                 productFlavors {
                     demo { dimension "version" }
                     full { dimension "version" }
@@ -90,7 +90,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                 superType { debuggable false }
                 release { }
             }
-            flavorDimensions "version"
+            flavorDimensions += "version"
             productFlavors {
                 demo { dimension "version" }
                 full { dimension "version" }
@@ -258,7 +258,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
                         //Non-debuggable, will not get any default ribbon
                     }
                 }
-                flavorDimensions "xxx"
+                flavorDimensions += "xxx"
                 productFlavors {
                     local { dimension "xxx" }
                     qa { dimension "xxx" }

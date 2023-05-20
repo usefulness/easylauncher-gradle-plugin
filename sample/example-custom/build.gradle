@@ -35,7 +35,7 @@ android {
         }
     }
 
-    flavorDimensions "environment", "different"
+    flavorDimensions = ["environment", "different"]
     productFlavors {
         local {
             dimension "environment"

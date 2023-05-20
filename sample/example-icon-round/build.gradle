@@ -12,7 +12,7 @@ android {
         }
     }
 
-    flavorDimensions "transparentPixels"
+    flavorDimensions += "transparentPixels"
     productFlavors {
         keep {
             dimension "transparentPixels"
