@@ -14,10 +14,7 @@ private val EASYLAUNCHER_DEFAULT_FONT by lazy {
         }
 }
 
-internal fun findFontFile(
-    resource: File?,
-    name: String?,
-): Font {
+internal fun findFontFile(resource: File?, name: String?): Font {
     if (resource != null) {
         if (!resource.exists()) {
             error("${resource.path} does not exits. Make sure it points at existing font resource.")

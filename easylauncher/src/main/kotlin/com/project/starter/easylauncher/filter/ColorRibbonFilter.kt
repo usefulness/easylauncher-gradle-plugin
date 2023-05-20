@@ -24,7 +24,10 @@ class ColorRibbonFilter(
 ) : EasyLauncherFilter {
 
     enum class Gravity {
-        TOP, BOTTOM, TOPLEFT, TOPRIGHT
+        TOP,
+        BOTTOM,
+        TOPLEFT,
+        TOPRIGHT,
     }
 
     enum class DrawingOption {
@@ -126,7 +129,6 @@ class ColorRibbonFilter(
     }
 
     companion object {
-        private fun calculateMaxLabelWidth(y: Int) =
-            (y * sqrt(2.0)).roundToInt()
+        private fun calculateMaxLabelWidth(y: Int) = (y * sqrt(2.0)).roundToInt()
     }
 }

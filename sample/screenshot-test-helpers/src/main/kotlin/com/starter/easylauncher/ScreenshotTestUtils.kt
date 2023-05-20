@@ -7,8 +7,8 @@ import androidx.annotation.DrawableRes
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.facebook.testing.screenshot.Screenshot
+import com.facebook.testing.screenshot.TestNameDetector
 import com.facebook.testing.screenshot.ViewHelpers
-import com.facebook.testing.screenshot.internal.TestNameDetector
 import kotlin.reflect.KClass
 import com.example.custom.adaptive.R as AdaptiveR
 
@@ -31,11 +31,12 @@ fun recordScreenshot(activityClass: KClass<out Activity>, flavor: String, @Drawa
 }
 
 private fun View.record(flavor: String) {
-    val testClassText = TestNameDetector.getTestClass().substringAfterLast('.').removeSuffix("Test")
+    val methodInfo = TestNameDetector.getTestMethodInfo().let(::checkNotNull)
+    val testClassText = methodInfo.className.substringAfterLast('.').removeSuffix("Test")
 
     Screenshot
         .snap(this)
         .setGroup(flavor)
-        .setName("${testClassText}_${TestNameDetector.getTestName()}($flavor)")
+        .setName("${testClassText}_${methodInfo.methodName}($flavor)")
         .record()
 }

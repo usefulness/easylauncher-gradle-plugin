@@ -15,8 +15,8 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.project.starter:android:0.59.0"
-        classpath "com.facebook.testing.screenshot:plugin:0.15.0"
+        classpath "com.project.starter:android:0.60.1"
+        classpath "io.github.usefulness:screenshot-testing-plugin:0.16.12"
         if (project.hasProperty("useMavenLocal")) {
             classpath "com.project.starter.local:easylauncher:+"
         } else {
@@ -61,7 +61,7 @@ subprojects {
     }
 
     pluginManager.withPlugin("com.android.application") {
-        pluginManager.apply("com.facebook.testing.screenshot")
+        pluginManager.apply("io.github.usefulness.screenshot-testing-plugin")
 
         android {
             buildFeatures {
@@ -154,7 +154,7 @@ subprojects {
     }
 
     pluginManager.withPlugin("com.android.library") {
-        pluginManager.apply("com.facebook.testing.screenshot")
+        pluginManager.apply("io.github.usefulness.screenshot-testing-plugin")
 
         android {
             testOptions.unitTests.includeAndroidResources true

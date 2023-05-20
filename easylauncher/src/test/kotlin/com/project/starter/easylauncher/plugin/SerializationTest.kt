@@ -47,8 +47,7 @@ class SerializationTest {
     }
 
     @Test
-    fun `serializes overlay filter`() =
-        test(OverlayFilter(fgFile = File("")))
+    fun `serializes overlay filter`() = test(OverlayFilter(fgFile = File("")))
 
     private fun <T : Serializable> test(input: T) {
         val output = SerializationUtils.deserialize<T>(SerializationUtils.serialize(input))
