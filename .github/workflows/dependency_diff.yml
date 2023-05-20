@@ -32,6 +32,7 @@ jobs:
         with:
           configuration: 'runtimeClasspath'
           project: 'easylauncher'
+
       - uses: peter-evans/find-comment@v2
         id: find_comment
         with:

@@ -38,8 +38,7 @@ jobs:
 
       - uses: gradle/gradle-build-action@v2
 
-      - name: Code style check
-        run: ./gradlew projectCodestyle
+      - run: ./gradlew projectCodestyle
 
       - run: ./gradlew assemble
 
@@ -110,6 +109,9 @@ jobs:
         run: |
           mkdir -p ~/.gradle
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
+        shell: bash
+
+      - run: yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
         shell: bash
 
       - uses: gradle/gradle-build-action@v2
