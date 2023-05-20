@@ -35,7 +35,7 @@ android {
         }
     }
 
-    flavorDimensions "environment", "different"
+    flavorDimensions = ["environment", "different"]
     productFlavors {
         local {
             dimension "environment"
@@ -112,6 +112,9 @@ easylauncher {
         productionAaaDebug {
             // OVERRIDE all previous filters defined for `productionAADebug` variant
             filters = orangeRibbonFilter("custom")
+        }
+        stagingAaaDebug {
+            filters = chromeLike("uses `src/staging/res`")
         }
         localBbbCanary {
             filters = chromeLike(label: "api<26", ribbonColor: "#0B3954", labelColor: "#FF6663")

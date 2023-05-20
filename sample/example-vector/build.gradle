@@ -16,7 +16,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    flavorDimensions "reportedBugs"
+    flavorDimensions += "reportedBugs"
     productFlavors {
         register("twoVectors") {
             dimension "reportedBugs"
