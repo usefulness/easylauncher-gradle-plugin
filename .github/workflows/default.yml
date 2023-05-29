@@ -61,6 +61,10 @@ jobs:
           name: jacoco-report
           path: "${{ github.workspace }}/**/build/reports/jacoco"
 
+      - run: ./gradlew publishToMavenLocal
+
+      - run: git diff --exit-code
+
   provide-agp-version-matrix:
     runs-on: ubuntu-latest
     outputs:
