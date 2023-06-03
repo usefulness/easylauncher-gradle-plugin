@@ -64,7 +64,8 @@ abstract class EasyLauncherTask @Inject constructor(
                         modifier = EasyLauncherFilter.Modifier.Round,
                     )
 
-                    is IconFile.Adaptive -> processIcon(adaptiveIcon = iconFile)
+                    is IconFile.Adaptive -> iconFile.processAdaptiveIcon()
+                    is IconFile.XmlDrawableResource -> iconFile.processDrawable()
                 }
             }
         }
@@ -78,7 +79,7 @@ abstract class EasyLauncherTask @Inject constructor(
         .associate { (key, value) -> key to value }
 
     private fun getIcons(iconNames: Map<String, IconType>): List<IconFile> {
-        log.info { "will process icons: ${iconNames.values.joinToString()}" }
+        log.info { "will process icons: ${iconNames.keys.joinToString()}" }
 
         return resourceDirectories.get()
             .filter { it.exists() }
@@ -86,7 +87,7 @@ abstract class EasyLauncherTask @Inject constructor(
                 iconNames.flatMap { (iconName, iconType) ->
                     objects.getIconFiles(parent = resDir, iconName = iconName)
                         .map { iconFile ->
-                            iconFile.asAdaptiveIcon() ?: when (iconType) {
+                            iconFile.tryParseXmlFile() ?: when (iconType) {
                                 IconType.Default -> IconFile.Raster(iconFile)
                                 IconType.Round -> IconFile.RasterRound(iconFile)
                             }
@@ -95,9 +96,9 @@ abstract class EasyLauncherTask @Inject constructor(
             }
     }
 
-    private fun processIcon(adaptiveIcon: IconFile.Adaptive) {
+    private fun IconFile.Adaptive.processAdaptiveIcon() {
         resourceDirectories.get().forEach { resDir ->
-            val icons = objects.getIconFiles(parent = resDir, iconName = adaptiveIcon.foreground)
+            val icons = objects.getIconFiles(parent = resDir, iconName = foreground)
             icons.forEach { iconFile ->
                 val outputFile = iconFile.getOutputFile()
                 if (iconFile.extension == "xml") {
@@ -111,6 +112,11 @@ abstract class EasyLauncherTask @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun IconFile.XmlDrawableResource.processDrawable() {
+        val outputFile = file.getOutputFile()
+        file.transformXml(outputFile, minSdkVersion.get(), filters.get())
     }
 
     private fun File.getOutputFile(): File = File(outputDir.asFile.get(), "${parentFile.name}/$name")

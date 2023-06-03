@@ -1,6 +1,8 @@
 package com.project.starter.easylauncher.plugin
 
+import com.project.starter.easylauncher.plugin.models.IconFile
 import com.project.starter.easylauncher.plugin.models.IconType
+import com.project.starter.easylauncher.plugin.utils.vectorFile
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -210,11 +212,21 @@ internal class XmlReaderTest {
             """.trimIndent(),
         )
 
-        val icon = adaptiveIcon.asAdaptiveIcon()
+        val icon = adaptiveIcon.tryParseXmlFile() as IconFile.Adaptive
 
-        assertThat(icon?.background).isEqualTo("@drawable/ic_launcher_background")
-        assertThat(icon?.foreground).isEqualTo("@mipmap/ic_launcher_foreground")
-        assertThat(icon?.file?.path).isEqualTo(adaptiveIcon.path)
+        assertThat(icon.background).isEqualTo("@drawable/ic_launcher_background")
+        assertThat(icon.foreground).isEqualTo("@mipmap/ic_launcher_foreground")
+        assertThat(icon.file.path).isEqualTo(adaptiveIcon.path)
+    }
+
+    @Test
+    fun `parses drawable resource`() {
+        val drawableResource = tempDir.resolve("ic_launcher.xml")
+        drawableResource.writeText(vectorFile())
+
+        val icon = drawableResource.tryParseXmlFile()
+
+        assertThat(icon).isEqualTo(IconFile.XmlDrawableResource(file = drawableResource))
     }
 
     @Test
@@ -231,7 +243,7 @@ internal class XmlReaderTest {
             """.trimIndent(),
         )
 
-        val icon = adaptiveIcon.asAdaptiveIcon()
+        val icon = adaptiveIcon.tryParseXmlFile()
 
         assertThat(icon).isNull()
     }

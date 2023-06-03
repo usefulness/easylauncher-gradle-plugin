@@ -56,7 +56,6 @@ internal class IconTransformerTest {
             |    <item android:drawable="@drawable/chromelikefilter_2_output" />
             |
             |    <item android:drawable="@drawable/overlayfilter_3_output" />
-            |
             |</layer-list>
             |
             """.trimMargin(),
@@ -91,7 +90,6 @@ internal class IconTransformerTest {
             |    <item android:drawable="@drawable/chromelikefilter_2_output" />
             |
             |    <item android:drawable="@drawable/overlayfilter_3_output" />
-            |
             |</layer-list>
             |
             """.trimMargin(),
