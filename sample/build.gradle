@@ -87,10 +87,7 @@ subprojects {
             lintOptions {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
-                // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
-                disable("IconLauncherShape")
-
-                if (agpVersion.startsWith("7.4") || agpVersion.startsWith("8")) {
+                if (agpVersion == "" || agpVersion.startsWith("7.4") || agpVersion.startsWith("8")) {
                     disable("MonochromeLauncherIcon")
                 }
 
@@ -175,10 +172,7 @@ subprojects {
             lintOptions {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
-                // https://github.com/usefulness/easylauncher-gradle-plugin/issues/114
-                disable("IconLauncherShape")
-
-                if (agpVersion.startsWith("7.4") || agpVersion.startsWith("8")) {
+                if (agpVersion == "" || agpVersion.startsWith("7.4") || agpVersion.startsWith("8")) {
                     disable("MonochromeLauncherIcon")
                 }
 

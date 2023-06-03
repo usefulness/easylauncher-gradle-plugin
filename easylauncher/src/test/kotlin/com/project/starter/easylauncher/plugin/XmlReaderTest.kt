@@ -1,5 +1,6 @@
 package com.project.starter.easylauncher.plugin
 
+import com.project.starter.easylauncher.plugin.models.IconType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -35,7 +36,7 @@ internal class XmlReaderTest {
 
         val icon = manifest.getLauncherIcons()
 
-        assertThat(icon).containsExactly("@drawable/ic_launcher")
+        assertThat(icon).isEqualTo(mapOf("@drawable/ic_launcher" to IconType.Default))
     }
 
     @Test
@@ -91,7 +92,12 @@ internal class XmlReaderTest {
 
         val icon = manifest.getLauncherIcons()
 
-        assertThat(icon).containsExactly("@drawable/ic_launcher", "@drawable/ic_launcher_round")
+        assertThat(icon).isEqualTo(
+            mapOf(
+                "@drawable/ic_launcher" to IconType.Default,
+                "@drawable/ic_launcher_round" to IconType.Round,
+            ),
+        )
     }
 
     @Test
@@ -120,7 +126,7 @@ internal class XmlReaderTest {
 
         val icon = manifest.getLauncherIcons()
 
-        assertThat(icon).containsExactly("@drawable/ic_launcher")
+        assertThat(icon).containsEntry("@drawable/ic_launcher", IconType.Round)
     }
 
     @Test
@@ -149,7 +155,12 @@ internal class XmlReaderTest {
 
         val icon = manifest.getLauncherIcons(mapOf("has_placeholder" to "@mipmap/ic_launcher"))
 
-        assertThat(icon).containsExactly("@mipmap/ic_launcher", "\${does_not_have_placeholder}")
+        assertThat(icon).isEqualTo(
+            mapOf(
+                "@mipmap/ic_launcher" to IconType.Default,
+                "\${does_not_have_placeholder}" to IconType.Round,
+            ),
+        )
     }
 
     @Test
@@ -177,7 +188,12 @@ internal class XmlReaderTest {
 
         val icon = manifest.getLauncherIcons(mapOf("cat_image" to "cat", "dog_image" to "dog"))
 
-        assertThat(icon).containsExactly("@drawable/cat", "@mipmap/dog")
+        assertThat(icon).isEqualTo(
+            mapOf(
+                "@drawable/cat" to IconType.Default,
+                "@mipmap/dog" to IconType.Round,
+            ),
+        )
     }
 
     @Test

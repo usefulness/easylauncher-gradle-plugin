@@ -2,6 +2,7 @@ package com.project.starter.easylauncher.plugin
 
 import com.project.starter.easylauncher.filter.Canvas
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
+import com.project.starter.easylauncher.plugin.internal.lowercase
 import com.project.starter.easylauncher.plugin.models.toSize
 import groovy.xml.XmlSlurper
 import java.awt.image.BufferedImage
@@ -9,11 +10,11 @@ import java.io.File
 import javax.imageio.ImageIO
 import kotlin.math.roundToInt
 
-internal fun File.transformImage(outputFile: File, filters: List<EasyLauncherFilter>, adaptive: Boolean) {
+internal fun File.transformImage(outputFile: File, filters: List<EasyLauncherFilter>, modifier: EasyLauncherFilter.Modifier?) {
     val image = ImageIO.read(this) ?: error("Unsupported image format at $path")
-    filters.forEach {
+    filters.forEach { filter ->
         val canvas = Canvas(image, adaptive = false)
-        it.apply(canvas, adaptive = adaptive)
+        filter.apply(canvas, modifier = modifier)
     }
     outputFile.parentFile.mkdirs()
     ImageIO.write(image, extension, outputFile)
@@ -37,7 +38,10 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
                 BufferedImage.TYPE_INT_ARGB,
             )
             val canvas = Canvas(overlay, adaptive = true)
-            filter.apply(canvas, adaptive = true)
+            filter.apply(
+                canvas = canvas,
+                modifier = EasyLauncherFilter.Modifier.Adaptive,
+            )
 
             val qualifiedRoot = drawableRoot.parentFile.resolve("${drawableRoot.normalizedName}-$qualifier")
             val qualifiedOverlayFile = qualifiedRoot.resolve("$resourceName.png").also { it.mkdirs() }
@@ -85,7 +89,6 @@ internal const val ADAPTIVE_CONTENT_SCALE = 56 / 108f
 
 internal const val ANDROID_OREO = 26
 
-@Suppress("MagicNumber")
 private val densities = mapOf(
     "ldpi" to 0.75,
     "mdpi" to 1.00,

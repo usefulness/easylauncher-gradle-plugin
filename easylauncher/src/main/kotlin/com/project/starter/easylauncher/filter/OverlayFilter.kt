@@ -7,19 +7,18 @@ import java.io.IOException
 import javax.imageio.ImageIO
 import kotlin.math.roundToInt
 
-@Suppress("MagicNumber")
 class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
 
     private val logger
         get() = LoggerFactory.getLogger(this::class.java)
 
-    override fun apply(canvas: Canvas, adaptive: Boolean) {
+    override fun apply(canvas: Canvas, modifier: EasyLauncherFilter.Modifier?) {
         try {
             val fgImage = ImageIO.read(fgFile)
             val fgWidth = fgImage.getWidth(null).toFloat()
             val fgHeight = fgImage.getHeight(null).toFloat()
 
-            val scale = if (adaptive) ADAPTIVE_SCALE else 1f
+            val scale = if (modifier == EasyLauncherFilter.Modifier.Adaptive) ADAPTIVE_SCALE else 1f
             val imageScale = scale * (canvas.width / fgWidth).coerceAtMost(canvas.height / fgHeight)
             val scaledWidth = (fgWidth * imageScale).roundToInt()
             val scaledHeight = (fgHeight * imageScale).roundToInt()
@@ -39,5 +38,10 @@ class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
             logger.error("Failed to load overlay '${fgFile.absolutePath}'.", e)
             return
         }
+    }
+
+    companion object {
+
+        private const val serialVersionUID: Long = 1
     }
 }

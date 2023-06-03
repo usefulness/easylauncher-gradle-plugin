@@ -4,6 +4,8 @@ import com.android.build.api.AndroidPluginVersion
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.BaseExtension
+import com.project.starter.easylauncher.plugin.internal.replaceFirstChar
+import com.project.starter.easylauncher.plugin.internal.titleCase
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.File
@@ -106,7 +108,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                         }
                         .flatten()
 
-                    val capitalisedVariantName = variant.name.replaceFirstChar(Char::titlecase)
+                    val capitalisedVariantName = variant.name.replaceFirstChar(Char::titleCase)
                     val task = project.tasks.register("easylauncher$capitalisedVariantName", EasyLauncherTask::class.java) {
                         it.manifestFiles.set(manifests)
                         it.manifestPlaceholders.set(variant.manifestPlaceholders)

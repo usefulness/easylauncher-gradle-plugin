@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.osacky.doctor)
 }
 
-def targetJavaVersion = JavaVersion.VERSION_1_8
+def targetJavaVersion = JavaVersion.VERSION_11
 tasks.withType(JavaCompile).configureEach {
     options.release.set(targetJavaVersion.majorVersion.toInteger())
 }

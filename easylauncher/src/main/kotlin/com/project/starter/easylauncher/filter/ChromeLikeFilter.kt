@@ -33,13 +33,11 @@ class ChromeLikeFilter(
     private val _overlayHeight get() = overlayHeight ?: OVERLAY_HEIGHT
     private val _gravity get() = gravity ?: Gravity.BOTTOM
 
-    override fun apply(canvas: Canvas, adaptive: Boolean) {
-        canvas.use { graphics ->
-            apply(canvas, graphics, adaptive)
-        }
+    override fun apply(canvas: Canvas, modifier: EasyLauncherFilter.Modifier?) = canvas.use { graphics ->
+        apply(canvas, graphics, modifier)
     }
 
-    private fun apply(canvas: Canvas, graphics: Graphics2D, adaptive: Boolean) {
+    private fun apply(canvas: Canvas, graphics: Graphics2D, modifier: EasyLauncherFilter.Modifier?) {
         val frc = FontRenderContext(graphics.transform, true, true)
         // calculate the rectangle where the label is rendered
         val backgroundHeight = (canvas.height * _overlayHeight).roundToInt()
@@ -53,7 +51,7 @@ class ChromeLikeFilter(
 
         // draw the ribbon
         graphics.color = _ribbonColor
-        if (!adaptive) {
+        if (modifier != EasyLauncherFilter.Modifier.Adaptive) {
             graphics.composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1f)
         }
         when (_gravity) {
@@ -63,6 +61,7 @@ class ChromeLikeFilter(
                 canvas.fullWidth,
                 canvas.paddingTop + backgroundHeight,
             )
+
             Gravity.BOTTOM -> graphics.fillRect(
                 -canvas.paddingLeft,
                 canvas.height - backgroundHeight,
@@ -83,6 +82,7 @@ class ChromeLikeFilter(
                     canvas.width / 2 - textBounds.width.toInt() / 2,
                     backgroundHeight - fm.descent - (labelPadding ?: 0),
                 )
+
             Gravity.BOTTOM ->
                 graphics.drawString(
                     label,
