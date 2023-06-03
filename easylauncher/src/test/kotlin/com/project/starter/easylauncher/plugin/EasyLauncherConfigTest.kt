@@ -11,6 +11,7 @@ import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.awt.GraphicsEnvironment
+import java.io.File
 
 internal class EasyLauncherConfigTest : WithGradleProjectTest() {
 
@@ -22,6 +23,9 @@ internal class EasyLauncherConfigTest : WithGradleProjectTest() {
             resolve("src/main/AndroidManifest.xml") { writeText(androidManifest()) }
             resolve("src/main/res/mipmap-v26/ic_launcher.xml") { writeText(adaptiveIcon()) }
             resolve("src/main/res/drawable/ic_foreground.xml") { writeText(vectorFile()) }
+            resolve("src/main/res/mipmap/ic_launcher_round.png") {
+                writeBytes(File("src/test/resources/beta.png").readBytes())
+            }
         }
     }
 

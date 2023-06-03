@@ -24,7 +24,13 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
             moduleRoot = resolve("app") {
                 resolve("src/main/AndroidManifest.xml") { writeText(androidManifest()) }
                 resolve("src/main/res/mipmap-v26/ic_launcher.xml") { writeText(adaptiveIcon()) }
+                resolve("src/main/res/mipmap/ic_launcher.png") {
+                    writeBytes(File("src/test/resources/beta.png").readBytes())
+                }
                 resolve("src/main/res/drawable/ic_foreground.xml") { writeText(vectorFile()) }
+                resolve("src/main/res/mipmap/ic_launcher_round.png") {
+                    writeBytes(File("src/test/resources/beta.png").readBytes())
+                }
             }
         }
     }
@@ -236,7 +242,6 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
     }
 
     @Test
-    @Suppress("LongMethod")
     fun `generates proper tasks`() {
         moduleRoot.resolve("build.gradle").buildScript(
             androidBlock = {

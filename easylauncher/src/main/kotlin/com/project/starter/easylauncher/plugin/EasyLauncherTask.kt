@@ -1,7 +1,8 @@
 package com.project.starter.easylauncher.plugin
 
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
-import com.project.starter.easylauncher.plugin.models.AdaptiveIcon
+import com.project.starter.easylauncher.plugin.models.IconFile
+import com.project.starter.easylauncher.plugin.models.IconType
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.model.ObjectFactory
@@ -46,16 +47,24 @@ abstract class EasyLauncherTask @Inject constructor(
     @TaskAction
     fun run() {
         val taskExecutionTime = measureTimeMillis {
-            val iconNames = customIconNames.get().takeIf { it.isNotEmpty() } ?: getLauncherIconNames()
-            val icons = getIcons(iconNames)
+            val customIcons = customIconNames.get().takeIf { it.isNotEmpty() }?.associateWith { IconType.Default }
+            val icons = getIcons(customIcons ?: getLauncherIconNames())
 
             icons.forEach { iconFile ->
-                val adaptiveIcon = iconFile.asAdaptiveIcon()
-                if (adaptiveIcon == null) {
-                    val outputFile = iconFile.getOutputFile()
-                    iconFile.transformImage(outputFile, filters.get(), adaptive = false)
-                } else {
-                    processIcon(adaptiveIcon)
+                when (iconFile) {
+                    is IconFile.Raster -> iconFile.file.transformImage(
+                        outputFile = iconFile.file.getOutputFile(),
+                        filters = filters.get(),
+                        modifier = null,
+                    )
+
+                    is IconFile.RasterRound -> iconFile.file.transformImage(
+                        outputFile = iconFile.file.getOutputFile(),
+                        filters = filters.get(),
+                        modifier = EasyLauncherFilter.Modifier.Round,
+                    )
+
+                    is IconFile.Adaptive -> processIcon(adaptiveIcon = iconFile)
                 }
             }
         }
@@ -63,42 +72,45 @@ abstract class EasyLauncherTask @Inject constructor(
         log.info { "task finished in $taskExecutionTime ms" }
     }
 
-    private fun getLauncherIconNames(): Set<String> {
-        return manifestFiles
-            .get()
-            .filter { it.exists() }
-            .map { it.getLauncherIcons(manifestPlaceholders.get()) }
-            .flatten()
-            .toSet()
-    }
+    private fun getLauncherIconNames() = manifestFiles.get()
+        .filter { it.exists() }
+        .flatMap { it.getLauncherIcons(manifestPlaceholders.get()).entries }
+        .associate { (key, value) -> key to value }
 
-    private fun getIcons(iconNames: Set<String>): List<File> {
-        log.info { "will process icons: ${iconNames.joinToString()}" }
+    private fun getIcons(iconNames: Map<String, IconType>): List<IconFile> {
+        log.info { "will process icons: ${iconNames.values.joinToString()}" }
 
-        return resourceDirectories
-            .get()
+        return resourceDirectories.get()
             .filter { it.exists() }
             .flatMap { resDir ->
-                iconNames.flatMap {
-                    objects.getIconFiles(parent = resDir, iconName = it)
+                iconNames.flatMap { (iconName, iconType) ->
+                    objects.getIconFiles(parent = resDir, iconName = iconName)
+                        .map { iconFile ->
+                            iconFile.asAdaptiveIcon() ?: when (iconType) {
+                                IconType.Default -> IconFile.Raster(iconFile)
+                                IconType.Round -> IconFile.RasterRound(iconFile)
+                            }
+                        }
                 }
             }
     }
 
-    private fun processIcon(adaptiveIcon: AdaptiveIcon) {
-        resourceDirectories
-            .get()
-            .forEach { resDir ->
-                val icons = objects.getIconFiles(parent = resDir, iconName = adaptiveIcon.foreground)
-                icons.forEach { iconFile ->
-                    val outputFile = iconFile.getOutputFile()
-                    if (iconFile.extension == "xml") {
-                        iconFile.transformXml(outputFile, minSdkVersion.get(), filters.get())
-                    } else {
-                        iconFile.transformImage(outputFile, filters.get(), adaptive = true)
-                    }
+    private fun processIcon(adaptiveIcon: IconFile.Adaptive) {
+        resourceDirectories.get().forEach { resDir ->
+            val icons = objects.getIconFiles(parent = resDir, iconName = adaptiveIcon.foreground)
+            icons.forEach { iconFile ->
+                val outputFile = iconFile.getOutputFile()
+                if (iconFile.extension == "xml") {
+                    iconFile.transformXml(outputFile, minSdkVersion.get(), filters.get())
+                } else {
+                    iconFile.transformImage(
+                        outputFile = outputFile,
+                        filters = filters.get(),
+                        modifier = EasyLauncherFilter.Modifier.Adaptive,
+                    )
                 }
             }
+        }
     }
 
     private fun File.getOutputFile(): File = File(outputDir.asFile.get(), "${parentFile.name}/$name")

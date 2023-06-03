@@ -1,10 +1,9 @@
 package com.project.starter.easylauncher.plugin.utils
 
-import org.intellij.lang.annotations.Language
 import java.io.File
 
 fun File.buildScript(androidBlock: () -> String = { "" }, easylauncherBlock: () -> String = { "" }) {
-    @Language("groovy")
+    // language=groovy
     val buildScript =
         """
         plugins {
@@ -40,7 +39,7 @@ fun File.buildScript(androidBlock: () -> String = { "" }, easylauncherBlock: () 
 }
 
 fun File.libraryBuildscript(androidBlock: () -> String = { "" }, easylauncherBlock: () -> String = { "" }) {
-    @Language("groovy")
+    // language=groovy
     val buildScript =
         """
         plugins {
@@ -105,6 +104,7 @@ internal fun androidManifest() = """
     
         <application
             android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
             android:label="Test"
             />
     </manifest>

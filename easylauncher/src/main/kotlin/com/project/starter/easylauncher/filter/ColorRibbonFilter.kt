@@ -1,5 +1,6 @@
 package com.project.starter.easylauncher.filter
 
+import com.project.starter.easylauncher.filter.EasyLauncherFilter.Modifier
 import com.project.starter.easylauncher.plugin.toColor
 import java.awt.AlphaComposite
 import java.awt.Color
@@ -11,7 +12,6 @@ import java.io.File
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
-@Suppress("MagicNumber")
 class ColorRibbonFilter(
     private val label: String,
     private val ribbonColor: String? = null,
@@ -39,14 +39,16 @@ class ColorRibbonFilter(
     private val _ribbonColor get() = ribbonColor?.toColor() ?: Color(0, 0x72, 0, 0x99)
     private val _labelColor get() = labelColor?.toColor() ?: Color.WHITE
 
-    override fun apply(canvas: Canvas, adaptive: Boolean) {
-        canvas.use { graphics ->
-            apply(canvas, graphics, adaptive)
-        }
+    override fun apply(canvas: Canvas, modifier: Modifier?) = canvas.use { graphics ->
+        apply(
+            canvas = canvas,
+            graphics = graphics,
+            modifier = modifier,
+        )
     }
 
-    private fun apply(canvas: Canvas, graphics: Graphics2D, adaptive: Boolean) {
-        val applyLargePadding = adaptive || drawingOptions.contains(DrawingOption.ADD_EXTRA_PADDING)
+    private fun apply(canvas: Canvas, graphics: Graphics2D, modifier: Modifier?) {
+        val applyLargePadding = modifier == Modifier.Adaptive || drawingOptions.contains(DrawingOption.ADD_EXTRA_PADDING)
 
         // rotate canvas if needed
         if (_gravity == Gravity.TOPLEFT) {
@@ -73,39 +75,32 @@ class ColorRibbonFilter(
 
         // draw the ribbon
         graphics.color = _ribbonColor
-        if (drawingOptions.contains(DrawingOption.IGNORE_TRANSPARENT_PIXELS) && !adaptive) {
+
+        val ignoresTransparentPixels = when (modifier) {
+            Modifier.Adaptive -> false
+            Modifier.Round -> true
+            null -> drawingOptions.contains(DrawingOption.IGNORE_TRANSPARENT_PIXELS)
+        }
+        if (ignoresTransparentPixels) {
             graphics.composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1f)
         }
 
-        if (_gravity == Gravity.TOP || _gravity == Gravity.BOTTOM) {
-            graphics.fillRect(-canvas.paddingLeft, yGravity, canvas.fullWidth, labelHeight)
-        } else if (_gravity == Gravity.TOPRIGHT) {
-            graphics.fillRect(-canvas.paddingLeft, yGravity, canvas.fullWidth * 2, labelHeight)
-        } else {
-            graphics.fillRect(-canvas.fullWidth, yGravity, canvas.fullWidth * 2, labelHeight)
+        when (_gravity) {
+            Gravity.TOP, Gravity.BOTTOM -> graphics.fillRect(-canvas.paddingLeft, yGravity, canvas.fullWidth, labelHeight)
+            Gravity.TOPRIGHT -> graphics.fillRect(-canvas.paddingLeft, yGravity, canvas.fullWidth * 2, labelHeight)
+            else -> graphics.fillRect(-canvas.fullWidth, yGravity, canvas.fullWidth * 2, labelHeight)
         }
         // draw the label
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         graphics.color = _labelColor
         val fm = graphics.fontMetrics
-        if (_gravity == Gravity.TOP || _gravity == Gravity.BOTTOM) {
-            graphics.drawString(
-                label,
-                canvas.width / 2 - textBounds.width.toInt() / 2,
-                yGravity + fm.ascent,
-            )
-        } else if (_gravity == Gravity.TOPRIGHT) {
-            graphics.drawString(
-                label,
-                canvas.width - textBounds.width.toInt() / 2,
-                yGravity + fm.ascent,
-            )
-        } else {
-            graphics.drawString(
-                label,
-                (-textBounds.width).toInt() / 2,
-                yGravity + fm.ascent,
-            )
+        when (_gravity) {
+            Gravity.TOP,
+            Gravity.BOTTOM,
+            -> graphics.drawString(label, canvas.width / 2 - textBounds.width.toInt() / 2, yGravity + fm.ascent)
+
+            Gravity.TOPRIGHT -> graphics.drawString(label, canvas.width - textBounds.width.toInt() / 2, yGravity + fm.ascent)
+            else -> graphics.drawString(label, (-textBounds.width).toInt() / 2, yGravity + fm.ascent)
         }
     }
 
@@ -129,6 +124,7 @@ class ColorRibbonFilter(
     }
 
     companion object {
+        private const val serialVersionUID: Long = 1
         private fun calculateMaxLabelWidth(y: Int) = (y * sqrt(2.0)).roundToInt()
     }
 }

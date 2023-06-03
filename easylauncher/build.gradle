@@ -40,11 +40,10 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
     pluginClasspath.from(configurations.testRuntimeDependencies)
 }
 
-
 tasks.withType(KotlinCompile).configureEach {
     kotlinOptions {
-        apiVersion = "1.5"
-        languageVersion = "1.5"
+        apiVersion = "1.4"
+        languageVersion = "1.4"
     }
 }
 kotlin {

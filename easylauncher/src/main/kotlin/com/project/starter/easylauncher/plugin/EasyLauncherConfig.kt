@@ -4,6 +4,7 @@ import com.project.starter.easylauncher.filter.ChromeLikeFilter
 import com.project.starter.easylauncher.filter.ColorRibbonFilter
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import com.project.starter.easylauncher.filter.OverlayFilter
+import com.project.starter.easylauncher.plugin.internal.uppercase
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
@@ -15,7 +16,6 @@ import java.io.Serializable
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-@Suppress("TooManyFunctions", "MagicNumber")
 open class EasyLauncherConfig @Inject constructor(
     val name: String,
     objectFactory: ObjectFactory,
@@ -87,10 +87,12 @@ open class EasyLauncherConfig @Inject constructor(
                 fontName = null
                 font = fontRaw
             }
+
             is String -> {
                 fontName = fontRaw
                 font = null
             }
+
             else -> {
                 fontName = properties["fontName"]?.toString()
                 font = null
@@ -190,10 +192,12 @@ open class EasyLauncherConfig @Inject constructor(
                 fontName = null
                 font = fontRaw
             }
+
             is String -> {
                 fontName = fontRaw
                 font = null
             }
+
             else -> {
                 fontName = properties["fontName"]?.toString()
                 font = null
@@ -232,12 +236,14 @@ internal fun String.toColor(): Color {
 
             Color(red, green, blue, alpha)
         }
+
         "#RRGGBB".length -> {
             val red = (value shr 16 and 0xFF).toInt()
             val green = (value shr 8 and 0xFF).toInt()
             val blue = (value and 0xFF).toInt()
             Color(red, green, blue)
         }
+
         else -> Color.decode(this)
     }
 }
