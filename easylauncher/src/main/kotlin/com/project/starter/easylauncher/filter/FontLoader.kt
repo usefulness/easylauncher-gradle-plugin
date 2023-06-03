@@ -10,7 +10,7 @@ private val EASYLAUNCHER_DEFAULT_FONT by lazy {
         .getResourceAsStream("Roboto-Regular.ttf")
         .use {
             runCatching { Font.createFont(Font.TRUETYPE_FONT, it) }
-                .getOrElse { error("Couldn't load bundled font. Visit issue #201 for more details") }
+                .getOrElse { throw IllegalStateException("Couldn't load bundled font. Visit issue #201 for more details", it) }
         }
 }
 
