@@ -50,10 +50,9 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
 
         resourceName
     }
-        .joinToString(separator = "\n") {
+        .joinToString(separator = "\n\n") {
             """
             |    <item android:drawable="@${outputFile.parentFile.normalizedName}/$it" />
-            |
             """.trimMargin()
         }
     val versionSuffix = if (minSdkVersion >= ANDROID_OREO) "" else "-v26"
@@ -65,7 +64,7 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
         |<?xml version="1.0" encoding="utf-8"?>
         |<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
         |
-        |    <item android:drawable="@drawable/easy_$nameWithoutExtension" />
+        |    <item android:drawable="@${drawableRoot.normalizedName}/easy_$nameWithoutExtension" />
         |
         |$layers
         |</layer-list>

@@ -4,7 +4,7 @@ import java.io.Serializable
 
 interface EasyLauncherFilter : Serializable {
 
-    fun apply(canvas: Canvas, modifier: Modifier? = null)
+    fun apply(canvas: Canvas, modifier: Modifier?)
 
     enum class Modifier {
         Adaptive,

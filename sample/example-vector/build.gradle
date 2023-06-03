@@ -56,6 +56,9 @@ android {
         register("usingResValues") {
             dimension "reportedBugs"
         }
+        register("customDrawable") {
+            dimension "reportedBugs"
+        }
     }
 }
 
@@ -136,8 +139,12 @@ easylauncher {
                     chromeLike(label: "aaa"),
                     overlayFilter(file("launcherOverlay/beta.png"))
         }
-        usingResValues {
+        register("usingResValues") {
             filters chromeLike(label: "res-values", ribbonColor: "#6600CC", labelColor: "#FFFFFF", position: "bottom")
+        }
+        register("customDrawable") {
+            iconNames = ["@mipmap/ic_launcher"]
+            filters chromeLike(label: "HEART")
         }
     }
 }

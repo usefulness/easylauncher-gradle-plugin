@@ -23,7 +23,7 @@ private val regex by lazy { "\\\$\\{([^{}]*)}".toRegex() }
 private fun String.applyPlaceholders(manifestPlaceholders: Map<String, Any>): String =
     replace(regex) { manifestPlaceholders[it.groups[1]?.value]?.toString() ?: it.value }
 
-internal fun File.asAdaptiveIcon(): IconFile.Adaptive? {
+internal fun File.tryParseXmlFile(): IconFile? {
     if (extension != "xml") {
         return null
     }
@@ -41,7 +41,7 @@ internal fun File.asAdaptiveIcon(): IconFile.Adaptive? {
             foreground = foregroundDrawable,
         )
     } else {
-        null
+        IconFile.XmlDrawableResource(file = this)
     }
 }
 
