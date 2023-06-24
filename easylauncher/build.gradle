@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.starter.library.kotlin)
     alias(libs.plugins.gradle.publishplugin)
     alias(libs.plugins.droidsonroids.jacocotestkit)
+    alias(libs.plugins.kotlinx.binarycompatibility)
 }
 
 tasks.withType(Test).configureEach {
@@ -47,7 +48,7 @@ tasks.withType(KotlinCompile).configureEach {
     }
 }
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(20)
 }
 
 dependencies {

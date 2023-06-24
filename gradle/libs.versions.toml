@@ -1,5 +1,5 @@
 [versions]
-gradle-starter = "0.60.1"
+gradle-starter = "0.61.1"
 gradle-gradlepublish = "1.2.0"
 gradle-doctor = "0.8.1"
 google-agp = "8.0.2"
@@ -7,7 +7,9 @@ gradle-jacocotestkit = "1.0.12"
 mavencentral-junit = "5.9.3"
 mavencentral-assertj = "3.24.2"
 mavencentral-apachecommons = "3.12.0"
-mavencentral-usefulnesswebp = "0.2.1"
+mavencentral-usefulnesswebp = "0.3.1"
+maven-binarycompatiblity = "0.13.2"
+maven-dokka = "1.8.20"
 
 [libraries]
 agp-gradle = { module = "com.android.tools.build:gradle", version.ref = "google-agp" }
@@ -16,6 +18,7 @@ junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", vers
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "mavencentral-assertj" }
 apache-commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "mavencentral-apachecommons" }
 usefulness-webp = { module = "com.github.usefulness:webp-imageio", version.ref = "mavencentral-usefulnesswebp" }
+jetbrains-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "maven-dokka" }
 
 [plugins]
 gradle-publishplugin = { id = "com.gradle.plugin-publish", version.ref = "gradle-gradlepublish" }
@@ -24,3 +27,4 @@ starter-config = { id = "com.starter.config", version.ref = "gradle-starter" }
 starter-versioning = { id = "com.starter.versioning", version.ref = "gradle-starter" }
 starter-library-kotlin = { id = "com.starter.library.kotlin", version.ref = "gradle-starter" }
 osacky-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
+kotlinx-binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "maven-binarycompatiblity" }

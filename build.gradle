@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.starter.versioning)
     alias(libs.plugins.osacky.doctor)
     alias(libs.plugins.starter.library.kotlin) apply false
+    alias(libs.plugins.kotlinx.binarycompatibility) apply(false)
 }
 
 commonConfig {
@@ -16,7 +17,7 @@ allprojects {
         def kotlinVersion = KotlinPluginWrapperKt.getKotlinPluginVersion(project)
         def agp = libs.agp.gradle.get().module
         def agpVersion = libs.versions.google.agp.get()
-        configurations.configureEach {
+        configurations.matching { it.name != "detekt" }.configureEach {
             resolutionStrategy.eachDependency {
                 if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith("kotlin")) {
                     useVersion kotlinVersion
