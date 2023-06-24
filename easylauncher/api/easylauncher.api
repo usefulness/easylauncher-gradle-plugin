@@ -1,0 +1,179 @@
+public final class com/project/starter/easylauncher/filter/Canvas {
+	public fun <init> (IIIIIILjava/awt/Graphics2D;)V
+	public final fun getFullHeight ()I
+	public final fun getFullWidth ()I
+	public final fun getHeight ()I
+	public final fun getPaddingBottom ()I
+	public final fun getPaddingLeft ()I
+	public final fun getPaddingRight ()I
+	public final fun getPaddingTop ()I
+	public final fun getWidth ()I
+}
+
+public final class com/project/starter/easylauncher/filter/CanvasKt {
+	public static final fun Canvas (Ljava/awt/image/BufferedImage;Z)Lcom/project/starter/easylauncher/filter/Canvas;
+	public static final fun rotate (Lcom/project/starter/easylauncher/filter/Canvas;Ljava/awt/Graphics2D;Ljava/lang/Number;Ljava/lang/Number;Ljava/lang/Number;)V
+}
+
+public final class com/project/starter/easylauncher/filter/ChromeLikeFilter : com/project/starter/easylauncher/filter/EasyLauncherFilter {
+	public static final field Companion Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Float;Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;Ljava/lang/Float;Ljava/lang/String;Ljava/io/File;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Float;Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;Ljava/lang/Float;Ljava/lang/String;Ljava/io/File;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun apply (Lcom/project/starter/easylauncher/filter/Canvas;Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;)V
+}
+
+public final class com/project/starter/easylauncher/filter/ChromeLikeFilter$Companion {
+}
+
+public final class com/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity : java/lang/Enum {
+	public static final field BOTTOM Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;
+	public static final field TOP Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;
+	public static fun valueOf (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;
+	public static fun values ()[Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;
+}
+
+public final class com/project/starter/easylauncher/filter/ColorRibbonFilter : com/project/starter/easylauncher/filter/EasyLauncherFilter {
+	public static final field Companion Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;Ljava/lang/Float;Ljava/lang/String;Ljava/io/File;Ljava/util/Set;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;Ljava/lang/Float;Ljava/lang/String;Ljava/io/File;Ljava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun apply (Lcom/project/starter/easylauncher/filter/Canvas;Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;)V
+}
+
+public final class com/project/starter/easylauncher/filter/ColorRibbonFilter$Companion {
+}
+
+public final class com/project/starter/easylauncher/filter/ColorRibbonFilter$DrawingOption : java/lang/Enum {
+	public static final field ADD_EXTRA_PADDING Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$DrawingOption;
+	public static final field IGNORE_TRANSPARENT_PIXELS Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$DrawingOption;
+	public static fun valueOf (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$DrawingOption;
+	public static fun values ()[Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$DrawingOption;
+}
+
+public final class com/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity : java/lang/Enum {
+	public static final field BOTTOM Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;
+	public static final field TOP Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;
+	public static final field TOPLEFT Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;
+	public static final field TOPRIGHT Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;
+	public static fun valueOf (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;
+	public static fun values ()[Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;
+}
+
+public abstract interface class com/project/starter/easylauncher/filter/EasyLauncherFilter : java/io/Serializable {
+	public abstract fun apply (Lcom/project/starter/easylauncher/filter/Canvas;Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;)V
+}
+
+public final class com/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier : java/lang/Enum {
+	public static final field Adaptive Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;
+	public static final field Round Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;
+	public static fun valueOf (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;
+	public static fun values ()[Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;
+}
+
+public final class com/project/starter/easylauncher/filter/OverlayFilter : com/project/starter/easylauncher/filter/EasyLauncherFilter {
+	public static final field Companion Lcom/project/starter/easylauncher/filter/OverlayFilter$Companion;
+	public fun <init> (Ljava/io/File;)V
+	public fun apply (Lcom/project/starter/easylauncher/filter/Canvas;Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;)V
+}
+
+public final class com/project/starter/easylauncher/filter/OverlayFilter$Companion {
+}
+
+public class com/project/starter/easylauncher/plugin/EasyLauncherConfig : java/io/Serializable {
+	public static final field Companion Lcom/project/starter/easylauncher/plugin/EasyLauncherConfig$Companion;
+	public fun <init> (Ljava/lang/String;Lorg/gradle/api/model/ObjectFactory;)V
+	public final fun blueRibbonFilter ()Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun blueRibbonFilter (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public static synthetic fun blueRibbonFilter$default (Lcom/project/starter/easylauncher/plugin/EasyLauncherConfig;Ljava/lang/String;ILjava/lang/Object;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun chromeLike ()Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun chromeLike (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun chromeLike (Ljava/lang/String;Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun chromeLike (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun chromeLike (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun chromeLike (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/io/File;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun chromeLike (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/io/File;Ljava/lang/Integer;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun chromeLike (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/io/File;Ljava/lang/Integer;Ljava/lang/Float;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun chromeLike (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/io/File;Ljava/lang/Integer;Ljava/lang/Float;Ljava/lang/Float;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun chromeLike (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/io/File;Ljava/lang/Integer;Ljava/lang/Float;Ljava/lang/Float;Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun chromeLike (Ljava/util/Map;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public static synthetic fun chromeLike$default (Lcom/project/starter/easylauncher/plugin/EasyLauncherConfig;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/io/File;Ljava/lang/Integer;Ljava/lang/Float;Ljava/lang/Float;Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;ILjava/lang/Object;)Lcom/project/starter/easylauncher/filter/ChromeLikeFilter;
+	public final fun customColorRibbonFilter (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun customColorRibbonFilter (Ljava/lang/String;Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun customColorRibbonFilter (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun customColorRibbonFilter (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun customColorRibbonFilter (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Float;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public static synthetic fun customColorRibbonFilter$default (Lcom/project/starter/easylauncher/plugin/EasyLauncherConfig;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Float;ILjava/lang/Object;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun customRibbon (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;Ljava/lang/Float;Ljava/lang/String;Ljava/io/File;Ljava/util/Set;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun customRibbon (Ljava/util/Map;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public static synthetic fun customRibbon$default (Lcom/project/starter/easylauncher/plugin/EasyLauncherConfig;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;Ljava/lang/Float;Ljava/lang/String;Ljava/io/File;Ljava/util/Set;ILjava/lang/Object;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun enable (Z)V
+	public final fun filters ([Lcom/project/starter/easylauncher/filter/EasyLauncherFilter;)V
+	public final fun getEnabled ()Lorg/gradle/api/provider/Property;
+	public final fun getIconNames ()Lorg/gradle/api/provider/ListProperty;
+	public final fun getName ()Ljava/lang/String;
+	public final fun grayRibbonFilter ()Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun grayRibbonFilter (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public static synthetic fun grayRibbonFilter$default (Lcom/project/starter/easylauncher/plugin/EasyLauncherConfig;Ljava/lang/String;ILjava/lang/Object;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun greenRibbonFilter ()Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun greenRibbonFilter (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public static synthetic fun greenRibbonFilter$default (Lcom/project/starter/easylauncher/plugin/EasyLauncherConfig;Ljava/lang/String;ILjava/lang/Object;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun orangeRibbonFilter ()Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun orangeRibbonFilter (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public static synthetic fun orangeRibbonFilter$default (Lcom/project/starter/easylauncher/plugin/EasyLauncherConfig;Ljava/lang/String;ILjava/lang/Object;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun overlayFilter (Ljava/io/File;)Lcom/project/starter/easylauncher/filter/OverlayFilter;
+	public final fun redRibbonFilter ()Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun redRibbonFilter (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public static synthetic fun redRibbonFilter$default (Lcom/project/starter/easylauncher/plugin/EasyLauncherConfig;Ljava/lang/String;ILjava/lang/Object;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun setFilters (Lcom/project/starter/easylauncher/filter/EasyLauncherFilter;)V
+	public final fun setFilters (Ljava/lang/Iterable;)V
+	public final fun setIconNames (Ljava/lang/Iterable;)V
+	public final fun yellowRibbonFilter ()Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public final fun yellowRibbonFilter (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+	public static synthetic fun yellowRibbonFilter$default (Lcom/project/starter/easylauncher/plugin/EasyLauncherConfig;Ljava/lang/String;ILjava/lang/Object;)Lcom/project/starter/easylauncher/filter/ColorRibbonFilter;
+}
+
+public final class com/project/starter/easylauncher/plugin/EasyLauncherConfig$Companion {
+}
+
+public class com/project/starter/easylauncher/plugin/EasyLauncherExtension {
+	public static final field Companion Lcom/project/starter/easylauncher/plugin/EasyLauncherExtension$Companion;
+	public static final field NAME Ljava/lang/String;
+	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
+	public final fun defaultFlavorNaming (Z)V
+	public final fun getBuildTypes ()Lorg/gradle/api/NamedDomainObjectContainer;
+	public final fun getIconNames ()Lorg/gradle/api/provider/ListProperty;
+	public final fun getProductFlavors ()Lorg/gradle/api/NamedDomainObjectContainer;
+	public final fun getShowWarnings ()Lorg/gradle/api/provider/Property;
+	public final fun getVariants ()Lorg/gradle/api/NamedDomainObjectContainer;
+	public final fun isDefaultFlavorNaming ()Lorg/gradle/api/provider/Property;
+	public final fun setDefaultFlavorNaming (Lorg/gradle/api/provider/Property;)V
+	public final fun setShowWarnings (Lorg/gradle/api/provider/Property;)V
+}
+
+public final class com/project/starter/easylauncher/plugin/EasyLauncherExtension$Companion {
+}
+
+public final class com/project/starter/easylauncher/plugin/EasyLauncherPlugin : org/gradle/api/Plugin {
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
+public abstract class com/project/starter/easylauncher/plugin/EasyLauncherTask : org/gradle/api/DefaultTask {
+	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
+	public abstract fun getCustomIconNames ()Lorg/gradle/api/provider/SetProperty;
+	public abstract fun getFilters ()Lorg/gradle/api/provider/ListProperty;
+	public abstract fun getManifestFiles ()Lorg/gradle/api/provider/ListProperty;
+	public abstract fun getManifestPlaceholders ()Lorg/gradle/api/provider/MapProperty;
+	public abstract fun getMinSdkVersion ()Lorg/gradle/api/provider/Property;
+	public abstract fun getOutputDir ()Lorg/gradle/api/file/DirectoryProperty;
+	public abstract fun getResourceDirectories ()Lorg/gradle/api/provider/SetProperty;
+	public final fun run ()V
+}
+
+public final class com/project/starter/easylauncher/plugin/models/IconType : java/lang/Enum {
+	public static final field Default Lcom/project/starter/easylauncher/plugin/models/IconType;
+	public static final field Round Lcom/project/starter/easylauncher/plugin/models/IconType;
+	public static fun valueOf (Ljava/lang/String;)Lcom/project/starter/easylauncher/plugin/models/IconType;
+	public static fun values ()[Lcom/project/starter/easylauncher/plugin/models/IconType;
+}
+

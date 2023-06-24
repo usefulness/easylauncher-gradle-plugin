@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 20
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
@@ -28,8 +28,7 @@ jobs:
 
       - uses: gradle/gradle-build-action@v2
 
-      - name: Build app with Gradle
-        run: ./gradlew assemble
+      - run: ./gradlew assemble
 
       - name: Publish to Gradle Plugin Portal
         run: ./gradlew publishPlugins -Pgradle.publish.key=${{ secrets.gradle_publish_key }} -Pgradle.publish.secret=${{ secrets.gradle_publish_secret }}

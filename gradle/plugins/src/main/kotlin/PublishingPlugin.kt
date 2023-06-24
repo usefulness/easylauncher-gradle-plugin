@@ -3,8 +3,10 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
+import org.gradle.jvm.tasks.Jar
 import org.gradle.plugin.devel.GradlePluginDevelopmentExtension
 import org.gradle.plugins.signing.SigningExtension
+import org.jetbrains.dokka.gradle.DokkaTask
 
 class PublishingPlugin : Plugin<Project> {
 
@@ -16,7 +18,20 @@ class PublishingPlugin : Plugin<Project> {
 
         extensions.configure<JavaPluginExtension> {
             withSourcesJar()
+            withJavadocJar()
         }
+
+        pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
+            pluginManager.apply("org.jetbrains.dokka")
+
+            tasks.withType(DokkaTask::class.java).configureEach { dokkaTask ->
+                dokkaTask.notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/1217")
+            }
+            tasks.named("javadocJar", Jar::class.java) { javadocJar ->
+                javadocJar.from(tasks.named("dokkaJavadoc"))
+            }
+        }
+
         extensions.configure<PublishingExtension> {
             with(repositories) {
                 maven { maven ->
@@ -29,15 +44,6 @@ class PublishingPlugin : Plugin<Project> {
                 }
             }
         }
-        pluginManager.withPlugin("com.gradle.plugin-publish") {
-            extensions.configure<GradlePluginDevelopmentExtension>("gradlePlugin") { gradlePlugin ->
-                gradlePlugin.apply {
-                    website.set("https://github.com/usefulness/easylauncher-gradle-plugin")
-                    vcsUrl.set("https://github.com/usefulness/easylauncher-gradle-plugin")
-                }
-            }
-        }
-
         pluginManager.withPlugin("signing") {
             with(extensions.extraProperties) {
                 set("signing.keyId", findConfig("SIGNING_KEY_ID"))
@@ -47,6 +53,13 @@ class PublishingPlugin : Plugin<Project> {
 
             extensions.configure<SigningExtension>("signing") { signing ->
                 signing.sign(extensions.getByType(PublishingExtension::class.java).publications)
+            }
+        }
+
+        pluginManager.withPlugin("com.gradle.plugin-publish") {
+            extensions.configure<GradlePluginDevelopmentExtension>("gradlePlugin") { gradlePlugin ->
+                gradlePlugin.website.set("https://github.com/usefulness/easylauncher-gradle-plugin")
+                gradlePlugin.vcsUrl.set("https://github.com/usefulness/easylauncher-gradle-plugin")
             }
         }
     }

@@ -35,7 +35,7 @@ class Canvas(
      * Use this Canvas once to execute all drawing operations.
      * The canvas is closed afterwards and can not be used again.
      */
-    fun use(block: (Graphics2D) -> Unit) {
+    internal fun use(block: (Graphics2D) -> Unit) {
         graphics.apply(block).dispose()
     }
 }

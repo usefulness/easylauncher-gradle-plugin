@@ -8,15 +8,11 @@ on:
     branches:
       - master
 
-jobs:
-  cancel-previous-workflows:
-    name: Cancel previous workflow runs
-    runs-on: ubuntu-latest
-    steps:
-      - uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +24,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 20
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
@@ -42,7 +38,7 @@ jobs:
 
       - run: ./gradlew assemble
 
-      - run: ./gradlew validatePlugins
+      - run: ./gradlew check
 
       - run: ./gradlew projectCoverage
 
@@ -63,7 +59,15 @@ jobs:
 
       - run: ./gradlew publishToMavenLocal
 
+      - run: ./gradlew publishPlugins -m
+
       - run: git diff --exit-code
+
+      - name: Publish to Github Package Registry
+        run: ./gradlew publish --continue
+        if: github.repository == 'usefulness/easylauncher-gradle-plugin' && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   provide-agp-version-matrix:
     runs-on: ubuntu-latest
@@ -176,7 +180,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 20
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
