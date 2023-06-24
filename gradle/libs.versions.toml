@@ -1,5 +1,5 @@
 [versions]
-gradle-starter = "0.60.1"
+gradle-starter = "0.61.1"
 gradle-gradlepublish = "1.2.0"
 gradle-doctor = "0.8.1"
 google-agp = "8.0.2"
