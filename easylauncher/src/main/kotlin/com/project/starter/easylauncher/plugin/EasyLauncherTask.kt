@@ -98,8 +98,11 @@ abstract class EasyLauncherTask @Inject constructor(
 
     private fun IconFile.Adaptive.processAdaptiveIcon() {
         resourceDirectories.get().forEach { resDir ->
-            val icons = objects.getIconFiles(parent = resDir, iconName = foreground)
-            icons.forEach { iconFile ->
+            val foregroundFiles = objects.getIconFiles(parent = resDir, iconName = foreground)
+            val monochromeFiles = monochrome?.let { objects.getIconFiles(parent = resDir, iconName = it) } ?: emptyList()
+            val iconFiles = (foregroundFiles + monochromeFiles).toSet()
+
+            iconFiles.forEach { iconFile ->
                 val outputFile = iconFile.getOutputFile()
                 if (iconFile.extension == "xml") {
                     iconFile.transformXml(outputFile, minSdkVersion.get(), filters.get())

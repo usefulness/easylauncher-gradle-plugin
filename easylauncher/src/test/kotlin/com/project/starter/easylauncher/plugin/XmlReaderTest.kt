@@ -220,6 +220,29 @@ internal class XmlReaderTest {
     }
 
     @Test
+    fun `parses adaptive icon with monochrome option`() {
+        val adaptiveIcon = tempDir.resolve("ic_launcher.xml")
+        adaptiveIcon.writeText(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+                <background android:drawable="@drawable/ic_launcher_background" />
+                <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+                <monochrome android:drawable="@mipmap/ic_launcher_foreground_monochrome" />
+            </adaptive-icon>
+
+            """.trimIndent(),
+        )
+
+        val icon = adaptiveIcon.tryParseXmlFile() as IconFile.Adaptive
+
+        assertThat(icon.background).isEqualTo("@drawable/ic_launcher_background")
+        assertThat(icon.foreground).isEqualTo("@mipmap/ic_launcher_foreground")
+        assertThat(icon.monochrome).isEqualTo("@mipmap/ic_launcher_foreground_monochrome")
+        assertThat(icon.file.path).isEqualTo(adaptiveIcon.path)
+    }
+
+    @Test
     fun `parses drawable resource`() {
         val drawableResource = tempDir.resolve("ic_launcher.xml")
         drawableResource.writeText(vectorFile())

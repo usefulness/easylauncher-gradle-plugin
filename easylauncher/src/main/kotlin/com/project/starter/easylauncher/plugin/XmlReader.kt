@@ -31,14 +31,17 @@ internal fun File.tryParseXmlFile(): IconFile? {
     val iconXml = XmlSlurper().parse(this)
     val foreground = iconXml.getProperty("foreground") as GPathResult
     val background = iconXml.getProperty("background") as GPathResult
+    val monochrome = iconXml.getProperty("monochrome") as GPathResult
     val backgroundDrawable = background.property("@android:drawable")
     val foregroundDrawable = foreground.property("@android:drawable")
+    val monochromeDrawable = monochrome.property("@android:drawable")
 
     return if (backgroundDrawable != null && foregroundDrawable != null) {
         IconFile.Adaptive(
             file = this,
             background = backgroundDrawable,
             foreground = foregroundDrawable,
+            monochrome = monochromeDrawable,
         )
     } else {
         IconFile.XmlDrawableResource(file = this)
