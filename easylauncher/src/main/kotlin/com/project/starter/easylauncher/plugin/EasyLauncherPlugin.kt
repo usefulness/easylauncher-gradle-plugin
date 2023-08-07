@@ -115,7 +115,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                         it.resourceDirectories.set(resSourceDirectories)
                         it.filters.set(filters)
                         it.customIconNames.set(customIconNames)
-                        it.minSdkVersion.set(variant.minSdkVersion.apiLevel)
+                        it.minSdkVersion.set(variant.minSdkCompat(agpVersion))
                     }
 
                     if (agpVersion.canUseNewResources) {
@@ -157,3 +157,7 @@ class EasyLauncherPlugin : Plugin<Project> {
     private val AndroidPluginVersion.canUseNewResources get() = this >= AndroidPluginVersion(7, 4).beta(2)
     private val AndroidPluginVersion.hasBrokenResourcesMerging get() = this >= AndroidPluginVersion(7, 3).alpha(1)
 }
+
+@Suppress("DEPRECATION")
+private fun Variant.minSdkCompat(agpVersion: AndroidPluginVersion) =
+    if (agpVersion >= AndroidPluginVersion(8, 1)) minSdk.apiLevel else minSdkVersion.apiLevel
