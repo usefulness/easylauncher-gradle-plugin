@@ -31,6 +31,14 @@ buildscript {
                 }
             }
         }
+        if (agpVersion != null && agpVersion.startsWith("7.4")) {
+            logger.quiet("using kotlin 1.8")
+            classpath("org.jetbrains.kotlin:kotlin-gradle-plugin") {
+                version {
+                    strictly("1.8.21")
+                }
+            }
+        }
     }
 }
 
