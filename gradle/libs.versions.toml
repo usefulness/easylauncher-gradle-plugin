@@ -9,7 +9,7 @@ mavencentral-assertj = "3.24.2"
 mavencentral-apachecommons = "3.13.0"
 mavencentral-usefulnesswebp = "0.4.1"
 maven-binarycompatiblity = "0.13.2"
-maven-dokka = "1.8.20"
+maven-dokka = "1.9.0"
 
 [libraries]
 agp-gradle = { module = "com.android.tools.build:gradle", version.ref = "google-agp" }
