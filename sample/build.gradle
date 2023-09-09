@@ -177,7 +177,7 @@ subprojects {
                 }
             }
 
-            lintOptions {
+            lint {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
                 if (agpVersion == "" || agpVersion.startsWith("7.4") || agpVersion.startsWith("8")) {

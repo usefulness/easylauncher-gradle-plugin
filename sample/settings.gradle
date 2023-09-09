@@ -1,5 +1,6 @@
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0" apply false
+    id "com.gradle.enterprise" version "3.14.1"
 }
 
 if(!gradle.gradleVersion.startsWith("7")) {
