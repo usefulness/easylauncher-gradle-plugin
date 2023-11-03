@@ -12,7 +12,10 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 
-class LauncherIconView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
+class LauncherIconView(
+    context: Context,
+    attrs: AttributeSet?,
+) : FrameLayout(context, attrs) {
 
     init {
         inflate(context, R.layout.launcher_icon_view, this)
@@ -28,12 +31,12 @@ class LauncherIconView(context: Context, attrs: AttributeSet?) : FrameLayout(con
         adaptive?.setupAdaptiveIcon() ?: setupLegacyIcon(iconResource)
     }
 
-    private fun getAdaptiveIcon(@DrawableRes iconResource: Int): AdaptiveIconDrawable? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ContextCompat.getDrawable(context, iconResource) as? AdaptiveIconDrawable
-        } else {
-            null
-        }
+    private fun getAdaptiveIcon(@DrawableRes iconResource: Int): AdaptiveIconDrawable? = if (Build.VERSION.SDK_INT >=
+        Build.VERSION_CODES.O
+    ) {
+        ContextCompat.getDrawable(context, iconResource) as? AdaptiveIconDrawable
+    } else {
+        null
     }
 
     @SuppressLint("NewApi") // whole AdaptiveIconDrawable is available since API26

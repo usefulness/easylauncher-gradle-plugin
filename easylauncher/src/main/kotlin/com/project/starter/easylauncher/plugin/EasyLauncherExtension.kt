@@ -6,9 +6,7 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import javax.inject.Inject
 
-open class EasyLauncherExtension @Inject constructor(
-    objectFactory: ObjectFactory,
-) {
+open class EasyLauncherExtension @Inject constructor(objectFactory: ObjectFactory) {
 
     /**
      * Defines if the plugins should show warnings at configuration time. Disable by adding:
