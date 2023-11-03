@@ -130,7 +130,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                             .toCreate(com.android.build.gradle.internal.scope.InternalArtifactType.GENERATED_RES)
                     } else {
                         // legacy way to hook up the plugin
-                        val generatedResDir = buildDir.resolve("generated/easylauncher/res/${variant.name}")
+                        val generatedResDir = layout.buildDirectory.map { it.dir("generated/easylauncher/res/${variant.name}") }
                         task.configure { it.outputDir.set(generatedResDir) }
                         project.afterEvaluate {
                             val android = extensions.getByName("android") as BaseExtension
@@ -149,10 +149,8 @@ class EasyLauncherPlugin : Plugin<Project> {
         variant: Variant,
         ribbonProductFlavors: Iterable<EasyLauncherConfig>,
         ribbonBuildTypes: Iterable<EasyLauncherConfig>,
-    ): List<EasyLauncherConfig> {
-        return ribbonProductFlavors.filter { config -> variant.productFlavors.any { config.name == it.second } } +
-            ribbonBuildTypes.filter { it.name == variant.buildType }
-    }
+    ): List<EasyLauncherConfig> = ribbonProductFlavors.filter { config -> variant.productFlavors.any { config.name == it.second } } +
+        ribbonBuildTypes.filter { it.name == variant.buildType }
 
     private val AndroidPluginVersion.canUseNewResources get() = this >= AndroidPluginVersion(7, 4).beta(2)
     private val AndroidPluginVersion.hasBrokenResourcesMerging get() = this >= AndroidPluginVersion(7, 3).alpha(1)

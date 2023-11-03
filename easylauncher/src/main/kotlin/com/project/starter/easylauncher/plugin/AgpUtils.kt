@@ -12,13 +12,11 @@ internal fun ObjectFactory.getIconFiles(parent: File, iconName: String): Iterabl
     include(resourceFilePattern(iconName))
 }
 
-private fun resourceFilePattern(name: String): String {
-    return if (name.startsWith("@")) {
-        val (baseResType, fileName) = name.substring(1).split("/".toRegex(), 2)
-        "$baseResType*/$fileName.*"
-    } else {
-        name
-    }
+private fun resourceFilePattern(name: String): String = if (name.startsWith("@")) {
+    val (baseResType, fileName) = name.substring(1).split("/".toRegex(), 2)
+    "$baseResType*/$fileName.*"
+} else {
+    name
 }
 
 /**

@@ -19,9 +19,7 @@ import javax.inject.Inject
 import kotlin.system.measureTimeMillis
 
 @CacheableTask
-abstract class EasyLauncherTask @Inject constructor(
-    private val objects: ObjectFactory,
-) : DefaultTask() {
+abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectFactory) : DefaultTask() {
 
     @get:Input
     abstract val manifestFiles: ListProperty<File>
