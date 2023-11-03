@@ -130,7 +130,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                             .toCreate(com.android.build.gradle.internal.scope.InternalArtifactType.GENERATED_RES)
                     } else {
                         // legacy way to hook up the plugin
-                        val generatedResDir = buildDir.resolve("generated/easylauncher/res/${variant.name}")
+                        val generatedResDir = layout.buildDirectory.map { it.dir("generated/easylauncher/res/${variant.name}") }
                         task.configure { it.outputDir.set(generatedResDir) }
                         project.afterEvaluate {
                             val android = extensions.getByName("android") as BaseExtension
