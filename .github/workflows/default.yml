@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0
 
       - name: set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 20
@@ -108,7 +108,7 @@ jobs:
           fetch-depth: 0
 
       - name: set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.javaVersion }}
@@ -147,7 +147,7 @@ jobs:
           fetch-depth: 0
 
       - name: set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.javaVersion }}
@@ -177,7 +177,7 @@ jobs:
           fetch-depth: 0
 
       - name: set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 20
