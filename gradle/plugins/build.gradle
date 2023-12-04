@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id 'java-gradle-plugin'
@@ -11,7 +12,9 @@ tasks.withType(JavaCompile).configureEach {
     options.release.set(targetJavaVersion.majorVersion.toInteger())
 }
 tasks.withType(KotlinCompile).configureEach {
-    kotlinOptions.jvmTarget = targetJavaVersion
+    compilerOptions {
+        jvmTarget = JvmTarget.@Companion.fromTarget(targetJavaVersion.toString())
+    }
 }
 
 dependencies {
