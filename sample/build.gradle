@@ -31,14 +31,6 @@ buildscript {
                 }
             }
         }
-        if (agpVersion != null && agpVersion.startsWith("7.4")) {
-            logger.quiet("using kotlin 1.8")
-            classpath("org.jetbrains.kotlin:kotlin-gradle-plugin") {
-                version {
-                    strictly("1.8.21")
-                }
-            }
-        }
     }
 }
 
@@ -95,7 +87,7 @@ subprojects {
             lintOptions {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
-                if (agpVersion == "" || agpVersion.startsWith("7.4") || agpVersion.startsWith("8")) {
+                if (agpVersion == "" || agpVersion.startsWith("8")) {
                     disable("MonochromeLauncherIcon")
                 }
 
@@ -180,7 +172,7 @@ subprojects {
             lintOptions {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
-                if (agpVersion == "" || agpVersion.startsWith("7.4") || agpVersion.startsWith("8")) {
+                if (agpVersion == "" || agpVersion.startsWith("8")) {
                     disable("MonochromeLauncherIcon")
                 }
 
@@ -190,11 +182,11 @@ subprojects {
 
         tasks.register("recordAll", Copy) {
             group = 'screenshot test'
-            from "build/screenshots_tmp/"
+            from layout.buildDirectory.map { it.dir("screenshots_tmp") }
             into "screenshots/"
 
             doLast {
-                file("build/screenshots_tmp/").deleteDir()
+                layout.buildDirectory.map { it.dir("screenshots_tmp") }.get().deleteDir()
             }
         }
 
@@ -227,7 +219,7 @@ subprojects {
 
         screenshots {
             addDeps = false
-            failureDir = "${buildDir}/failedScreenshots"
+            failureDir = layout.buildDirectory.map { it.dir("failedScreenshots") }.get().asFile
         }
 
         dependencies {

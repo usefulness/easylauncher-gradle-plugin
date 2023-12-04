@@ -20,8 +20,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: set up JDK
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 20
@@ -91,15 +90,15 @@ jobs:
         gradle: [ release-candidate ]
         agp: ${{ fromJSON(needs.provide-agp-version-matrix.outputs.agp-versions) }}
         include:
-          - javaVersion: 11
-            gradle: 7.5
-            agp: 7.4.1
+          - javaVersion: 17
+            gradle: "8.0"
+            agp: 8.0.0
           - javaVersion: 17
             gradle: current
-            agp: 7.4.1
+            agp: 8.0.0
           - javaVersion: 19
             gradle: current
-            agp: 7.4.1
+            agp: 8.0.0
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}, Java-${{ matrix.javaVersion }}
     steps:
@@ -107,8 +106,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: set up JDK
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.javaVersion }}
@@ -118,8 +116,6 @@ jobs:
           mkdir -p ~/.gradle
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
-
-      - uses: android-actions/setup-android@v2
 
       - uses: gradle/gradle-build-action@v2
 
@@ -146,8 +142,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: set up JDK
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.javaVersion }}
@@ -176,8 +171,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: set up JDK
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 20

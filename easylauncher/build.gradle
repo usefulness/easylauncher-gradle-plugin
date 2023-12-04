@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
     id "java-gradle-plugin"
@@ -42,9 +43,9 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
 }
 
 tasks.withType(KotlinCompile).configureEach {
-    kotlinOptions {
-        apiVersion = "1.4"
-        languageVersion = "1.4"
+    compilerOptions {
+        apiVersion = KotlinVersion.KOTLIN_1_4
+        languageVersion = KotlinVersion.KOTLIN_1_4
     }
 }
 kotlin {

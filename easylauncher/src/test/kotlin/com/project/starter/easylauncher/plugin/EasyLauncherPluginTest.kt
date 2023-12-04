@@ -234,7 +234,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
 
         val cleanRun = runTask("assembleDebug", "--configuration-cache", skipJacoco = true)
         assertThat(cleanRun.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.SUCCESS)
-        assertThat(cleanRun.output).contains("Calculating task graph as no configuration cache is available for tasks")
+        assertThat(cleanRun.output).contains("Calculating task graph as no cached configuration is available for tasks")
 
         val secondRun = runTask("assembleDebug", "--configuration-cache", skipJacoco = true)
         assertThat(secondRun.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.UP_TO_DATE)
