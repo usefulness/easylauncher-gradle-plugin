@@ -31,7 +31,7 @@ jobs:
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
 
       - run: ./gradlew projectCodestyle
 
@@ -117,12 +117,12 @@ jobs:
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
 
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
         with:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
@@ -153,7 +153,7 @@ jobs:
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
         with:
           build-root-directory: sample
           gradle-version: current
@@ -182,7 +182,7 @@ jobs:
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
 
       - name: Set up Python
         uses: actions/setup-python@v5
