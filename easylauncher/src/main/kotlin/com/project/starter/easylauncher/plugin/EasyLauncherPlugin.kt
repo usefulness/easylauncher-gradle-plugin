@@ -10,7 +10,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.File
 
-@Suppress("UnstableApiUsage")
 class EasyLauncherPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
@@ -34,6 +33,7 @@ class EasyLauncherPlugin : Plugin<Project> {
         val manifestBySourceSet = mutableMapOf<String, File>()
         val resSourceDirectoriesBySourceSet = mutableMapOf<String, Set<File>>()
 
+        @Suppress("UnstableApiUsage")
         androidComponents.finalizeDsl { common ->
             common.sourceSets
                 .mapNotNull { sourceSet -> sourceSet.manifest.srcFile?.let { sourceSet.name to it } }
@@ -53,8 +53,13 @@ class EasyLauncherPlugin : Plugin<Project> {
             if (enabled) {
                 val filters = configs.flatMap { it.filters.get() }.toMutableSet()
 
+                val isDebuggable = if (agpVersion.hasDebuggableProperty) {
+                    variant.debuggable
+                } else {
+                    variant.debuggableCompat
+                }
                 // set default ribbon
-                if (filters.isEmpty() && variant.debuggableCompat(agpVersion)) {
+                if (filters.isEmpty() && isDebuggable) {
                     val ribbonText = when (extension.isDefaultFlavorNaming.orNull) {
                         true -> variant.flavorName
                         false -> variant.buildType
@@ -71,7 +76,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                     }
                 }
 
-                log.info { "configuring ${variant.name}, isDebuggable=${variant.debuggableCompat(agpVersion)}, filters=${filters.size}" }
+                log.info { "configuring ${variant.name}, isDebuggable=$isDebuggable, filters=${filters.size}" }
 
                 if (filters.isNotEmpty()) {
                     val customIconNames = provider {
@@ -89,14 +94,20 @@ class EasyLauncherPlugin : Plugin<Project> {
                         flavor
                     }
 
-                    val manifests = manifestBySourceSet
-                        .mapNotNull { (name, file) ->
-                            if (relevantSourcesSets.contains(name)) {
-                                file
-                            } else {
-                                null
-                            }
+                    val manifests = if (agpVersion.canUseVariantManifestSources) {
+                        variant.sources.manifests.all.map { manifests -> manifests.map { it.asFile } }
+                    } else {
+                        project.provider {
+                            manifestBySourceSet
+                                .mapNotNull { (name, file) ->
+                                    if (relevantSourcesSets.contains(name)) {
+                                        file
+                                    } else {
+                                        null
+                                    }
+                                }
                         }
+                    }
 
                     val resSourceDirectories = resSourceDirectoriesBySourceSet
                         .mapNotNull { (name, files) ->
@@ -152,6 +163,8 @@ class EasyLauncherPlugin : Plugin<Project> {
     ): List<EasyLauncherConfig> = ribbonProductFlavors.filter { config -> variant.productFlavors.any { config.name == it.second } } +
         ribbonBuildTypes.filter { it.name == variant.buildType }
 
+    private val AndroidPluginVersion.canUseVariantManifestSources get() = this >= AndroidPluginVersion(8, 3, 0)
+    private val AndroidPluginVersion.hasDebuggableProperty get() = this >= AndroidPluginVersion(8, 3, 0)
     private val AndroidPluginVersion.canUseNewResources get() = this >= AndroidPluginVersion(7, 4).beta(2)
     private val AndroidPluginVersion.hasBrokenResourcesMerging get() = this >= AndroidPluginVersion(7, 3).alpha(1)
 }
