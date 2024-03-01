@@ -54,7 +54,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                 val filters = configs.flatMap { it.filters.get() }.toMutableSet()
 
                 // set default ribbon
-                if (filters.isEmpty() && variant.isDebuggable) {
+                if (filters.isEmpty() && variant.debuggableCompat(agpVersion)) {
                     val ribbonText = when (extension.isDefaultFlavorNaming.orNull) {
                         true -> variant.flavorName
                         false -> variant.buildType
@@ -71,7 +71,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                     }
                 }
 
-                log.info { "configuring ${variant.name}, isDebuggable=${variant.isDebuggable}, filters=${filters.size}" }
+                log.info { "configuring ${variant.name}, isDebuggable=${variant.debuggableCompat(agpVersion)}, filters=${filters.size}" }
 
                 if (filters.isNotEmpty()) {
                     val customIconNames = provider {

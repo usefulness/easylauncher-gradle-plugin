@@ -1,5 +1,6 @@
 package com.project.starter.easylauncher.plugin
 
+import com.android.build.api.AndroidPluginVersion
 import com.android.build.api.component.analytics.AnalyticsEnabledApplicationVariant
 import com.android.build.api.dsl.AndroidSourceDirectorySet
 import com.android.build.api.dsl.AndroidSourceFile
@@ -19,13 +20,19 @@ private fun resourceFilePattern(name: String): String = if (name.startsWith("@")
     name
 }
 
+internal fun Variant.debuggableCompat(agpVersion: AndroidPluginVersion) = if (agpVersion > AndroidPluginVersion(8, 3, 0)) {
+    debuggable
+} else {
+    isDebuggable
+}
+
 /**
  * Workaround for https://issuetracker.google.com/issues/197121905
  */
-internal val Variant.isDebuggable: Boolean
+private val Variant.isDebuggable: Boolean
     get() = when (this) {
         is AnalyticsEnabledApplicationVariant -> delegate.isDebuggable
-        is ComponentCreationConfig -> debuggable
+        is ComponentCreationConfig -> (this as ComponentCreationConfig).debuggable
         else -> false
     }
 
