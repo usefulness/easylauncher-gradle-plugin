@@ -4,7 +4,6 @@ import com.project.starter.easylauncher.filter.ChromeLikeFilter
 import com.project.starter.easylauncher.filter.ColorRibbonFilter
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import com.project.starter.easylauncher.filter.OverlayFilter
-import com.project.starter.easylauncher.plugin.internal.uppercase
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
