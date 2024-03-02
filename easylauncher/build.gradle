@@ -44,8 +44,8 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
 
 tasks.withType(KotlinCompile).configureEach {
     compilerOptions {
-        apiVersion = KotlinVersion.KOTLIN_1_4
-        languageVersion = KotlinVersion.KOTLIN_1_4
+        apiVersion = KotlinVersion.KOTLIN_1_8
+        languageVersion = KotlinVersion.KOTLIN_1_8
     }
 }
 kotlin {

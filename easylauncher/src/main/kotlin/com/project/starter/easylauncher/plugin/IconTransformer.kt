@@ -2,7 +2,6 @@ package com.project.starter.easylauncher.plugin
 
 import com.project.starter.easylauncher.filter.Canvas
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
-import com.project.starter.easylauncher.plugin.internal.lowercase
 import com.project.starter.easylauncher.plugin.models.toSize
 import groovy.xml.XmlSlurper
 import java.awt.image.BufferedImage
