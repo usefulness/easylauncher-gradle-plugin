@@ -28,18 +28,24 @@ class EasyLauncherPlugin : Plugin<Project> {
             }
         }
 
-        val manifestBySourceSet = mutableMapOf<String, File>()
-        val resSourceDirectoriesBySourceSet = mutableMapOf<String, Set<File>>()
+        lateinit var manifestBySourceSet: Map<String, File>
+        lateinit var resSourceDirectoriesBySourceSet: Map<String, Set<File>>
 
-        @Suppress("UnstableApiUsage")
-        androidComponents.finalizeDsl { common ->
-            common.sourceSets
-                .mapNotNull { sourceSet -> sourceSet.manifest.srcFile?.let { sourceSet.name to it } }
-                .forEach { manifestBySourceSet[it.first] = it.second }
+        if (!agpVersion.canUseVariantManifestSources || !agpVersion.canAccessStaticVariantSources) {
+            @Suppress("UnstableApiUsage")
+            androidComponents.finalizeDsl { common ->
+                if (!agpVersion.canUseVariantManifestSources) {
+                    manifestBySourceSet = common.sourceSets
+                        .mapNotNull { sourceSet -> sourceSet.manifest.srcFile?.let { sourceSet.name to it } }
+                        .toMap()
+                }
 
-            common.sourceSets
-                .map { sourceSet -> sourceSet.name to sourceSet.res.srcDirs }
-                .forEach { resSourceDirectoriesBySourceSet[it.first] = it.second }
+                if (!agpVersion.canAccessStaticVariantSources) {
+                    resSourceDirectoriesBySourceSet = common.sourceSets
+                        .map { sourceSet -> sourceSet.name to sourceSet.res.srcDirs }
+                        .toMap()
+                }
+            }
         }
 
         androidComponents.onVariants { variant ->
@@ -107,15 +113,22 @@ class EasyLauncherPlugin : Plugin<Project> {
                         }
                     }
 
-                    val resSourceDirectories = resSourceDirectoriesBySourceSet
-                        .mapNotNull { (name, files) ->
-                            if (relevantSourcesSets.contains(name)) {
-                                files
-                            } else {
-                                null
-                            }
+                    val resSourceDirectories = if (agpVersion.canAccessStaticVariantSources) {
+                        variant.sources.res?.static?.map { outer -> outer.flatten().map { inner -> inner.asFile } }
+                            ?: project.provider { emptyList() }
+                    } else {
+                        project.provider {
+                            resSourceDirectoriesBySourceSet
+                                .mapNotNull { (name, files) ->
+                                    if (relevantSourcesSets.contains(name)) {
+                                        files
+                                    } else {
+                                        null
+                                    }
+                                }
+                                .flatten()
                         }
-                        .flatten()
+                    }
 
                     val capitalisedVariantName = variant.name.replaceFirstChar(Char::titlecase)
                     val task = project.tasks.register("easylauncher$capitalisedVariantName", EasyLauncherTask::class.java) {
@@ -124,7 +137,8 @@ class EasyLauncherPlugin : Plugin<Project> {
                         it.resourceDirectories.set(resSourceDirectories)
                         it.filters.set(filters)
                         it.customIconNames.set(customIconNames)
-                        it.minSdkVersion.set(variant.minSdkCompat(agpVersion))
+                        @Suppress("DEPRECATION")
+                        it.minSdkVersion.set(if (agpVersion.canUseNewMinSdk) variant.minSdk.apiLevel else variant.minSdkVersion.apiLevel)
                     }
 
                     if (agpVersion.canUseNewResources) {
@@ -164,9 +178,7 @@ class EasyLauncherPlugin : Plugin<Project> {
     private val AndroidPluginVersion.canUseVariantManifestSources get() = this >= AndroidPluginVersion(8, 3, 0)
     private val AndroidPluginVersion.hasDebuggableProperty get() = this >= AndroidPluginVersion(8, 3, 0)
     private val AndroidPluginVersion.canUseNewResources get() = this >= AndroidPluginVersion(7, 4).beta(2)
+    private val AndroidPluginVersion.canAccessStaticVariantSources get() = this >= AndroidPluginVersion(8, 4).alpha(13)
     private val AndroidPluginVersion.hasBrokenResourcesMerging get() = this >= AndroidPluginVersion(7, 3).alpha(1)
+    private val AndroidPluginVersion.canUseNewMinSdk get() = this >= AndroidPluginVersion(8, 1, 0)
 }
-
-@Suppress("DEPRECATION")
-private fun Variant.minSdkCompat(agpVersion: AndroidPluginVersion) =
-    if (agpVersion >= AndroidPluginVersion(8, 1)) minSdk.apiLevel else minSdkVersion.apiLevel
