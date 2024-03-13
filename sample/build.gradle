@@ -44,22 +44,6 @@ commonConfig {
 
 def agpVersion = project.properties["agpVersion"] ?: ""
 subprojects {
-    pluginManager.withPlugin("com.starter.application.android") {
-        android {
-            defaultConfig {
-                testInstrumentationRunner "com.starter.easylauncher.ScreenshotsRunner"
-            }
-        }
-    }
-
-    pluginManager.withPlugin("com.starter.library.android") {
-        android {
-            defaultConfig {
-                testInstrumentationRunner "com.starter.easylauncher.ScreenshotsRunner"
-            }
-        }
-    }
-
     pluginManager.withPlugin("com.android.application") {
         pluginManager.apply("io.github.usefulness.screenshot-testing-plugin")
 
