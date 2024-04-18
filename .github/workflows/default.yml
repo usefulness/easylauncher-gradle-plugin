@@ -122,7 +122,7 @@ jobs:
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
 
-      - uses: gradle/gradle-build-action@v3
+      - uses: gradle/actions/setup-gradle@v3
         with:
           build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
