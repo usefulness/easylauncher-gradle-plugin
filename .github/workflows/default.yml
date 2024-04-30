@@ -160,7 +160,7 @@ jobs:
           arguments: assembleDebug --configuration-cache
 
   icons-test:
-    runs-on: macos-latest
+    runs-on: macos-13
     strategy:
       matrix:
         apiVersion: [ 28 ]
@@ -200,7 +200,7 @@ jobs:
           api-level: ${{ matrix.apiVersion }}
           profile: pixel_xl
           target: google_apis
-          arch: arm64-v8a
+          arch: x86
           disable-spellchecker: true
           working-directory: ./sample
           script: ./icon_check.sh
