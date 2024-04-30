@@ -160,7 +160,7 @@ jobs:
           arguments: assembleDebug --configuration-cache
 
   icons-test:
-    runs-on: macos-13
+    runs-on: macos-14
     strategy:
       matrix:
         apiVersion: [ 28 ]
