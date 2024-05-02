@@ -12,6 +12,7 @@ import java.io.File
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
+@Suppress("ktlint:standard:backing-property-naming")
 class ColorRibbonFilter(
     private val label: String,
     private val ribbonColor: String? = null,
@@ -100,6 +101,7 @@ class ColorRibbonFilter(
             -> graphics.drawString(label, canvas.width / 2 - textBounds.width.toInt() / 2, yGravity + fm.ascent)
 
             Gravity.TOPRIGHT -> graphics.drawString(label, canvas.width - textBounds.width.toInt() / 2, yGravity + fm.ascent)
+
             else -> graphics.drawString(label, (-textBounds.width).toInt() / 2, yGravity + fm.ascent)
         }
     }
