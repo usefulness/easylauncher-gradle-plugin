@@ -126,7 +126,7 @@ subprojects {
 
         screenshots {
             addDeps = false
-            failureDir = "${buildDir}/failedScreenshots"
+            failureDir = layout.buildDirectory.dir("failedScreenshots").get().asFile.path
         }
 
         dependencies {
