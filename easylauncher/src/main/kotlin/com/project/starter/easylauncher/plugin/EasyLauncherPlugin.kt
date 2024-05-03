@@ -66,7 +66,9 @@ class EasyLauncherPlugin : Plugin<Project> {
                 if (filters.isEmpty() && isDebuggable) {
                     val ribbonText = when (extension.isDefaultFlavorNaming.orNull) {
                         true -> variant.flavorName
+
                         false -> variant.buildType
+
                         null ->
                             if (variant.productFlavors.isEmpty()) {
                                 variant.buildType

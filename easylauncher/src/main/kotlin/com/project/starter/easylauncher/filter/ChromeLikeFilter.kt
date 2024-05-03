@@ -11,6 +11,7 @@ import java.awt.font.FontRenderContext
 import java.io.File
 import kotlin.math.roundToInt
 
+@Suppress("ktlint:standard:backing-property-naming")
 class ChromeLikeFilter(
     private val label: String,
     private val ribbonColor: String? = null,

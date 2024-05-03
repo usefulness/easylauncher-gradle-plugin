@@ -1,5 +1,5 @@
-import com.android.build.api.variant.ResValue
 import com.android.build.api.AndroidPluginVersion
+import com.android.build.api.variant.ResValue
 import kotlin.Pair
 
 apply plugin: 'com.starter.application.android'
@@ -61,7 +61,6 @@ android {
         }
     }
 }
-
 
 androidComponents {
     if (pluginVersion >= new AndroidPluginVersion(7, 3).alpha(1) && pluginVersion < new AndroidPluginVersion(7, 4).beta(2)) {

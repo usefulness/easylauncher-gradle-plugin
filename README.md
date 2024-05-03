@@ -1,7 +1,6 @@
 # Easylauncher gradle plugin for Android
 
-[![codecov](https://codecov.io/gh/usefulness/easylauncher-gradle-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/usefulness/easylauncher-gradle-plugin)
-&nbsp;[![build](https://github.com/usefulness/easylauncher-gradle-plugin/actions/workflows/default.yml/badge.svg)](https://github.com/usefulness/easylauncher-gradle-plugin/actions/workflows/default.yml)
+[![build](https://github.com/usefulness/easylauncher-gradle-plugin/actions/workflows/default.yml/badge.svg)](https://github.com/usefulness/easylauncher-gradle-plugin/actions/workflows/default.yml)
 &nbsp;[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 
 [![version](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/com/project/starter/easylauncher/maven-metadata.xml?label=gradle)](https://plugins.gradle.org/search?term=com.starter)

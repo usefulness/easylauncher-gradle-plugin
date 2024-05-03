@@ -63,6 +63,7 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
                     )
 
                     is IconFile.Adaptive -> iconFile.processAdaptiveIcon()
+
                     is IconFile.XmlDrawableResource -> iconFile.processDrawable()
                 }
             }
