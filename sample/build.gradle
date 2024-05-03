@@ -82,11 +82,12 @@ subprojects {
 
         tasks.register("recordAll", Copy) {
             group = 'screenshot test'
-            from "build/screenshots_tmp/"
+            def tempDir = layout.buildDirectory.file("screenshots_tmp/")
+            from tempDir
             into "screenshots/"
 
             doLast {
-                file("build/screenshots_tmp/").deleteDir()
+                tempDir.get().asFile.deleteDir()
             }
         }
 
@@ -98,7 +99,7 @@ subprojects {
 
                 tasks.register(recordAndCopyTask, Copy) {
                     from "screenshots/"
-                    into "build/screenshots_tmp/"
+                    into layout.buildDirectory.file("screenshots_tmp")
                     dependsOn recordTask
                 }
 
@@ -166,11 +167,13 @@ subprojects {
 
         tasks.register("recordAll", Copy) {
             group = 'screenshot test'
-            from layout.buildDirectory.map { it.dir("screenshots_tmp") }
+
+            def tempDir = layout.buildDirectory.map { it.dir("screenshots_tmp") }
+            from tempDir
             into "screenshots/"
 
             doLast {
-                layout.buildDirectory.map { it.dir("screenshots_tmp") }.get().deleteDir()
+                tempDir.get().asFile.deleteDir()
             }
         }
 
@@ -182,7 +185,7 @@ subprojects {
 
                 tasks.register(recordAndCopyTask, Copy) {
                     from "screenshots/"
-                    into "build/screenshots_tmp/"
+                    into layout.buildDirectory.dir("screenshots_tmp")
                     dependsOn recordTask
                 }
 
