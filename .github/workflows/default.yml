@@ -124,9 +124,10 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v3
         with:
-          build-root-directory: sample
           gradle-version: ${{ matrix.gradle }}
-          arguments: assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }}
+
+      - run: gradle assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }}
+        working-directory: sample
 
   build-sample-apps-with-configuration-cache:
     runs-on: ${{ matrix.os }}
@@ -155,9 +156,10 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v3
         with:
-          build-root-directory: sample
           gradle-version: current
-          arguments: assembleDebug --configuration-cache
+
+      - run: gradle assembleDebug --configuration-cache
+        working-directory: sample
 
   icons-test:
     runs-on: macos-13
