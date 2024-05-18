@@ -125,11 +125,6 @@ subprojects {
             useJUnitPlatform()
         }
 
-        screenshots {
-            addDeps = false
-            failureDir = layout.buildDirectory.dir("failedScreenshots").get().asFile.path
-        }
-
         dependencies {
             androidTestImplementation project(":screenshot-test-helpers")
         }
@@ -202,11 +197,6 @@ subprojects {
 
         tasks.withType(Test).configureEach {
             useJUnitPlatform()
-        }
-
-        screenshots {
-            addDeps = false
-            failureDir = layout.buildDirectory.map { it.dir("failedScreenshots") }.get().asFile
         }
 
         dependencies {
