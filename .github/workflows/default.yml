@@ -200,11 +200,18 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: failedScreenshots
-          path: "${{ github.workspace }}/**/build/failedScreenshots"
+          path: "**/reports/failedScreenshots"
+
+      - name: Upload failed screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests
+          path: "**/reports/androidTests"
 
       - name: Upload screenshot tests result
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: screenshots
-          path: "${{ github.workspace }}/**/build/*AndroidTest/"
+          path: "**/reports/screenshots**AndroidTest*/"
