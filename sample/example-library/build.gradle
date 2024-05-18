@@ -1,14 +1,24 @@
 apply plugin: 'com.starter.library.android'
 apply plugin: 'com.starter.easylauncher'
+pluginManager.apply("io.github.usefulness.screenshot-testing-plugin")
 
 android {
     namespace "com.example.simple"
+
     defaultConfig {
         minSdk = 26
     }
+
+    packagingOptions {
+        exclude "META-INF/LICENSE*"
+    }
+
+    testOptions.unitTests.includeAndroidResources true
+
     testVariants.configureEach { variant ->
         variant.mergedFlavor.manifestPlaceholders = [appName: ""]
     }
+
     unitTestVariants.configureEach { variant ->
         variant.mergedFlavor.manifestPlaceholders = [appName: ""]
     }
