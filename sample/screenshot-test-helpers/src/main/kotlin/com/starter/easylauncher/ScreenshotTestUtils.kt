@@ -6,9 +6,9 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import com.facebook.testing.screenshot.Screenshot
-import com.facebook.testing.screenshot.TestNameDetector
-import com.facebook.testing.screenshot.ViewHelpers
+import io.github.usefulness.testing.screenshot.Screenshot
+import io.github.usefulness.testing.screenshot.TestNameDetector
+import io.github.usefulness.testing.screenshot.ViewHelpers
 import kotlin.reflect.KClass
 import com.example.custom.adaptive.R as AdaptiveR
 
