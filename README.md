@@ -1,4 +1,4 @@
-# Easylauncher gradle plugin for Android
+# Easylauncher Gradle Plugin for Android
 
 [![build](https://github.com/usefulness/easylauncher-gradle-plugin/actions/workflows/default.yml/badge.svg)](https://github.com/usefulness/easylauncher-gradle-plugin/actions/workflows/default.yml)
 &nbsp;[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
@@ -50,6 +50,12 @@ plugins {
 }
 ```
 
+Alternatively, if using Version Catalog:
+```toml
+[plugins]
+starter-easylauncher = { id = "com.starter.easylauncher", version.ref = "easylauncher" }
+```
+
 See [related issue](https://github.com/usefulness/easylauncher-gradle-plugin/issues/80) for more information.
   
 </details>  
@@ -65,26 +71,26 @@ Imagine these are the type and flavors of your app:
 // in app/build.gradle
 android {
     buildTypes {
-        debug {
+        named("debug") {
             //Debuggable, will get a default ribbon in the launcher icon
         }
-        beta {
+        named("release") {
+            //Non-debuggable, will not get any default ribbon
+        }
+        register("beta") {
             //Debuggable, will get a default ribbon in the launcher icon
             debuggable true
         }
-        canary {
+        register('canary') {
             //Non-debuggable, will not get any default ribbon
             debuggable false
         }
-        release {
-            //Non-debuggable, will not get any default ribbon
-        }
     }
     productFlavors {
-        local {}
-        qa {}
-        staging {}
-        production {}
+        register("local") {}
+        register("qa") {}
+        register("staging") {}
+        register("production") {}
     }
 }
 ```
@@ -95,36 +101,36 @@ You could customize the plugin's behaviour like this:
 
 ```groovy
 easylauncher {
-    defaultFlavorNaming true // Use flavor name for default ribbon, instead of the type name
-    showWarnings true // Defines if the plugins should show warnings at configuration time
+    defaultFlavorNaming = true // Use flavor name for default ribbon, instead of the type name
+    showWarnings = true // Defines if the plugins should show warnings at configuration time
     
     productFlavors {
-        local {}
-        qa {
+        register("local") {}
+        register("qa") {
             // Add one more filter to all `qa` variants
             filters redRibbonFilter()
         }
-        staging {}
-        production {}
+        register("staging") {}
+        register("production") {}
     }
     
     buildTypes {
-        beta {
+        register("beta") {
             // Add two more filters to all `beta` variants
             filters = [
                     customRibbon(ribbonColor: "#0000FF"),
                     overlayFilter(file("example-custom/launcherOverlay/beta.png"))
             ]
         }
-        canary {
+        register("canary") {
             // Remove ALL filters to `canary` variants
-            enable false
+            enable = false
         }
-        release {}
+        register("release") {}
     }
     
     variants {
-        productionDebug {
+        register("productionDebug") {
             // OVERRIDE all previous filters defined for `productionDebug` variant
             filters = orangeRibbonFilter("custom")
         }
@@ -141,7 +147,7 @@ easylauncher {
     iconNames = ["@mipmap/custom_launcher_icon"] // optional, disables automatic launcher icon discovery and will use provided icons only
 
     buildTypes {
-        beta {
+        register("beta") {
             // icon names can also be provided per each configuration (buildType, productFlavor or variant)
             iconNames = ["@mipmap/beta_launcher"]  
         }
@@ -217,8 +223,8 @@ See [related issue](https://github.com/usefulness/easylauncher-gradle-plugin/iss
 
 ## Requirements
 Minimal requirements for the plugin are: 
-- Gradle: **8.0**
-- Android Gradle Plugin: **8.0.0**
+- Gradle: **8.2.1**
+- Android Gradle Plugin: **8.2.2**
 - Java Version: **11**
 - minSdkVersion: **26** _(theoretically there should be no lower boundary - it just hasn't been tested)_
 
