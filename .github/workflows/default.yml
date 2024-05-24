@@ -89,14 +89,14 @@ jobs:
         agp: ${{ fromJSON(needs.provide-agp-version-matrix.outputs.agp-versions) }}
         include:
           - javaVersion: 17
-            gradle: "8.0"
-            agp: 8.0.0
+            gradle: "8.2.1"
+            agp: 8.2.2
           - javaVersion: 17
             gradle: current
-            agp: 8.0.0
+            agp: 8.2.2
           - javaVersion: 19
             gradle: current
-            agp: 8.0.0
+            agp: 8.2.2
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}, Java-${{ matrix.javaVersion }}
     steps:
@@ -200,11 +200,18 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: failedScreenshots
-          path: "${{ github.workspace }}/**/build/failedScreenshots"
+          path: "**/reports/failedScreenshots"
+
+      - name: Upload failed screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests
+          path: "**/reports/androidTests"
 
       - name: Upload screenshot tests result
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: screenshots
-          path: "${{ github.workspace }}/**/build/*AndroidTest/"
+          path: "**/reports/screenshots**AndroidTest*/"

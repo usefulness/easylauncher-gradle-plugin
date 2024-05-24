@@ -15,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.project.starter:android:0.73.0"
+        classpath "com.project.starter:android:0.74.0"
         classpath "io.github.usefulness:screenshot-testing-plugin:1.1.0"
         if (project.hasProperty("useMavenLocal")) {
             classpath "com.project.starter.local:easylauncher:+"
@@ -108,7 +108,7 @@ subprojects {
             }
 
             if (lastTask != null) {
-                if (gradle.gradleVersion.startsWith("8.0")) {
+                if (gradle.gradleVersion.startsWith("8.2")) {
                     return
                 }
                 tasks.named { it == "record${variant.name.capitalize()}AndroidTestScreenshotTest" }.configureEach {
