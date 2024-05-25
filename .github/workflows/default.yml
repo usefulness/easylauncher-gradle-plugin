@@ -160,14 +160,13 @@ jobs:
         working-directory: sample
 
   icons-test:
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         apiVersion: [ 28 ]
 
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -183,6 +182,12 @@ jobs:
         shell: bash
 
       - uses: gradle/actions/setup-gradle@v3
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
