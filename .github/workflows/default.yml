@@ -66,27 +66,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  provide-agp-version-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      agp-versions: ${{ steps.build-agp-matrix.outputs.agp-versions }}
-    steps:
-      - id: agp-version-finder
-        uses: usefulness/agp-version-finder-action@v1
-
-      - id: build-agp-matrix
-        run: echo 'agp-versions=["${{ steps.agp-version-finder.outputs.latest-stable }}", "${{ steps.agp-version-finder.outputs.latest-beta }}", "${{ steps.agp-version-finder.outputs.latest-alpha }}"]' >> $GITHUB_OUTPUT
-
   build-all-sample-apps:
     runs-on: ubuntu-latest
-    needs:
-      - provide-agp-version-matrix
     strategy:
       fail-fast: false
       matrix:
         javaVersion: [ 17, 21 ]
         gradle: [ release-candidate ]
-        agp: ${{ fromJSON(needs.provide-agp-version-matrix.outputs.agp-versions) }}
+        agp: [ alpha, beta, stable ]
         include:
           - javaVersion: 17
             gradle: "8.2.1"
@@ -97,6 +84,9 @@ jobs:
           - javaVersion: 19
             gradle: current
             agp: 8.2.2
+          - javaVersion: 21
+            gradle: current
+            agp: stable
 
     name: Run Gradle-${{ matrix.gradle }}, AGP-${{ matrix.agp }}, Java-${{ matrix.javaVersion }}
     steps:
@@ -120,11 +110,16 @@ jobs:
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
 
+      - id: agp-version-finder
+        uses: usefulness/agp-version-finder-action@v1
+        with:
+          version-to-resolve: ${{ matrix.agp }}
+
       - uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: ${{ matrix.gradle }}
 
-      - run: gradle assemble lint -PuseMavenLocal -PagpVersion=${{ matrix.agp }}
+      - run: gradle assemble lint -PuseMavenLocal -PagpVersion=${{ steps.agp-version-finder.outputs.resolved-version }}
         working-directory: sample
 
   build-sample-apps-with-configuration-cache:
