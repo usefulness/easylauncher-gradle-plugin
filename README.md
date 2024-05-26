@@ -5,7 +5,7 @@
 
 [![version](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/com/project/starter/easylauncher/maven-metadata.xml?label=gradle)](https://plugins.gradle.org/search?term=com.starter)
 
-Modify the launcher icon of each of your app-variants using simple Gradle rules. Add ribbons of any color, overlay your own images, customize it according to your needs!
+Modify the launcher icon of each of your app-variants using simple Gradle rules. Add ribbons of any color,s overlay your own images, customize it according to your needs!
 
 | Circle | RoundedRectangle | Teardrop |
 | --- | --- | --- |
