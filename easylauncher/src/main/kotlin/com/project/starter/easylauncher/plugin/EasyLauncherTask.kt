@@ -64,7 +64,7 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
 
                     is IconFile.Adaptive -> iconFile.processAdaptiveIcon()
 
-                    is IconFile.XmlDrawableResource -> iconFile.processDrawable()
+                    is IconFile.XmlDrawable -> iconFile.processDrawable()
                 }
             }
         }
@@ -86,7 +86,7 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
                 iconNames.flatMap { (iconName, iconType) ->
                     objects.getIconFiles(parent = resDir, iconName = iconName)
                         .map { iconFile ->
-                            iconFile.tryParseXmlFile() ?: when (iconType) {
+                            iconFile.tryParseXmlIcon() ?: when (iconType) {
                                 IconType.Default -> IconFile.Raster(iconFile)
                                 IconType.Round -> IconFile.RasterRound(iconFile)
                             }
@@ -104,7 +104,10 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
             iconFiles.forEach { iconFile ->
                 val outputFile = iconFile.getOutputFile()
                 if (iconFile.extension == "xml") {
-                    iconFile.transformXml(outputFile, minSdkVersion.get(), filters.get())
+                    when (val drawable = iconFile.tryParseXmlDrawable()) {
+                        is IconFile.XmlDrawable.Vector -> drawable.transform(outputFile, minSdkVersion.get(), filters.get())
+                        null -> log.info { "Skipped $iconFile due to unrecognised file format" }
+                    }
                 } else {
                     iconFile.transformImage(
                         outputFile = outputFile,
@@ -116,9 +119,10 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
         }
     }
 
-    private fun IconFile.XmlDrawableResource.processDrawable() {
-        val outputFile = file.getOutputFile()
-        file.transformXml(outputFile, minSdkVersion.get(), filters.get())
+    private fun IconFile.XmlDrawable.processDrawable() {
+        when (this) {
+            is IconFile.XmlDrawable.Vector -> transform(file.getOutputFile(), minSdkVersion.get(), filters.get())
+        }
     }
 
     private fun File.getOutputFile(): File = File(outputDir.asFile.get(), "${parentFile.name}/$name")

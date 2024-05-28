@@ -2,6 +2,7 @@ package com.project.starter.easylauncher.plugin
 
 import com.project.starter.easylauncher.plugin.models.IconFile
 import com.project.starter.easylauncher.plugin.models.IconType
+import com.project.starter.easylauncher.plugin.models.toSize
 import groovy.xml.XmlSlurper
 import groovy.xml.slurpersupport.GPathResult
 import java.io.File
@@ -23,7 +24,7 @@ private val regex by lazy { "\\\$\\{([^{}]*)}".toRegex() }
 private fun String.applyPlaceholders(manifestPlaceholders: Map<String, Any>): String =
     replace(regex) { manifestPlaceholders[it.groups[1]?.value]?.toString() ?: it.value }
 
-internal fun File.tryParseXmlFile(): IconFile? {
+internal fun File.tryParseXmlIcon(): IconFile? {
     if (extension != "xml") {
         return null
     }
@@ -44,7 +45,23 @@ internal fun File.tryParseXmlFile(): IconFile? {
             monochrome = monochromeDrawable,
         )
     } else {
-        IconFile.XmlDrawableResource(file = this)
+        tryParseXmlDrawable()
+    }
+}
+
+internal fun File.tryParseXmlDrawable(): IconFile.XmlDrawable? {
+    val iconXml = XmlSlurper().parse(this)
+    val width = iconXml.property("@android:width")?.toSize()?.value
+    val height = iconXml.property("@android:height")?.toSize()?.value
+
+    return when {
+        width != null && height != null -> IconFile.XmlDrawable.Vector(
+            file = this,
+            width = width,
+            height = height,
+        )
+
+        else -> null
     }
 }
 

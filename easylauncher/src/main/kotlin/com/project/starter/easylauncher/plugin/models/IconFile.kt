@@ -15,5 +15,12 @@ internal sealed class IconFile {
         val monochrome: String?,
     ) : IconFile()
 
-    data class XmlDrawableResource(val file: File) : IconFile()
+    sealed class XmlDrawable : IconFile() {
+
+        data class Vector(
+            val file: File,
+            val width: Int,
+            val height: Int,
+        ) : XmlDrawable()
+    }
 }
