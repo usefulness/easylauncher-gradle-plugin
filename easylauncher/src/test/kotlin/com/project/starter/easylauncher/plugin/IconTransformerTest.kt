@@ -3,6 +3,7 @@ package com.project.starter.easylauncher.plugin
 import com.project.starter.easylauncher.filter.ChromeLikeFilter
 import com.project.starter.easylauncher.filter.ColorRibbonFilter
 import com.project.starter.easylauncher.filter.OverlayFilter
+import com.project.starter.easylauncher.plugin.models.IconFile
 import com.project.starter.easylauncher.plugin.utils.vectorFile
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -14,7 +15,7 @@ internal class IconTransformerTest {
 
     @TempDir
     lateinit var tempDir: File
-    lateinit var sourceIcon: File
+    lateinit var sourceIcon: IconFile.XmlDrawable.Vector
     lateinit var output: File
 
     @BeforeEach
@@ -22,8 +23,8 @@ internal class IconTransformerTest {
         val drawable = tempDir.resolve("drawable").apply {
             mkdir()
         }
-        sourceIcon = drawable.resolve("icon_resource.xml")
-        sourceIcon.writeText(vectorFile())
+        val sourceIconFile = drawable.resolve("icon_resource.xml").apply { writeText(vectorFile()) }
+        sourceIcon = sourceIconFile.tryParseXmlDrawable() as IconFile.XmlDrawable.Vector
 
         output = drawable.resolve("output.xml")
     }
@@ -31,7 +32,7 @@ internal class IconTransformerTest {
     @Test
     fun `transforms vector icon pre api 26`() {
         val expected = tempDir.resolve("drawable-anydpi-v26/output.xml")
-        sourceIcon.transformXml(
+        sourceIcon.transform(
             outputFile = output,
             minSdkVersion = 21,
             filters = listOf(
@@ -65,7 +66,7 @@ internal class IconTransformerTest {
     @Test
     fun `transforms vector icon since api 26`() {
         val expected = tempDir.resolve("drawable-anydpi/output.xml")
-        sourceIcon.transformXml(
+        sourceIcon.transform(
             outputFile = output,
             minSdkVersion = 26,
             filters = listOf(

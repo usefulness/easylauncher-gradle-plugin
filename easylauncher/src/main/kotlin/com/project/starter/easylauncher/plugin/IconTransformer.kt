@@ -2,8 +2,7 @@ package com.project.starter.easylauncher.plugin
 
 import com.project.starter.easylauncher.filter.Canvas
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
-import com.project.starter.easylauncher.plugin.models.toSize
-import groovy.xml.XmlSlurper
+import com.project.starter.easylauncher.plugin.models.IconFile
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -19,11 +18,7 @@ internal fun File.transformImage(outputFile: File, filters: List<EasyLauncherFil
     ImageIO.write(image, extension, outputFile)
 }
 
-internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: List<EasyLauncherFilter>) {
-    val iconXml = XmlSlurper().parse(this)
-    val width = iconXml.property("@android:width")?.toSize().let(::requireNotNull)
-    val height = iconXml.property("@android:height")?.toSize().let(::requireNotNull)
-
+internal fun IconFile.XmlDrawable.Vector.transform(outputFile: File, minSdkVersion: Int, filters: List<EasyLauncherFilter>) {
     val drawableRoot = outputFile.parentFile // eg. debug/drawable/
 
     val layers = filters.mapIndexed { index, filter ->
@@ -32,8 +27,8 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
 
         densities.forEach { (qualifier, multiplier) ->
             val overlay = BufferedImage(
-                (width.value * multiplier).roundToInt(),
-                (height.value * multiplier).roundToInt(),
+                (width * multiplier).roundToInt(),
+                (height * multiplier).roundToInt(),
                 BufferedImage.TYPE_INT_ARGB,
             )
             val canvas = Canvas(overlay, adaptive = true)
@@ -57,13 +52,13 @@ internal fun File.transformXml(outputFile: File, minSdkVersion: Int, filters: Li
     val versionSuffix = if (minSdkVersion >= ANDROID_OREO) "" else "-v26"
     val v26DrawableRoot = drawableRoot.parentFile.resolve("${drawableRoot.normalizedName}-anydpi$versionSuffix")
 
-    copyTo(v26DrawableRoot.resolve("easy_$name"), overwrite = true)
+    file.copyTo(v26DrawableRoot.resolve("easy_${file.name}"), overwrite = true)
     v26DrawableRoot.resolve(outputFile.name).writeText(
         """
         |<?xml version="1.0" encoding="utf-8"?>
         |<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
         |
-        |    <item android:drawable="@${drawableRoot.normalizedName}/easy_$nameWithoutExtension" />
+        |    <item android:drawable="@${drawableRoot.normalizedName}/easy_${file.nameWithoutExtension}" />
         |
         |$layers
         |</layer-list>

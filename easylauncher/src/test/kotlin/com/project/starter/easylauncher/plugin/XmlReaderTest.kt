@@ -212,7 +212,7 @@ internal class XmlReaderTest {
             """.trimIndent(),
         )
 
-        val icon = adaptiveIcon.tryParseXmlFile() as IconFile.Adaptive
+        val icon = adaptiveIcon.tryParseXmlIcon() as IconFile.Adaptive
 
         assertThat(icon.background).isEqualTo("@drawable/ic_launcher_background")
         assertThat(icon.foreground).isEqualTo("@mipmap/ic_launcher_foreground")
@@ -234,7 +234,7 @@ internal class XmlReaderTest {
             """.trimIndent(),
         )
 
-        val icon = adaptiveIcon.tryParseXmlFile() as IconFile.Adaptive
+        val icon = adaptiveIcon.tryParseXmlIcon() as IconFile.Adaptive
 
         assertThat(icon.background).isEqualTo("@drawable/ic_launcher_background")
         assertThat(icon.foreground).isEqualTo("@mipmap/ic_launcher_foreground")
@@ -247,9 +247,15 @@ internal class XmlReaderTest {
         val drawableResource = tempDir.resolve("ic_launcher.xml")
         drawableResource.writeText(vectorFile())
 
-        val icon = drawableResource.tryParseXmlFile()
+        val icon = drawableResource.tryParseXmlIcon()
 
-        assertThat(icon).isEqualTo(IconFile.XmlDrawableResource(file = drawableResource))
+        assertThat(icon).isEqualTo(
+            IconFile.XmlDrawable.Vector(
+                file = drawableResource,
+                width = 24,
+                height = 24,
+            ),
+        )
     }
 
     @Test
@@ -266,7 +272,7 @@ internal class XmlReaderTest {
             """.trimIndent(),
         )
 
-        val icon = adaptiveIcon.tryParseXmlFile()
+        val icon = adaptiveIcon.tryParseXmlIcon()
 
         assertThat(icon).isNull()
     }

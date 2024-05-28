@@ -1,0 +1,20 @@
+apply plugin: 'com.starter.application.android'
+apply plugin: 'com.starter.easylauncher'
+
+android {
+    namespace "com.example.vector"
+    defaultConfig {
+        minSdkVersion 28
+    }
+    buildTypes {
+        named("release") {
+            debuggable false
+            signingConfig signingConfigs.debug
+        }
+    }
+    flavorDimensions += "reportedBugs"
+}
+
+dependencies {
+    implementation project(":adaptive-support")
+}

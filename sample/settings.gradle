@@ -6,9 +6,9 @@ if(!gradle.gradleVersion.startsWith("7")) {
     apply plugin: "org.gradle.toolchains.foojay-resolver-convention"
 }
 
-
 include ':example-activity-alias'
 include ':example-custom'
+include ':example-drawables'
 include ':example-icon-round'
 include ':example-library'
 include ':example-manifest-placeholder'
