@@ -242,6 +242,42 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
     }
 
     @Test
+    fun `plugin is compatible with isolated projects`() {
+        moduleRoot.resolve("build.gradle").buildScript(
+            androidBlock = { "" },
+            easylauncherBlock = {
+                """
+                productFlavors {
+                    debug {
+                        filters(
+                            grayRibbonFilter(),
+                            greenRibbonFilter(),
+                            orangeRibbonFilter(),
+                            yellowRibbonFilter(),
+                            redRibbonFilter(),
+                            blueRibbonFilter(),
+                            customRibbon(label: "second", ribbonColor: "#6600CC", labelColor: "#FFFFFF", position: "bottom"),
+                            chromeLike(),
+                            chromeLike(
+                                label: "JP2", 
+                                ribbonColor: "#723D46", 
+                                labelColor: "#EEFFFEE", 
+                                labelPadding: 25, 
+                                overlayHeight: 0.6, 
+                                textSizeRatio: 0.15
+                            ),
+                        )
+                    }
+                }
+                """.trimIndent()
+            },
+        )
+
+        val result = runTask("assembleDebug", "-Dorg.gradle.unsafe.isolated-projects=true", skipJacoco = true)
+        assertThat(result.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.SUCCESS)
+    }
+
+    @Test
     fun `generates proper tasks`() {
         moduleRoot.resolve("build.gradle").buildScript(
             androidBlock = {
