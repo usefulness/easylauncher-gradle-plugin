@@ -11,7 +11,7 @@ android {
 
 dependencies {
     implementation(project(":adaptive-support"))
-    api("io.github.usefulness:screenshot-testing-core:1.2.0")
+    api("io.github.usefulness:screenshot-testing-core:1.2.1")
     api(platform("org.junit:junit-bom:5.11.2"))
     api("org.junit.vintage:junit-vintage-engine:5.11.2")
     api("androidx.test:rules:1.6.1")
