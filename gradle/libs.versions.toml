@@ -8,7 +8,7 @@ mavencentral-junit = "5.11.4"
 mavencentral-assertj = "3.27.0"
 mavencentral-apachecommons = "3.17.0"
 mavencentral-usefulnesswebp = "0.8.0"
-maven-binarycompatiblity = "0.16.3"
+maven-binarycompatiblity = "0.17.0"
 maven-dokka = "2.0.0"
 
 [libraries]
