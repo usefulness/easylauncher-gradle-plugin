@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
@@ -42,7 +42,7 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
     pluginClasspath.from(configurations.testRuntimeDependencies)
 }
 
-tasks.withType(KotlinCompile).configureEach {
+tasks.withType(KotlinJvmCompile).configureEach {
     compilerOptions {
         apiVersion = KotlinVersion.KOTLIN_1_8
         languageVersion = KotlinVersion.KOTLIN_1_8
