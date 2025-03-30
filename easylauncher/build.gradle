@@ -58,6 +58,7 @@ dependencies {
     compileOnly(libs.agp.gradle)
 
     testImplementation gradleTestKit()
+    testRuntimeOnly(libs.junit.platform.launcher)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.assertj.core)
     testImplementation(libs.junit.jupiter.params)
