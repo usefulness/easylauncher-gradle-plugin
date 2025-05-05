@@ -116,11 +116,14 @@ class EasyLauncherPlugin : Plugin<Project> {
                     }
 
                     val resSourceDirectories = if (agpVersion.canAccessStaticVariantSources) {
-                        variant.sources.res?.static?.map { outer -> outer.flatten().map { inner -> inner.asFile } }
-                            ?: project.provider { emptyList() }
+                        variant.sources.res?.static?.map { outer ->
+                            // Reorder resource directories to ensure flavor-specific directories have priority
+                            val files = outer.flatten().map { it.asFile }
+                            sortResourceDirectories(files, variant)
+                        } ?: project.provider { emptyList() }
                     } else {
                         project.provider {
-                            resSourceDirectoriesBySourceSet
+                            val allDirs = resSourceDirectoriesBySourceSet
                                 .mapNotNull { (name, files) ->
                                     if (relevantSourcesSets.contains(name)) {
                                         files
@@ -129,6 +132,8 @@ class EasyLauncherPlugin : Plugin<Project> {
                                     }
                                 }
                                 .flatten()
+                            // Reorder resource directories
+                            sortResourceDirectories(allDirs, variant)
                         }
                     }
 
@@ -176,6 +181,36 @@ class EasyLauncherPlugin : Plugin<Project> {
         ribbonBuildTypes: Iterable<EasyLauncherConfig>,
     ): List<EasyLauncherConfig> = ribbonProductFlavors.filter { config -> variant.productFlavors.any { config.name == it.second } } +
         ribbonBuildTypes.filter { it.name == variant.buildType }
+
+    /**
+     * Add this helper method to sort resource directories
+     */
+    private fun sortResourceDirectories(directories: List<File>, variant: Variant): List<File> {
+        // Define priority order: variant-specific > flavor-specific > build-type-specific > main
+        val variantName = variant.name
+        val flavorName = variant.flavorName ?: ""
+        val buildType = variant.buildType
+
+        // Create a priority mapping function
+        fun getPriority(dir: File): Int {
+            val path = dir.path
+            return when {
+                // Variant-specific directory (e.g., prodDebug) has highest priority
+                path.contains(variantName) -> 4
+                // Flavor-specific directory (e.g., prod) has second priority
+                flavorName.isNotEmpty() && path.contains(flavorName) -> 3
+                // Build-type-specific directory (e.g., debug) has third priority
+                path.contains("$buildType") -> 2
+                // Main directory has lowest priority
+                path.contains("main") -> 1
+                // Other directories
+                else -> 0
+            }
+        }
+
+        // Sort by priority in ascending order, lower priority comes first
+        return directories.sortedBy { getPriority(it) }
+    }
 
     private val AndroidPluginVersion.canUseVariantManifestSources get() = this >= AndroidPluginVersion(8, 3, 0)
     private val AndroidPluginVersion.hasDebuggableProperty get() = this >= AndroidPluginVersion(8, 3, 0)
