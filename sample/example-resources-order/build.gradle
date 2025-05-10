@@ -1,0 +1,37 @@
+apply plugin: 'com.starter.application.android'
+apply plugin: 'com.starter.easylauncher'
+
+android {
+    namespace "com.example.resourcesorder"
+    defaultConfig {
+        minSdkVersion 28
+    }
+    buildTypes {
+        named("release") {
+            signingConfig signingConfigs.debug
+        }
+        register("canary") {
+            signingConfig signingConfigs.debug
+            debuggable true
+        }
+    }
+
+    def buildType = findProperty("testBuildType")?.toString() ?: "debug"
+    if (buildTypes.any { it.name == buildType }) {
+        testBuildType = buildType
+    }
+
+    flavorDimensions = ["environment"]
+    productFlavors {
+        register("local") {
+            dimension "environment"
+        }
+        register("qa") {
+            dimension "environment"
+        }
+    }
+}
+
+dependencies {
+    implementation project(":adaptive-support")
+}

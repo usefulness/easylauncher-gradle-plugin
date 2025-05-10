@@ -16,6 +16,7 @@ include ':example-scripted'
 include ':example-simple'
 include ':example-vector'
 include ':example-webp'
+include ':example-resources-order'
 
 // utilities
 include ':adaptive-support'
