@@ -6,6 +6,7 @@ import com.android.build.api.variant.Variant
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.Directory
 import java.io.File
 
 class EasyLauncherPlugin : Plugin<Project> {
@@ -116,14 +117,16 @@ class EasyLauncherPlugin : Plugin<Project> {
                     }
 
                     val resSourceDirectories = if (agpVersion.canAccessStaticVariantSources) {
-                        variant.sources.res?.static?.map { outer ->
-                            // Reorder resource directories to ensure flavor-specific directories have priority
-                            val files = outer.flatten().map { it.asFile }
-                            sortResourceDirectories(files, variant)
-                        } ?: project.provider { emptyList() }
+                        variant.sources.res?.static
+                            ?.map { outer ->
+                                outer.flatten()
+                                    .map { it.asFile }
+                                    .sortedWith(resDirectoriesComparator(variant, projectPath = layout.projectDirectory))
+                            }
+                            ?: project.provider { emptyList() }
                     } else {
                         project.provider {
-                            val allDirs = resSourceDirectoriesBySourceSet
+                            resSourceDirectoriesBySourceSet
                                 .mapNotNull { (name, files) ->
                                     if (relevantSourcesSets.contains(name)) {
                                         files
@@ -132,8 +135,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                                     }
                                 }
                                 .flatten()
-                            // Reorder resource directories
-                            sortResourceDirectories(allDirs, variant)
+                                .sortedWith(resDirectoriesComparator(variant, projectPath = layout.projectDirectory))
                         }
                     }
 
@@ -182,34 +184,20 @@ class EasyLauncherPlugin : Plugin<Project> {
     ): List<EasyLauncherConfig> = ribbonProductFlavors.filter { config -> variant.productFlavors.any { config.name == it.second } } +
         ribbonBuildTypes.filter { it.name == variant.buildType }
 
-    /**
-     * Add this helper method to sort resource directories
-     */
-    private fun sortResourceDirectories(directories: List<File>, variant: Variant): List<File> {
-        // Define priority order: variant-specific > flavor-specific > build-type-specific > main
+    // Define priority order: variant-specific > flavor-specific > build-type-specific > main
+    private fun resDirectoriesComparator(variant: Variant, projectPath: Directory) = compareBy<File> { dir ->
         val variantName = variant.name
-        val flavorName = variant.flavorName ?: ""
+        val flavorName = variant.flavorName
         val buildType = variant.buildType
 
-        // Create a priority mapping function
-        fun getPriority(dir: File): Int {
-            val path = dir.path
-            return when {
-                // Variant-specific directory (e.g., prodDebug) has highest priority
-                path.contains(variantName) -> 4
-                // Flavor-specific directory (e.g., prod) has second priority
-                flavorName.isNotEmpty() && path.contains(flavorName) -> 3
-                // Build-type-specific directory (e.g., debug) has third priority
-                path.contains("$buildType") -> 2
-                // Main directory has lowest priority
-                path.contains("main") -> 1
-                // Other directories
-                else -> 0
-            }
+        val path = dir.relativeToOrSelf(projectPath.asFile).path
+        when {
+            path.contains(variantName) -> 4
+            flavorName?.isNotBlank() == true && path.contains(flavorName) -> 3
+            buildType?.isNotBlank() == true && path.contains(buildType) -> 2
+            path.contains("main") -> 1
+            else -> 0
         }
-
-        // Sort by priority in ascending order, lower priority comes first
-        return directories.sortedBy { getPriority(it) }
     }
 
     private val AndroidPluginVersion.canUseVariantManifestSources get() = this >= AndroidPluginVersion(8, 3, 0)
