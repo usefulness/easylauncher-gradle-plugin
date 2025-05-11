@@ -19,8 +19,8 @@ fun File.buildScript(androidBlock: () -> String = { "" }, easylauncherBlock: () 
         android {
             namespace 'com.project.starter.easylauncher.app'
             defaultConfig {
-                compileSdkVersion 33
-                minSdkVersion 23
+                compileSdk = 36
+                minSdk = 23
             }
             
             ${androidBlock()}
@@ -55,8 +55,8 @@ fun File.libraryBuildscript(androidBlock: () -> String = { "" }, easylauncherBlo
         android {
             namespace 'com.project.starter.easylauncher.library'
             defaultConfig {
-                compileSdkVersion 33
-                minSdkVersion 23
+                compileSdk = 36
+                minSdk = 23
             }
             ${androidBlock()}
         }

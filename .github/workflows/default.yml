@@ -39,20 +39,12 @@ jobs:
 
       - run: ./gradlew check
 
-      - run: ./gradlew projectCoverage
-
       - name: Upload test results
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: "${{ github.workspace }}/**/build/reports/tests"
-
-      - name: Upload jacoco report
-        uses: actions/upload-artifact@v4
-        with:
-          name: jacoco-report
-          path: "${{ github.workspace }}/**/build/reports/jacoco"
 
       - run: ./gradlew publishToMavenLocal
 
@@ -73,14 +65,14 @@ jobs:
       matrix:
         javaVersion: [ 17, 24 ]
         gradle: [ release-candidate ]
-        agp: [ alpha, beta, stable ]
+        agp: [ alpha, stable ]
         include:
           - javaVersion: 17
             gradle: "8.14.3"
-            agp: 8.6.0
+            agp: 8.13.0
           - javaVersion: 17
             gradle: current
-            agp: 8.6.0
+            agp: 8.13.0
           - javaVersion: 21
             gradle: current
             agp: stable
