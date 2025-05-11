@@ -222,11 +222,13 @@ See [related issue](https://github.com/usefulness/easylauncher-gradle-plugin/iss
  - `iconNames`: provides a list of icons which will have the filters applied
 
 ## Requirements
-Minimal requirements for the plugin are: 
-- Gradle: **8.2.1**
-- Android Gradle Plugin: **8.2.2**
+Minimal requirements for the plugin are:
+- Gradle: **8.7**
+- Android Gradle Plugin: **8.6.0**
 - Java Version: **11**
-- minSdkVersion: **26** _(theoretically there should be no lower boundary - it just hasn't been tested)_
+- minSdkVersion: **26**
+
+_Note: theoretically there should be no lower boundary - it just isn't tested_
 
 ## Project Structure
 
