@@ -71,19 +71,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        javaVersion: [ 17, 21 ]
+        javaVersion: [ 17, 24 ]
         gradle: [ release-candidate ]
         agp: [ alpha, beta, stable ]
         include:
           - javaVersion: 17
-            gradle: "8.2.1"
-            agp: 8.2.2
+            gradle: "8.7"
+            agp: 8.6.0
           - javaVersion: 17
             gradle: current
-            agp: 8.2.2
-          - javaVersion: 19
-            gradle: current
-            agp: 8.2.2
+            agp: 8.6.0
           - javaVersion: 21
             gradle: current
             agp: stable
