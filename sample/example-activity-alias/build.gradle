@@ -3,7 +3,6 @@ apply plugin: 'com.starter.easylauncher'
 
 android {
     namespace "com.example.multiplelauncher"
-    testBuildType findProperty("testBuildType")?.toString() ?: "debug"
 
     defaultConfig {
         applicationId "com.example.mutliplelauncher"
@@ -17,6 +16,11 @@ android {
         named("release") {
             signingConfig signingConfigs.debug
         }
+    }
+
+    def buildType = findProperty("testBuildType")?.toString() ?: "debug"
+    if (buildTypes.any { it.name == buildType }) {
+        testBuildType = buildType
     }
 }
 

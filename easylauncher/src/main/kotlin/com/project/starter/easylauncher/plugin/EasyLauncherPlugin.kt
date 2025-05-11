@@ -6,6 +6,7 @@ import com.android.build.api.variant.Variant
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.Directory
 import java.io.File
 
 class EasyLauncherPlugin : Plugin<Project> {
@@ -116,7 +117,12 @@ class EasyLauncherPlugin : Plugin<Project> {
                     }
 
                     val resSourceDirectories = if (agpVersion.canAccessStaticVariantSources) {
-                        variant.sources.res?.static?.map { outer -> outer.flatten().map { inner -> inner.asFile } }
+                        variant.sources.res?.static
+                            ?.map { outer ->
+                                outer.flatten()
+                                    .map { it.asFile }
+                                    .sortedWith(resDirectoriesComparator(variant, projectPath = layout.projectDirectory))
+                            }
                             ?: project.provider { emptyList() }
                     } else {
                         project.provider {
@@ -129,6 +135,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                                     }
                                 }
                                 .flatten()
+                                .sortedWith(resDirectoriesComparator(variant, projectPath = layout.projectDirectory))
                         }
                     }
 
@@ -176,6 +183,22 @@ class EasyLauncherPlugin : Plugin<Project> {
         ribbonBuildTypes: Iterable<EasyLauncherConfig>,
     ): List<EasyLauncherConfig> = ribbonProductFlavors.filter { config -> variant.productFlavors.any { config.name == it.second } } +
         ribbonBuildTypes.filter { it.name == variant.buildType }
+
+    // Define priority order: variant-specific > flavor-specific > build-type-specific > main
+    private fun resDirectoriesComparator(variant: Variant, projectPath: Directory) = compareBy<File> { dir ->
+        val variantName = variant.name
+        val flavorName = variant.flavorName
+        val buildType = variant.buildType
+
+        val path = dir.relativeToOrSelf(projectPath.asFile).path
+        when {
+            path.contains(variantName) -> 4
+            flavorName?.isNotBlank() == true && path.contains(flavorName) -> 3
+            buildType?.isNotBlank() == true && path.contains(buildType) -> 2
+            path.contains("main") -> 1
+            else -> 0
+        }
+    }
 
     private val AndroidPluginVersion.canUseVariantManifestSources get() = this >= AndroidPluginVersion(8, 3, 0)
     private val AndroidPluginVersion.hasDebuggableProperty get() = this >= AndroidPluginVersion(8, 3, 0)

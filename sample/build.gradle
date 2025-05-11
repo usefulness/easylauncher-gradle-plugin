@@ -58,11 +58,7 @@ subprojects {
             }
             applicationVariants.configureEach { variant ->
                 variant.mergedFlavor.applicationId = "com.${project.name.replace("-", ".")}.${variant.name}"
-                if (variant.flavorName == "") {
-                    variant.mergedFlavor.manifestPlaceholders += [appName: "$project.name"]
-                } else {
-                    variant.mergedFlavor.manifestPlaceholders += [appName: "$variant.flavorName"]
-                }
+                variant.mergedFlavor.manifestPlaceholders += [appName: "$variant.name"]
             }
             buildTypes.configureEach {
                 matchingFallbacks = ["debug"]
