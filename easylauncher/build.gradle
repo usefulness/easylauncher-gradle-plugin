@@ -49,13 +49,13 @@ tasks.withType(KotlinJvmCompile).configureEach {
     }
 }
 kotlin {
-    jvmToolchain(23)
+    jvmToolchain(24)
 }
 
 dependencies {
     implementation("org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}")
     runtimeOnly(libs.usefulness.webp)
-    compileOnly(libs.agp.gradle)
+    compileOnly(libs.agp.gradle.api)
 
     testImplementation gradleTestKit()
     testRuntimeOnly(libs.junit.platform.launcher)
@@ -63,4 +63,6 @@ dependencies {
     testImplementation(libs.assertj.core)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.apache.commons.lang3)
+
+    testRuntimeDependencies(libs.agp.gradle.impl)
 }
