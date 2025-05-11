@@ -51,7 +51,7 @@ kotlin {
 
 dependencies {
     runtimeOnly(libs.usefulness.webp)
-    compileOnly(libs.agp.gradle)
+    compileOnly(libs.agp.gradle.api)
 
     testImplementation gradleTestKit()
     testRuntimeOnly(libs.junit.platform.launcher)
@@ -59,4 +59,6 @@ dependencies {
     testImplementation(libs.assertj.core)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.apache.commons.lang3)
+
+    testRuntimeDependencies(libs.agp.gradle.impl)
 }
