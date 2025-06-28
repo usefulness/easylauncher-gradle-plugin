@@ -7,7 +7,7 @@ gradle-jacocotestkit = "1.0.12"
 mavencentral-junit = "5.13.2"
 mavencentral-assertj = "3.27.3"
 mavencentral-apachecommons = "3.17.0"
-mavencentral-usefulnesswebp = "0.10.0"
+mavencentral-usefulnesswebp = "0.10.1"
 maven-binarycompatiblity = "0.18.0"
 maven-dokka = "2.0.0"
 
