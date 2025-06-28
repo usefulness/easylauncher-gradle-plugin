@@ -65,7 +65,7 @@ class PublishingPlugin : Plugin<Project> {
     }
 
 
-    private inline fun <reified T> ExtensionContainer.configure(crossinline receiver: T.() -> Unit) {
+    private inline fun <reified T: Any> ExtensionContainer.configure(crossinline receiver: T.() -> Unit) {
         configure(T::class.java) { receiver(it) }
     }
 }
