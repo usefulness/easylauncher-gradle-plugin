@@ -18,5 +18,5 @@ dependencies {
     api("androidx.test:runner:1.7.0")
     api("androidx.test:core-ktx:1.7.0")
     api("androidx.test.ext:junit-ktx:1.2.1")
-    api("androidx.test.espresso:espresso-core:3.6.1")
+    api("androidx.test.espresso:espresso-core:3.7.0")
 }
