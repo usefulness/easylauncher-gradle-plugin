@@ -94,7 +94,9 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: ${{ matrix.javaVersion }}
+          java-version: |
+            ${{ matrix.javaVersion }}
+            24
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
@@ -125,7 +127,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        javaVersion: [ 17, 21 ]
+        javaVersion: [ 17, 24 ]
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
@@ -136,7 +138,9 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: ${{ matrix.javaVersion }}
+          java-version: |
+            ${{ matrix.javaVersion }}
+            24
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
