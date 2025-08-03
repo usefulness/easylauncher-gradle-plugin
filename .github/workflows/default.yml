@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 23
+          java-version-file: .java-version
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
@@ -76,7 +76,7 @@ jobs:
         agp: [ alpha, beta, stable ]
         include:
           - javaVersion: 17
-            gradle: "8.7"
+            gradle: "8.14.3"
             agp: 8.6.0
           - javaVersion: 17
             gradle: current
@@ -94,7 +94,9 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: ${{ matrix.javaVersion }}
+          java-version: |
+            ${{ matrix.javaVersion }}
+            24
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
@@ -125,7 +127,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        javaVersion: [ 17, 21 ]
+        javaVersion: [ 17, 24 ]
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
@@ -136,7 +138,9 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: ${{ matrix.javaVersion }}
+          java-version: |
+            ${{ matrix.javaVersion }}
+            24
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
@@ -165,7 +169,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 23
+          java-version-file: .java-version
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
