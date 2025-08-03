@@ -6,7 +6,6 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.jvm.tasks.Jar
 import org.gradle.plugin.devel.GradlePluginDevelopmentExtension
 import org.gradle.plugins.signing.SigningExtension
-import org.jetbrains.dokka.gradle.DokkaTask
 
 class PublishingPlugin : Plugin<Project> {
 
@@ -24,11 +23,8 @@ class PublishingPlugin : Plugin<Project> {
         pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
             pluginManager.apply("org.jetbrains.dokka")
 
-            tasks.withType(DokkaTask::class.java).configureEach { dokkaTask ->
-                dokkaTask.notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/1217")
-            }
-            tasks.named("javadocJar", Jar::class.java) { javadocJar ->
-                javadocJar.from(tasks.named("dokkaJavadoc"))
+            tasks.named { it == "javadocJar" }.withType(Jar::class.java).configureEach { javadocJar ->
+                javadocJar.from(tasks.named("dokkaGeneratePublicationHtml"))
             }
         }
 
@@ -64,12 +60,9 @@ class PublishingPlugin : Plugin<Project> {
         }
     }
 
-
-    private inline fun <reified T: Any> ExtensionContainer.configure(crossinline receiver: T.() -> Unit) {
+    private inline fun <reified T : Any> ExtensionContainer.configure(crossinline receiver: T.() -> Unit) {
         configure(T::class.java) { receiver(it) }
     }
 }
 
-private fun Project.findConfig(key: String): String {
-    return findProperty(key)?.toString() ?: System.getenv(key) ?: ""
-}
+private fun Project.findConfig(key: String): String = findProperty(key)?.toString() ?: System.getenv(key) ?: ""

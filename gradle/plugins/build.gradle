@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -8,21 +7,18 @@ plugins {
 }
 
 def targetJavaVersion = JavaVersion.VERSION_11
+
+kotlin {
+    jvmToolchain(24)
+    compilerOptions.jvmTarget = JvmTarget.fromTarget(targetJavaVersion.toString())
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.release.set(targetJavaVersion.majorVersion.toInteger())
-}
-tasks.withType(KotlinCompile).configureEach {
-    compilerOptions {
-        jvmTarget = JvmTarget.@Companion.fromTarget(targetJavaVersion.toString())
-    }
 }
 
 dependencies {
     implementation libs.jetbrains.dokka
-}
-
-kotlin {
-    jvmToolchain(23)
 }
 
 gradlePlugin {
