@@ -97,9 +97,8 @@ class EasyLauncherPlugin : Plugin<Project> {
                         variant.name,
                         variant.buildType,
                         variant.flavorName,
-                    ) + variant.productFlavors.map { (_, flavor) ->
-                        flavor
-                    }
+                    ) +
+                        variant.productFlavors.map { (_, flavor) -> flavor }
 
                     val manifests = if (agpVersion.canUseVariantManifestSources) {
                         variant.sources.manifests.all.map { manifests -> manifests.map { it.asFile } }
