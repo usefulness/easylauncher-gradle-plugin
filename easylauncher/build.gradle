@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
@@ -42,18 +41,16 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
     pluginClasspath.from(configurations.testRuntimeDependencies)
 }
 
-tasks.withType(KotlinJvmCompile).configureEach {
+kotlin {
+    jvmToolchain(24)
     compilerOptions {
         apiVersion = KotlinVersion.KOTLIN_1_8
         languageVersion = KotlinVersion.KOTLIN_1_8
     }
 }
-kotlin {
-    jvmToolchain(23)
-}
 
 dependencies {
-    implementation("org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}")
+//    implementation("org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}")
     runtimeOnly(libs.usefulness.webp)
     compileOnly(libs.agp.gradle)
 
