@@ -50,7 +50,6 @@ kotlin {
 }
 
 dependencies {
-//    implementation("org.codehaus.groovy:groovy-xml:${GroovySystem.getVersion()}")
     runtimeOnly(libs.usefulness.webp)
     compileOnly(libs.agp.gradle)
 
