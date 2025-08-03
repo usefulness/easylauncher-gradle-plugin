@@ -50,7 +50,6 @@ fun File.libraryBuildscript(androidBlock: () -> String = { "" }, easylauncherBlo
         repositories {
             mavenCentral()
             google()
-            jcenter()
         }
         
         android {
