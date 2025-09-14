@@ -2,7 +2,7 @@
 gradle-starter = "0.90.0"
 gradle-gradlepublish = "2.0.0"
 gradle-doctor = "0.12.1"
-google-agp = "8.9.2"
+google-agp = "8.13.0"
 gradle-jacocotestkit = "1.0.12"
 mavencentral-junit = "5.13.4"
 mavencentral-assertj = "3.27.4"
