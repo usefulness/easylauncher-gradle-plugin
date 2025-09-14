@@ -1,3 +1,6 @@
+import com.android.build.api.variant.HasAndroidTest
+import com.android.build.api.variant.HasUnitTest
+
 apply plugin: 'com.starter.library.android'
 apply plugin: 'com.starter.easylauncher'
 pluginManager.apply("io.github.usefulness.screenshot-testing-plugin")
@@ -14,13 +17,16 @@ android {
     }
 
     testOptions.unitTests.includeAndroidResources true
+}
 
-    testVariants.configureEach { variant ->
-        variant.mergedFlavor.manifestPlaceholders = [appName: ""]
-    }
-
-    unitTestVariants.configureEach { variant ->
-        variant.mergedFlavor.manifestPlaceholders = [appName: ""]
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        if (variant instanceof HasUnitTest) {
+            variant.unitTest?.manifestPlaceholders.put("appName", "")
+        }
+        if (variant instanceof HasAndroidTest) {
+            variant.androidTest?.manifestPlaceholders.put("appName", "")
+        }
     }
 }
 

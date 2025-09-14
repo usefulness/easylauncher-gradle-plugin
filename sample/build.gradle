@@ -38,11 +38,10 @@ apply plugin: "com.starter.config"
 
 commonConfig {
     androidPlugin {
-        minSdkVersion 23
+        minSdkVersion = 23
     }
 }
 
-def agpVersion = project.properties["agpVersion"] ?: ""
 subprojects {
     pluginManager.withPlugin("com.android.application") {
         pluginManager.apply("io.github.usefulness.screenshot-testing-plugin")
@@ -56,10 +55,6 @@ subprojects {
             packagingOptions {
                 exclude "META-INF/LICENSE*"
             }
-            applicationVariants.configureEach { variant ->
-                variant.mergedFlavor.applicationId = "com.${project.name.replace("-", ".")}.${variant.name}"
-                variant.mergedFlavor.manifestPlaceholders += [appName: "$variant.name"]
-            }
             buildTypes.configureEach {
                 matchingFallbacks = ["debug"]
             }
@@ -67,12 +62,16 @@ subprojects {
             lintOptions {
                 disable("VectorPath", "HardcodedText", "IconDuplicates", "ContentDescription")
 
-                if (agpVersion == "" || agpVersion.startsWith("8")) {
-                    disable("MonochromeLauncherIcon")
-                }
+                disable("MonochromeLauncherIcon")
 
                 warningsAsErrors = true
                 checkReleaseBuilds = false
+            }
+        }
+        androidComponents {
+            onVariants(selector().all()) { variant ->
+                variant.applicationId = "com.${project.name.replace("-", ".")}.${variant.name}"
+                variant.manifestPlaceholders.put("appName", "$variant.name")
             }
         }
 
@@ -88,31 +87,34 @@ subprojects {
         }
 
         String lastTask = null
-        android.applicationVariants.configureEach { variant ->
-            def recordTask = tasks.findByName("record${variant.name.capitalize()}AndroidTestScreenshotTest")
 
-            if (recordTask != null) {
-                def recordAndCopyTask = "recordAndCopy${variant.name.capitalize()}AndroidTestScreenshotTest"
+        androidComponents {
+            onVariants(selector().all()) { variant ->
+                def recordTask = tasks.findByName("record${variant.name.capitalize()}AndroidTestScreenshotTest")
 
-                tasks.register(recordAndCopyTask, Copy) {
-                    from "screenshots/"
-                    into layout.buildDirectory.file("screenshots_tmp")
-                    dependsOn recordTask
+                if (recordTask != null) {
+                    def recordAndCopyTask = "recordAndCopy${variant.name.capitalize()}AndroidTestScreenshotTest"
+
+                    tasks.register(recordAndCopyTask, Copy) {
+                        from "screenshots/"
+                        into layout.buildDirectory.file("screenshots_tmp")
+                        dependsOn recordTask
+                    }
+
+                    tasks.recordAll.dependsOn recordAndCopyTask
                 }
 
-                tasks.recordAll.dependsOn recordAndCopyTask
+                if (lastTask != null) {
+                    if (gradle.gradleVersion.startsWith("8.2")) {
+                        return
+                    }
+                    tasks.named { it == "record${variant.name.capitalize()}AndroidTestScreenshotTest" }.configureEach {
+                        mustRunAfter("record${lastTask.capitalize()}AndroidTestScreenshotTest")
+                        mustRunAfter("recordAndCopy${lastTask.capitalize()}AndroidTestScreenshotTest")
+                    }
+                }
+                lastTask = variant.name
             }
-
-            if (lastTask != null) {
-                if (gradle.gradleVersion.startsWith("8.2")) {
-                    return
-                }
-                tasks.named { it == "record${variant.name.capitalize()}AndroidTestScreenshotTest" }.configureEach {
-                    mustRunAfter("record${lastTask.capitalize()}AndroidTestScreenshotTest")
-                    mustRunAfter("recordAndCopy${lastTask.capitalize()}AndroidTestScreenshotTest")
-                }
-            }
-            lastTask = variant.name
         }
 
         tasks.register("verifyAll") {
@@ -152,19 +154,21 @@ subprojects {
                 }
             }
 
-            android.libraryVariants.configureEach { variant ->
-                def recordTask = tasks.findByName("record${variant.name.capitalize()}AndroidTestScreenshotTest")
+            androidComponents {
+                onVariants(selector().all()) { variant ->
+                    def recordTask = tasks.findByName("record${variant.name.capitalize()}AndroidTestScreenshotTest")
 
-                if (recordTask != null) {
-                    def recordAndCopyTask = "recordAndCopy${variant.name.capitalize()}AndroidTestScreenshotTest"
+                    if (recordTask != null) {
+                        def recordAndCopyTask = "recordAndCopy${variant.name.capitalize()}AndroidTestScreenshotTest"
 
-                    tasks.register(recordAndCopyTask, Copy) {
-                        from "screenshots/"
-                        into layout.buildDirectory.dir("screenshots_tmp")
-                        dependsOn recordTask
+                        tasks.register(recordAndCopyTask, Copy) {
+                            from "screenshots/"
+                            into layout.buildDirectory.dir("screenshots_tmp")
+                            dependsOn recordTask
+                        }
+
+                        tasks.recordAll.dependsOn recordAndCopyTask
                     }
-
-                    tasks.recordAll.dependsOn recordAndCopyTask
                 }
             }
 

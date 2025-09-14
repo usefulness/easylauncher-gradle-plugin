@@ -15,7 +15,7 @@ commonConfig {
 allprojects {
     pluginManager.withPlugin("kotlin") { plugin ->
         def kotlinVersion = KotlinPluginWrapperKt.getKotlinPluginVersion(project)
-        def agp = libs.agp.gradle.get().module
+        def agp = libs.agp.gradle.api.get().module
         def agpVersion = libs.versions.google.agp.get()
         configurations.matching { it.name != "detekt" }.configureEach {
             resolutionStrategy.eachDependency {

@@ -232,11 +232,11 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
             },
         )
 
-        val cleanRun = runTask("assembleDebug", "--configuration-cache", skipJacoco = true)
+        val cleanRun = runTask("assembleDebug", "--configuration-cache")
         assertThat(cleanRun.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.SUCCESS)
         assertThat(cleanRun.output).contains("Calculating task graph as no cached configuration is available for tasks")
 
-        val secondRun = runTask("assembleDebug", "--configuration-cache", skipJacoco = true)
+        val secondRun = runTask("assembleDebug", "--configuration-cache")
         assertThat(secondRun.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.UP_TO_DATE)
         assertThat(secondRun.output).contains("Configuration cache entry reused")
     }
@@ -273,7 +273,7 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
             },
         )
 
-        val result = runTask("assembleDebug", "-Dorg.gradle.unsafe.isolated-projects=true", skipJacoco = true)
+        val result = runTask("assembleDebug", "-Dorg.gradle.unsafe.isolated-projects=true")
         assertThat(result.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.SUCCESS)
     }
 
