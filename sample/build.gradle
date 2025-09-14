@@ -16,7 +16,7 @@ buildscript {
     }
     dependencies {
         classpath "com.project.starter:android:0.91.0"
-        classpath "io.github.usefulness:screenshot-testing-plugin:1.2.1"
+        classpath "io.github.usefulness:screenshot-testing-plugin:1.3.0"
         if (project.hasProperty("useMavenLocal")) {
             classpath "com.project.starter.local:easylauncher:+"
         } else {
