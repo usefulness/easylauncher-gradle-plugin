@@ -25,7 +25,7 @@ jobs:
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v5
 
       - run: ./gradlew assemble
 

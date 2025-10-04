@@ -31,7 +31,7 @@ jobs:
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v5
 
       - run: ./gradlew projectCodestyle
 
@@ -96,7 +96,7 @@ jobs:
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v5
 
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
@@ -106,7 +106,7 @@ jobs:
         with:
           version-to-resolve: ${{ matrix.agp }}
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v5
         with:
           gradle-version: ${{ matrix.gradle }}
 
@@ -140,7 +140,7 @@ jobs:
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v5
         with:
           gradle-version: current
 
@@ -169,7 +169,7 @@ jobs:
           printf "org.gradle.jvmargs=-Xmx3G -XX:+UseParallelGC\n" >> ~/.gradle/gradle.properties
         shell: bash
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v5
 
       - name: Enable KVM group perms
         run: |
