@@ -41,7 +41,7 @@ jobs:
 
       - name: Upload test results
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results
           path: "${{ github.workspace }}/**/build/reports/tests"
@@ -190,20 +190,20 @@ jobs:
 
       - name: Upload failed screenshots
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: failedScreenshots
           path: "**/reports/failedScreenshots"
 
       - name: Upload failed screenshots
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: tests
           path: "**/reports/androidTests"
 
       - name: Upload screenshot tests result
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: ${{ always() }}
         with:
           name: screenshots
