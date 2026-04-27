@@ -4,7 +4,7 @@ apply plugin: 'com.starter.easylauncher'
 android {
     namespace "com.example.webp"
     defaultConfig {
-        minSdkVersion 23
+        minSdk 23
     }
     buildTypes {
         named("release") {

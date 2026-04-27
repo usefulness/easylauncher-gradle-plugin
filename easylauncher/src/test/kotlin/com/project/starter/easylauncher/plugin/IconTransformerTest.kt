@@ -34,7 +34,7 @@ internal class IconTransformerTest {
         val expected = tempDir.resolve("drawable-anydpi-v26/output.xml")
         sourceIcon.transform(
             outputFile = output,
-            minSdkVersion = 21,
+            minSdkVersion = 23,
             filters = listOf(
                 ColorRibbonFilter(label = "test1", ribbonColor = "#0000ff"),
                 ColorRibbonFilter(label = "test2", ribbonColor = "#ff00000", gravity = ColorRibbonFilter.Gravity.BOTTOM),

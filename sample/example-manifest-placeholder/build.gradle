@@ -4,7 +4,7 @@ apply plugin: 'com.starter.easylauncher'
 android {
     namespace "com.example.manifestplaceholder"
     defaultConfig {
-        minSdkVersion 25
+        minSdk 25
 
         manifestPlaceholders += [
                 appIcon     : "@mipmap/ic_launcher",

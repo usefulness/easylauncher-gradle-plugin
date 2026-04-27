@@ -5,9 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.scripted"
+    buildTypes {
+        named("release") {
+            signingConfig = signingConfigs.findByName("debug")
+        }
+    }
 }
-
-val implementation by configurations
 
 dependencies {
     implementation(project(":adaptive-support"))
