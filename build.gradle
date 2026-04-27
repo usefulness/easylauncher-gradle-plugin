@@ -9,7 +9,7 @@ plugins {
 }
 
 commonConfig {
-    javaVersion JavaVersion.VERSION_11
+    javaVersion JavaVersion.VERSION_17
 }
 
 allprojects {

@@ -63,16 +63,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        javaVersion: [ 17, 24 ]
+        javaVersion: [ 21, 25 ]
         gradle: [ release-candidate ]
         agp: [ alpha, stable ]
         include:
           - javaVersion: 17
-            gradle: "8.14.3"
-            agp: 8.13.0
-          - javaVersion: 17
-            gradle: current
-            agp: 8.13.0
+            gradle: "9.0.0"
+            agp: 8.13.2
           - javaVersion: 21
             gradle: current
             agp: stable
@@ -88,7 +85,7 @@ jobs:
           distribution: 'temurin'
           java-version: |
             ${{ matrix.javaVersion }}
-            24
+            25
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
@@ -119,7 +116,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        javaVersion: [ 17, 24 ]
+        javaVersion: [ 17, 25 ]
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
@@ -132,7 +129,7 @@ jobs:
           distribution: 'temurin'
           java-version: |
             ${{ matrix.javaVersion }}
-            24
+            25
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |

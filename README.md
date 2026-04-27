@@ -226,7 +226,7 @@ Minimal requirements for the plugin are:
 - Gradle: **9.0.0**
 - Android Gradle Plugin: **8.13.0**
 - Java Version: **17**
-- minSdkVersion: **26**
+- minSdk: **26**
 
 _Note: theoretically there should be no lower boundary - it just isn't tested_
 

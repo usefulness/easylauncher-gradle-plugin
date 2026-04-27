@@ -4,7 +4,7 @@ apply plugin: 'com.starter.easylauncher'
 android {
     namespace "com.example.resourcesorder"
     defaultConfig {
-        minSdkVersion 28
+        minSdk 28
     }
     buildTypes {
         named("release") {
