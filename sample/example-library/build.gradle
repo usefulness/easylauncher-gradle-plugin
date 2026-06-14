@@ -3,7 +3,7 @@ import com.android.build.api.variant.HasUnitTest
 
 apply plugin: 'com.starter.library.android'
 apply plugin: 'com.starter.easylauncher'
-pluginManager.apply("io.github.usefulness.screenshot-testing-plugin")
+pluginManager.apply("io.github.takahirom.roborazzi")
 
 android {
     namespace "com.example.simple"
