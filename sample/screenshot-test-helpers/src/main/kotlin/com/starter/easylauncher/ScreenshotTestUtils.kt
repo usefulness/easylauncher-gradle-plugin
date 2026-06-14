@@ -6,11 +6,23 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
+import com.dropbox.differ.SimpleImageComparator
+import com.github.takahirom.roborazzi.RoborazziOptions
 import com.github.takahirom.roborazzi.captureRoboImage
 import kotlin.reflect.KClass
 import com.example.custom.adaptive.R as AdaptiveR
 
 private const val SCREENSHOT_WIDTH_DP = 300
+
+// Robolectric's native rendering produces tiny (delta <= ~3/255) anti-aliasing differences across
+// host OSes, so goldens recorded on one OS would fail verification on another (e.g. macOS vs CI Linux).
+// A per-pixel colour tolerance absorbs that noise while still catching any real change to the icon -
+// applying/removing a ribbon swaps colours far beyond this distance, regardless of how small the icon is.
+private val roborazziOptions = RoborazziOptions(
+    compareOptions = RoborazziOptions.CompareOptions(
+        imageComparator = SimpleImageComparator(maxDistance = 0.05f),
+    ),
+)
 
 inline fun <reified T : Activity> recordScreenshot(flavor: String, @DrawableRes iconName: Int = AdaptiveR.mipmap.ic_launcher) =
     recordScreenshot(T::class, flavor, iconName)
@@ -31,7 +43,7 @@ fun recordScreenshot(activityClass: KClass<out Activity>, flavor: String, @Drawa
             )
             root.layout(0, 0, root.measuredWidth, root.measuredHeight)
 
-            root.captureRoboImage(filePath = "screenshots/${flavor.toFileName()}.png")
+            root.captureRoboImage(filePath = "screenshots/${flavor.toFileName()}.png", roborazziOptions = roborazziOptions)
         }
     }
 }
