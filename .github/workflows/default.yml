@@ -146,9 +146,6 @@ jobs:
 
   icons-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        apiVersion: [ 28 ]
 
     steps:
       - uses: actions/checkout@v6
@@ -168,40 +165,20 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
 
-      - name: Enable KVM group perms
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
-      - name: run tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.apiVersion }}
-          profile: pixel_xl
-          target: google_apis
-          arch: x86
-          disable-spellchecker: true
-          working-directory: ./sample
-          script: ./icon_check.sh
+      - name: run screenshot tests
+        working-directory: ./sample
+        run: ./icon_check.sh
 
       - name: Upload failed screenshots
         if: ${{ failure() }}
         uses: actions/upload-artifact@v7
         with:
           name: failedScreenshots
-          path: "**/reports/failedScreenshots"
+          path: "sample/**/build/outputs/roborazzi/**"
 
-      - name: Upload failed screenshots
+      - name: Upload test reports
         if: ${{ failure() }}
         uses: actions/upload-artifact@v7
         with:
           name: tests
-          path: "**/reports/androidTests"
-
-      - name: Upload screenshot tests result
-        uses: actions/upload-artifact@v7
-        if: ${{ always() }}
-        with:
-          name: screenshots
-          path: "**/reports/screenshots**AndroidTest*/"
+          path: "sample/**/build/reports/tests/**"

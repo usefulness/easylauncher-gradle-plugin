@@ -6,37 +6,35 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import io.github.usefulness.testing.screenshot.Screenshot
-import io.github.usefulness.testing.screenshot.TestNameDetector
-import io.github.usefulness.testing.screenshot.ViewHelpers
+import com.github.takahirom.roborazzi.captureRoboImage
 import kotlin.reflect.KClass
 import com.example.custom.adaptive.R as AdaptiveR
 
-private const val SCREENSHOT_WIDTH = 300
+private const val SCREENSHOT_WIDTH_DP = 300
 
 inline fun <reified T : Activity> recordScreenshot(flavor: String, @DrawableRes iconName: Int = AdaptiveR.mipmap.ic_launcher) =
     recordScreenshot(T::class, flavor, iconName)
 
 fun recordScreenshot(activityClass: KClass<out Activity>, flavor: String, @DrawableRes iconName: Int) {
-    lateinit var root: View
     val startIntent = Intent(ApplicationProvider.getApplicationContext(), activityClass.java)
         .putExtra("iconName", iconName)
-    ActivityScenario.launch<Activity>(startIntent).onActivity { activity ->
-        root = activity.findViewById(android.R.id.content)
+
+    ActivityScenario.launch<Activity>(startIntent).use { scenario ->
+        scenario.onActivity { activity ->
+            val root = activity.findViewById<View>(android.R.id.content)
+
+            // Capture at a fixed width with wrap-content height, independent of the device window size.
+            val widthPx = (SCREENSHOT_WIDTH_DP * activity.resources.displayMetrics.density).toInt()
+            root.measure(
+                View.MeasureSpec.makeMeasureSpec(widthPx, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+            )
+            root.layout(0, 0, root.measuredWidth, root.measuredHeight)
+
+            root.captureRoboImage(filePath = "screenshots/${flavor.toFileName()}.png")
+        }
     }
-
-    ViewHelpers.setupView(root).setExactWidthDp(SCREENSHOT_WIDTH).layout()
-
-    root.record(flavor)
 }
 
-private fun View.record(flavor: String) {
-    val methodInfo = TestNameDetector.getTestMethodInfo().let(::checkNotNull)
-    val testClassText = methodInfo.className.substringAfterLast('.').removeSuffix("Test")
-
-    Screenshot
-        .snap(this)
-        .setGroup(flavor)
-        .setName("${testClassText}_${methodInfo.methodName}($flavor)")
-        .record()
-}
+// Golden file names must be filesystem-friendly; the flavor label is unique per golden within a module.
+private fun String.toFileName() = replace(Regex("[^A-Za-z0-9]+"), "_").trim('_')
