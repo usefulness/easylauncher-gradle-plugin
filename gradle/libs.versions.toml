@@ -6,7 +6,7 @@ google-agp = "9.2.1"
 mavencentral-junit = "6.1.0"
 mavencentral-assertj = "3.27.7"
 mavencentral-apachecommons = "3.20.0"
-mavencentral-usefulnesswebp = "0.10.2"
+mavencentral-usefulnesswebp = "0.11.0"
 maven-binarycompatiblity = "0.18.1"
 maven-dokka = "2.2.0"
 
