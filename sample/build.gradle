@@ -16,7 +16,7 @@ buildscript {
     }
     dependencies {
         classpath "com.project.starter:android:0.96.1"
-        classpath "io.github.takahirom.roborazzi:roborazzi-gradle-plugin:1.64.0"
+        classpath "io.github.takahirom.roborazzi:roborazzi-gradle-plugin:1.67.0"
         if (project.hasProperty("useMavenLocal")) {
             classpath "com.project.starter.local:easylauncher:+"
         } else {
