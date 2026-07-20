@@ -11,7 +11,7 @@ android {
 
 dependencies {
     implementation(project(":adaptive-support"))
-    api("io.github.takahirom.roborazzi:roborazzi:1.69.0")
+    api("io.github.takahirom.roborazzi:roborazzi:1.70.0")
     api("org.robolectric:robolectric:4.16.1")
     api(platform("org.junit:junit-bom:6.1.2"))
     api("org.junit.vintage:junit-vintage-engine:6.1.2")
