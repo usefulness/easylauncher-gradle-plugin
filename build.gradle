@@ -17,7 +17,7 @@ allprojects {
         def kotlinVersion = KotlinPluginWrapperKt.getKotlinPluginVersion(project)
         def agp = libs.agp.gradle.api.get().module
         def agpVersion = libs.versions.google.agp.get()
-        configurations.matching { it.name != "detekt" }.configureEach {
+        configurations.matching { it.name != "ktlint" }.configureEach {
             resolutionStrategy.eachDependency {
                 if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith("kotlin")) {
                     useVersion kotlinVersion
