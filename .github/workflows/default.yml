@@ -83,9 +83,12 @@ jobs:
       - uses: actions/setup-java@v6
         with:
           distribution: 'temurin'
-          java-version: |
-            ${{ matrix.javaVersion }}
-            25
+          java-version: ${{ matrix.javaVersion }}
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version-file: .java-version
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |
@@ -127,9 +130,12 @@ jobs:
       - uses: actions/setup-java@v6
         with:
           distribution: 'temurin'
-          java-version: |
-            ${{ matrix.javaVersion }}
-            25
+          java-version: ${{ matrix.javaVersion }}
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version-file: .java-version
 
       - name: Write Gradle build properties to `~/.gradle/gradle.properties`
         run: |

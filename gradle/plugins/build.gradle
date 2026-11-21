@@ -9,7 +9,7 @@ plugins {
 def targetJavaVersion = JavaVersion.VERSION_17
 
 kotlin {
-    jvmToolchain(25)
+    jvmToolchain(libs.versions.java.compilation.get().toInteger())
     compilerOptions.jvmTarget = JvmTarget.fromTarget(targetJavaVersion.toString())
 }
 
