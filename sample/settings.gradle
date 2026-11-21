@@ -1,3 +1,13 @@
+plugins {
+    id("com.starter.config") version "0.101.0"
+}
+
+commonConfig {
+    androidPlugin {
+        minSdkVersion 23
+    }
+}
+
 include ':example-activity-alias'
 include ':example-custom'
 include ':example-drawables'

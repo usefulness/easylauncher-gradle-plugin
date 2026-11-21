@@ -112,6 +112,8 @@ jobs:
 
       - run: gradle assemble lint -PuseMavenLocal -PagpVersion=${{ steps.agp-version-finder.outputs.resolved-version }}
         working-directory: sample
+        env:
+          JAVA_HOME: ${{ env[format('JAVA_HOME_{0}_X64', matrix.javaVersion)] }}
 
   build-sample-apps-with-configuration-cache:
     runs-on: ${{ matrix.os }}
