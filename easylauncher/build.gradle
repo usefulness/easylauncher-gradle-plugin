@@ -41,7 +41,7 @@ tasks.withType(PluginUnderTestMetadata).configureEach {
 }
 
 kotlin {
-    jvmToolchain(25)
+    jvmToolchain(libs.versions.java.compilation.get().toInteger())
     compilerOptions {
         apiVersion = KotlinVersion.KOTLIN_2_0
         languageVersion = KotlinVersion.KOTLIN_2_0
