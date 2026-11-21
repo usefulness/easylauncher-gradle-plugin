@@ -66,3 +66,10 @@ internal fun File.tryParseXmlDrawable(): IconFile.XmlDrawable? {
 }
 
 internal fun GPathResult.property(key: String) = getProperty(key)?.toString()?.takeIf { it.isNotBlank() }
+
+internal const val MONOCHROME_SUFFIX = "_easylauncher_monochrome"
+
+internal fun String.replaceMonochromeDrawable(from: String, to: String): String =
+    replace(Regex("""(<monochrome\b[^>]*android:drawable\s*=\s*")${Regex.escape(from)}(")""")) {
+        "${it.groupValues[1]}$to${it.groupValues[2]}"
+    }

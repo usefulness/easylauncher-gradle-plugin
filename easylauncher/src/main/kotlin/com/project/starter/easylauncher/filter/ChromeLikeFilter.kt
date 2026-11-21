@@ -51,8 +51,9 @@ class ChromeLikeFilter(
         val textBounds = graphics.font.getStringBounds(label, frc)
 
         // draw the ribbon
-        graphics.color = _ribbonColor
-        if (modifier != EasyLauncherFilter.Modifier.Adaptive) {
+        val monochrome = modifier == EasyLauncherFilter.Modifier.Monochrome
+        graphics.color = if (monochrome) Color.BLACK else _ribbonColor
+        if (modifier != EasyLauncherFilter.Modifier.Adaptive && !monochrome) {
             graphics.composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1f)
         }
         when (_gravity) {
@@ -74,7 +75,12 @@ class ChromeLikeFilter(
         // draw the label
         graphics.setPaintMode()
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-        graphics.color = _labelColor
+        if (monochrome) {
+            graphics.composite = AlphaComposite.DstOut
+            graphics.color = Color.BLACK
+        } else {
+            graphics.color = _labelColor
+        }
         val fm = graphics.fontMetrics
         when (_gravity) {
             Gravity.TOP ->

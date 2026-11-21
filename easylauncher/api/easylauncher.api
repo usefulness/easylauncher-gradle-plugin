@@ -67,6 +67,7 @@ public abstract interface class com/project/starter/easylauncher/filter/EasyLaun
 
 public final class com/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier : java/lang/Enum {
 	public static final field Adaptive Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;
+	public static final field Monochrome Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;
 	public static final field Round Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;

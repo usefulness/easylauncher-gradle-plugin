@@ -8,6 +8,7 @@ interface EasyLauncherFilter : Serializable {
 
     enum class Modifier {
         Adaptive,
+        Monochrome,
         Round,
     }
 }

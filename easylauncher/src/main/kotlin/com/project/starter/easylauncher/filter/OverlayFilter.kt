@@ -18,7 +18,10 @@ class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
             val fgWidth = fgImage.getWidth(null).toFloat()
             val fgHeight = fgImage.getHeight(null).toFloat()
 
-            val scale = if (modifier == EasyLauncherFilter.Modifier.Adaptive) ADAPTIVE_SCALE else 1f
+            val scale = when (modifier) {
+                EasyLauncherFilter.Modifier.Adaptive, EasyLauncherFilter.Modifier.Monochrome -> ADAPTIVE_SCALE
+                EasyLauncherFilter.Modifier.Round, null -> 1f
+            }
             val imageScale = scale * (canvas.width / fgWidth).coerceAtMost(canvas.height / fgHeight)
             val scaledWidth = (fgWidth * imageScale).roundToInt()
             val scaledHeight = (fgHeight * imageScale).roundToInt()
