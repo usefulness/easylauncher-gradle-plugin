@@ -149,6 +149,7 @@ jobs:
 
       - name: Pre-compile plugin
         run: ./gradlew publishToMavenLocal -Pgroup=com.project.starter.local
+        shell: bash
 
       - uses: gradle/actions/setup-gradle@v6
         with:
