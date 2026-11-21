@@ -39,14 +39,6 @@ buildscript {
     }
 }
 
-apply plugin: "com.starter.config"
-
-commonConfig {
-    androidPlugin {
-        minSdkVersion 23
-    }
-}
-
 subprojects {
     pluginManager.withPlugin("com.android.application") {
         pluginManager.apply("io.github.takahirom.roborazzi")

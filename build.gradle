@@ -1,31 +1,4 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
-
 plugins {
-    alias(libs.plugins.starter.config)
-    alias(libs.plugins.starter.versioning)
-    alias(libs.plugins.osacky.doctor)
     alias(libs.plugins.starter.library.kotlin) apply false
     alias(libs.plugins.kotlinx.binarycompatibility) apply(false)
-}
-
-commonConfig {
-    javaVersion JavaVersion.VERSION_17
-}
-
-allprojects {
-    pluginManager.withPlugin("kotlin") { plugin ->
-        def kotlinVersion = KotlinPluginWrapperKt.getKotlinPluginVersion(project)
-        def agp = libs.agp.gradle.api.get().module
-        def agpVersion = libs.versions.google.agp.get()
-        configurations.matching { it.name != "ktlint" }.configureEach {
-            resolutionStrategy.eachDependency {
-                if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith("kotlin")) {
-                    useVersion kotlinVersion
-                }
-                if (requested.group == agp.group && requested.module.name == agp.name) {
-                    useVersion agpVersion
-                }
-            }
-        }
-    }
 }
