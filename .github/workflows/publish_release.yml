@@ -9,6 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: github.repository == 'usefulness/easylauncher-gradle-plugin'
+    env:
+      ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+      ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+      ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
     steps:
       - uses: actions/checkout@v7
         with:
