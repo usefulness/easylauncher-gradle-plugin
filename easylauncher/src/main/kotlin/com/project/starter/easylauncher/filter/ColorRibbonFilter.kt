@@ -8,20 +8,40 @@ import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.font.FontRenderContext
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import java.io.File
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 @Suppress("ktlint:standard:backing-property-naming")
 class ColorRibbonFilter(
-    private val label: String,
-    private val ribbonColor: String? = null,
-    private val labelColor: String? = null,
-    private val gravity: Gravity? = null,
-    private val textSizeRatio: Float? = null,
-    private val fontName: String? = null,
-    private val fontResource: File? = null,
-    private val drawingOptions: Set<DrawingOption> = emptySet(),
+    @get:Input
+    val label: String,
+    @get:Input
+    @get:Optional
+    val ribbonColor: String? = null,
+    @get:Input
+    @get:Optional
+    val labelColor: String? = null,
+    @get:Input
+    @get:Optional
+    val gravity: Gravity? = null,
+    @get:Input
+    @get:Optional
+    val textSizeRatio: Float? = null,
+    @get:Input
+    @get:Optional
+    val fontName: String? = null,
+    @get:InputFiles
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.NONE)
+    val fontResource: File? = null,
+    @get:Input
+    val drawingOptions: Set<DrawingOption> = emptySet(),
 ) : EasyLauncherFilter {
 
     enum class Gravity {

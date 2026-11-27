@@ -1,5 +1,8 @@
 package com.project.starter.easylauncher.filter
 
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.slf4j.LoggerFactory
 import java.awt.Image
 import java.io.File
@@ -7,7 +10,11 @@ import java.io.IOException
 import javax.imageio.ImageIO
 import kotlin.math.roundToInt
 
-class OverlayFilter(private val fgFile: File) : EasyLauncherFilter {
+class OverlayFilter(
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    val fgFile: File,
+) : EasyLauncherFilter {
 
     private val logger
         get() = LoggerFactory.getLogger(this::class.java)

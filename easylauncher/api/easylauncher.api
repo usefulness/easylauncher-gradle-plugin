@@ -20,6 +20,15 @@ public final class com/project/starter/easylauncher/filter/ChromeLikeFilter : co
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Float;Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;Ljava/lang/Float;Ljava/lang/String;Ljava/io/File;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Float;Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;Ljava/lang/Float;Ljava/lang/String;Ljava/io/File;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun apply (Lcom/project/starter/easylauncher/filter/Canvas;Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;)V
+	public final fun getFontName ()Ljava/lang/String;
+	public final fun getFontResource ()Ljava/io/File;
+	public final fun getGravity ()Lcom/project/starter/easylauncher/filter/ChromeLikeFilter$Gravity;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getLabelColor ()Ljava/lang/String;
+	public final fun getLabelPadding ()Ljava/lang/Integer;
+	public final fun getOverlayHeight ()Ljava/lang/Float;
+	public final fun getRibbonColor ()Ljava/lang/String;
+	public final fun getTextSizeRatio ()Ljava/lang/Float;
 }
 
 public final class com/project/starter/easylauncher/filter/ChromeLikeFilter$Companion {
@@ -38,6 +47,14 @@ public final class com/project/starter/easylauncher/filter/ColorRibbonFilter : c
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;Ljava/lang/Float;Ljava/lang/String;Ljava/io/File;Ljava/util/Set;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;Ljava/lang/Float;Ljava/lang/String;Ljava/io/File;Ljava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun apply (Lcom/project/starter/easylauncher/filter/Canvas;Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;)V
+	public final fun getDrawingOptions ()Ljava/util/Set;
+	public final fun getFontName ()Ljava/lang/String;
+	public final fun getFontResource ()Ljava/io/File;
+	public final fun getGravity ()Lcom/project/starter/easylauncher/filter/ColorRibbonFilter$Gravity;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getLabelColor ()Ljava/lang/String;
+	public final fun getRibbonColor ()Ljava/lang/String;
+	public final fun getTextSizeRatio ()Ljava/lang/Float;
 }
 
 public final class com/project/starter/easylauncher/filter/ColorRibbonFilter$Companion {
@@ -77,6 +94,7 @@ public final class com/project/starter/easylauncher/filter/OverlayFilter : com/p
 	public static final field Companion Lcom/project/starter/easylauncher/filter/OverlayFilter$Companion;
 	public fun <init> (Ljava/io/File;)V
 	public fun apply (Lcom/project/starter/easylauncher/filter/Canvas;Lcom/project/starter/easylauncher/filter/EasyLauncherFilter$Modifier;)V
+	public final fun getFgFile ()Ljava/io/File;
 }
 
 public final class com/project/starter/easylauncher/filter/OverlayFilter$Companion {
@@ -170,7 +188,7 @@ public abstract class com/project/starter/easylauncher/plugin/EasyLauncherTask :
 	public abstract fun getManifestPlaceholders ()Lorg/gradle/api/provider/MapProperty;
 	public abstract fun getMinSdkVersion ()Lorg/gradle/api/provider/Property;
 	public abstract fun getOutputDir ()Lorg/gradle/api/file/DirectoryProperty;
-	public abstract fun getResourceDirectories ()Lorg/gradle/api/provider/SetProperty;
+	public abstract fun getResourceDirectories ()Lorg/gradle/api/provider/ListProperty;
 	public final fun run ()V
 }
 
@@ -180,5 +198,10 @@ public final class com/project/starter/easylauncher/plugin/models/IconType : jav
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/project/starter/easylauncher/plugin/models/IconType;
 	public static fun values ()[Lcom/project/starter/easylauncher/plugin/models/IconType;
+}
+
+public final class com/project/starter/easylauncher/plugin/models/SourceRoot {
+	public fun <init> (Ljava/io/File;)V
+	public final fun getLocation ()Ljava/io/File;
 }
 

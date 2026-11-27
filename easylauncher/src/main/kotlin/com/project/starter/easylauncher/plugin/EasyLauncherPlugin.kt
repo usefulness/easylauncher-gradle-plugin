@@ -2,6 +2,7 @@ package com.project.starter.easylauncher.plugin
 
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.Variant
+import com.project.starter.easylauncher.plugin.models.SourceRoot
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
@@ -55,13 +56,15 @@ class EasyLauncherPlugin : Plugin<Project> {
                         (global + variantSpecific).toSet()
                     }
 
-                    val manifests = variant.sources.manifests.all.map { manifests -> manifests.map { it.asFile } }
+                    val manifests = variant.sources.manifests.all.map { manifests -> manifests.map { SourceRoot(it.asFile) } }
 
                     val resSourceDirectories = variant.sources.res?.static
                         ?.map { outer ->
                             outer.flatten()
                                 .map { it.asFile }
                                 .sortedWith(resDirectoriesComparator(variant, projectPath = layout.projectDirectory))
+                                .distinct()
+                                .map(::SourceRoot)
                         }
                         ?: project.provider { emptyList() }
 
@@ -73,6 +76,7 @@ class EasyLauncherPlugin : Plugin<Project> {
                         it.filters.set(filters)
                         it.customIconNames.set(customIconNames)
                         it.minSdkVersion.set(variant.minSdk.apiLevel)
+                        it.dependsOn(files(variant.sources.manifests.all, variant.sources.res?.static))
                     }
 
                     variant.sources.res?.addGeneratedSourceDirectory(task, EasyLauncherTask::outputDir)

@@ -3,6 +3,7 @@ package com.project.starter.easylauncher.plugin
 import com.project.starter.easylauncher.filter.EasyLauncherFilter
 import com.project.starter.easylauncher.plugin.models.IconFile
 import com.project.starter.easylauncher.plugin.models.IconType
+import com.project.starter.easylauncher.plugin.models.SourceRoot
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.model.ObjectFactory
@@ -12,6 +13,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import java.io.File
@@ -21,16 +23,16 @@ import kotlin.system.measureTimeMillis
 @CacheableTask
 abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectFactory) : DefaultTask() {
 
-    @get:Input
-    abstract val manifestFiles: ListProperty<File>
+    @get:Nested
+    abstract val manifestFiles: ListProperty<SourceRoot>
 
     @get:Input
     abstract val manifestPlaceholders: MapProperty<String, String>
 
-    @get:Input
-    abstract val resourceDirectories: SetProperty<File>
+    @get:Nested
+    abstract val resourceDirectories: ListProperty<SourceRoot>
 
-    @get:Input
+    @get:Nested
     abstract val filters: ListProperty<EasyLauncherFilter>
 
     @get:Input
@@ -45,6 +47,10 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
     @TaskAction
     fun run() {
         val taskExecutionTime = measureTimeMillis {
+            outputDir.asFile.get().apply {
+                deleteRecursively()
+                mkdirs()
+            }
             val customIcons = customIconNames.get().takeIf { it.isNotEmpty() }?.associateWith { IconType.Default }
             val icons = getIcons(customIcons ?: getLauncherIconNames())
 
@@ -73,6 +79,7 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
     }
 
     private fun getLauncherIconNames() = manifestFiles.get()
+        .map { it.location }
         .filter { it.exists() }
         .flatMap { it.getLauncherIcons(manifestPlaceholders.get()).entries }
         .associate { (key, value) -> key to value }
@@ -81,6 +88,7 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
         log.info { "will process icons: ${iconNames.keys.joinToString()}" }
 
         return resourceDirectories.get()
+            .map { it.location }
             .filter { it.exists() }
             .flatMap { resDir ->
                 iconNames.flatMap { (iconName, iconType) ->
@@ -96,7 +104,7 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
     }
 
     private fun IconFile.Adaptive.processAdaptiveIcon() {
-        resourceDirectories.get().forEach { resDir ->
+        resourceDirectories.get().map { it.location }.forEach { resDir ->
             val foregroundFiles = objects.getIconFiles(parent = resDir, iconName = foreground)
             val monochromeFiles = monochrome?.let { objects.getIconFiles(parent = resDir, iconName = it) } ?: emptyList()
             val iconFiles = (foregroundFiles + monochromeFiles).toSet()
