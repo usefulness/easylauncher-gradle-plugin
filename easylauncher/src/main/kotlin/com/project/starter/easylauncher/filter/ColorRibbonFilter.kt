@@ -49,7 +49,10 @@ class ColorRibbonFilter(
     }
 
     private fun apply(canvas: Canvas, graphics: Graphics2D, modifier: Modifier?) {
-        val applyLargePadding = modifier == Modifier.Adaptive || drawingOptions.contains(DrawingOption.ADD_EXTRA_PADDING)
+        val applyLargePadding = when (modifier) {
+            Modifier.Adaptive, Modifier.Monochrome -> true
+            Modifier.Round, null -> drawingOptions.contains(DrawingOption.ADD_EXTRA_PADDING)
+        }
 
         // rotate canvas if needed
         if (_gravity == Gravity.TOPLEFT) {
@@ -75,10 +78,10 @@ class ColorRibbonFilter(
         }
 
         // draw the ribbon
-        graphics.color = _ribbonColor
+        graphics.color = if (modifier == Modifier.Monochrome) Color.BLACK else _ribbonColor
 
         val ignoresTransparentPixels = when (modifier) {
-            Modifier.Adaptive -> false
+            Modifier.Adaptive, Modifier.Monochrome -> false
             Modifier.Round -> true
             null -> drawingOptions.contains(DrawingOption.IGNORE_TRANSPARENT_PIXELS)
         }
@@ -93,7 +96,12 @@ class ColorRibbonFilter(
         }
         // draw the label
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-        graphics.color = _labelColor
+        if (modifier == Modifier.Monochrome) {
+            graphics.composite = AlphaComposite.DstOut
+            graphics.color = Color.BLACK
+        } else {
+            graphics.color = _labelColor
+        }
         val fm = graphics.fontMetrics
         when (_gravity) {
             Gravity.TOP,

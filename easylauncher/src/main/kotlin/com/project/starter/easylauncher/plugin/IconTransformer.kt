@@ -18,12 +18,21 @@ internal fun File.transformImage(outputFile: File, filters: List<EasyLauncherFil
     ImageIO.write(image, extension, outputFile)
 }
 
-internal fun IconFile.XmlDrawable.Vector.transform(outputFile: File, minSdkVersion: Int, filters: List<EasyLauncherFilter>) {
+internal fun IconFile.XmlDrawable.Vector.transform(
+    outputFile: File,
+    minSdkVersion: Int,
+    filters: List<EasyLauncherFilter>,
+    modifier: EasyLauncherFilter.Modifier = EasyLauncherFilter.Modifier.Adaptive,
+) {
     val drawableRoot = outputFile.parentFile // eg. debug/drawable/
 
-    val layers = filters.mapIndexed { index, filter ->
-        val filterId = "${filter::class.java.simpleName.lowercase()}_$index"
-        val resourceName = "${filterId}_${outputFile.nameWithoutExtension}"
+    val overlayGroups = if (modifier == EasyLauncherFilter.Modifier.Monochrome) {
+        listOf("overlay" to filters)
+    } else {
+        filters.mapIndexed { index, filter -> "${filter::class.java.simpleName.lowercase()}_$index" to listOf(filter) }
+    }
+    val layers = overlayGroups.map { (groupId, groupFilters) ->
+        val resourceName = "${groupId}_${outputFile.nameWithoutExtension}"
 
         densities.forEach { (qualifier, multiplier) ->
             val overlay = BufferedImage(
@@ -31,11 +40,12 @@ internal fun IconFile.XmlDrawable.Vector.transform(outputFile: File, minSdkVersi
                 (height * multiplier).roundToInt(),
                 BufferedImage.TYPE_INT_ARGB,
             )
-            val canvas = Canvas(overlay, adaptive = true)
-            filter.apply(
-                canvas = canvas,
-                modifier = EasyLauncherFilter.Modifier.Adaptive,
-            )
+            groupFilters.forEach { filter ->
+                filter.apply(
+                    canvas = Canvas(overlay, adaptive = true),
+                    modifier = modifier,
+                )
+            }
 
             val qualifiedRoot = drawableRoot.parentFile.resolve("${drawableRoot.normalizedName}-$qualifier")
             val qualifiedOverlayFile = qualifiedRoot.resolve("$resourceName.png").also { it.mkdirs() }

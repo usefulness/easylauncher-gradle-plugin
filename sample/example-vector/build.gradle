@@ -58,6 +58,9 @@ android {
         register("customDrawable") {
             dimension "reportedBugs"
         }
+        register("themed") {
+            dimension "reportedBugs"
+        }
     }
 }
 
@@ -117,6 +120,10 @@ easylauncher {
         }
         register("usingResValues") {
             filters chromeLike(label: "res-values", ribbonColor: "#6600CC", labelColor: "#FFFFFF", position: "bottom")
+        }
+        register("themed") {
+            filters customRibbon(label: "themed", ribbonColor: "#6600CC"),
+                    chromeLike(label: "Beta")
         }
         register("customDrawable") {
             iconNames = ["@mipmap/ic_launcher"]

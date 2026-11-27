@@ -10,7 +10,9 @@ import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.awt.image.BufferedImage
 import java.io.File
+import javax.imageio.ImageIO
 
 internal class EasyLauncherPluginTest : WithGradleProjectTest() {
 
@@ -275,6 +277,81 @@ internal class EasyLauncherPluginTest : WithGradleProjectTest() {
 
         val result = runTask("assembleDebug", "-Dorg.gradle.unsafe.isolated-projects=true")
         assertThat(result.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.SUCCESS)
+    }
+
+    @Test
+    fun `draws legible label on raster monochrome layer`() {
+        moduleRoot.resolve("src/main/res/mipmap-v26/ic_launcher.xml") {
+            writeText(
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+                    <background android:drawable="@android:drawable/arrow_down_float" />
+                    <foreground android:drawable="@drawable/ic_foreground" />
+                    <monochrome android:drawable="@mipmap/ic_monochrome" />
+                </adaptive-icon>
+                """.trimIndent(),
+            )
+        }
+        moduleRoot.resolve("src/main/res/mipmap-xxxhdpi/ic_monochrome.png") {
+            ImageIO.write(BufferedImage(432, 432, BufferedImage.TYPE_INT_ARGB), "png", this)
+        }
+        moduleRoot.resolve("build.gradle").buildScript(
+            easylauncherBlock = {
+                """
+                buildTypes {
+                    debug {
+                        filters(chromeLike(label: "debug", textSizeRatio: 0.2f))
+                    }
+                }
+                """.trimIndent()
+            },
+        )
+
+        runTask("easylauncherDebug")
+
+        val outputRoot = moduleRoot.resolve("build/generated/res/easylauncherDebug")
+        assertThat(outputRoot.resolve("mipmap-v26/ic_launcher.xml"))
+            .content()
+            .contains("""<monochrome android:drawable="@mipmap/ic_monochrome_easylauncher_monochrome" />""")
+        val monochrome = ImageIO.read(outputRoot.resolve("mipmap-xxxhdpi/ic_monochrome_easylauncher_monochrome.png"))
+        val ribbonAlphas = (300 until 432).flatMap { y -> (0 until 432).map { x -> monochrome.getRGB(x, y) ushr 24 } }
+        assertSoftly { softly ->
+            softly.assertThat(monochrome.getRGB(216, 431) ushr 24).isEqualTo(0xFF)
+            softly.assertThat(ribbonAlphas).contains(0x00)
+            softly.assertThat(monochrome.getRGB(216, 10) ushr 24).isEqualTo(0x00)
+        }
+    }
+
+    @Test
+    fun `generates separate monochrome layer when it shares a vector drawable with foreground`() {
+        moduleRoot.resolve("src/main/res/mipmap-v26/ic_launcher.xml") {
+            writeText(
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+                    <background android:drawable="@android:drawable/arrow_down_float" />
+                    <foreground android:drawable="@drawable/ic_foreground" />
+                    <monochrome android:drawable="@drawable/ic_foreground" />
+                </adaptive-icon>
+                """.trimIndent(),
+            )
+        }
+        moduleRoot.resolve("build.gradle").buildScript()
+
+        val result = runTask("assembleDebug")
+
+        assertThat(result.task(":app:easylauncherDebug")?.outcome).isEqualTo(TaskOutcome.SUCCESS)
+        val outputRoot = moduleRoot.resolve("build/generated/res/easylauncherDebug")
+        assertSoftly { softly ->
+            softly.assertThat(outputRoot.resolve("mipmap-v26/ic_launcher.xml"))
+                .content()
+                .contains("""<foreground android:drawable="@drawable/ic_foreground" />""")
+                .contains("""<monochrome android:drawable="@drawable/ic_foreground_easylauncher_monochrome" />""")
+            softly.assertThat(outputRoot.resolve("drawable-anydpi-v26/ic_foreground.xml")).exists()
+            softly.assertThat(outputRoot.resolve("drawable-anydpi-v26/ic_foreground_easylauncher_monochrome.xml")).exists()
+            softly.assertThat(outputRoot.resolve("drawable-xxxhdpi/overlay_ic_foreground_easylauncher_monochrome.png")).exists()
+        }
     }
 
     @Test

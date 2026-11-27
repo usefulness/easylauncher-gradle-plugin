@@ -97,26 +97,41 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
 
     private fun IconFile.Adaptive.processAdaptiveIcon() {
         resourceDirectories.get().forEach { resDir ->
-            val foregroundFiles = objects.getIconFiles(parent = resDir, iconName = foreground)
-            val monochromeFiles = monochrome?.let { objects.getIconFiles(parent = resDir, iconName = it) } ?: emptyList()
-            val iconFiles = (foregroundFiles + monochromeFiles).toSet()
-
-            iconFiles.forEach { iconFile ->
-                val outputFile = iconFile.getOutputFile()
-                if (iconFile.extension == "xml") {
-                    when (val drawable = iconFile.tryParseXmlDrawable()) {
-                        is IconFile.XmlDrawable.Vector -> drawable.transform(outputFile, minSdkVersion.get(), filters.get())
-                        null -> log.info { "Skipped $iconFile due to unrecognised file format" }
-                    }
-                } else {
-                    iconFile.transformImage(
-                        outputFile = outputFile,
-                        filters = filters.get(),
-                        modifier = EasyLauncherFilter.Modifier.Adaptive,
-                    )
-                }
+            objects.getIconFiles(parent = resDir, iconName = foreground).forEach { iconFile ->
+                iconFile.transformLayer(iconFile.getOutputFile(), EasyLauncherFilter.Modifier.Adaptive)
             }
         }
+        val transformedMonochrome = monochrome?.takeIf { name ->
+            resourceDirectories.get()
+                .flatMap { resDir -> objects.getIconFiles(parent = resDir, iconName = name) }
+                .map { iconFile ->
+                    iconFile.transformLayer(iconFile.getOutputFile(MONOCHROME_SUFFIX), EasyLauncherFilter.Modifier.Monochrome)
+                }
+                .any { it }
+        }
+
+        val adaptiveIconXml = file.readText()
+        val outputXml = transformedMonochrome
+            ?.let { adaptiveIconXml.replaceMonochromeDrawable(from = it, to = "$it$MONOCHROME_SUFFIX") }
+            ?: adaptiveIconXml
+        file.getOutputFile().apply { parentFile.mkdirs() }.writeText(outputXml)
+    }
+
+    private fun File.transformLayer(outputFile: File, modifier: EasyLauncherFilter.Modifier): Boolean = if (extension == "xml") {
+        when (val drawable = tryParseXmlDrawable()) {
+            is IconFile.XmlDrawable.Vector -> {
+                drawable.transform(outputFile, minSdkVersion.get(), filters.get(), modifier)
+                true
+            }
+
+            null -> {
+                log.info { "Skipped $this due to unrecognised file format" }
+                false
+            }
+        }
+    } else {
+        transformImage(outputFile = outputFile, filters = filters.get(), modifier = modifier)
+        true
     }
 
     private fun IconFile.XmlDrawable.processDrawable() {
@@ -125,5 +140,6 @@ abstract class EasyLauncherTask @Inject constructor(private val objects: ObjectF
         }
     }
 
-    private fun File.getOutputFile(): File = File(outputDir.asFile.get(), "${parentFile.name}/$name")
+    private fun File.getOutputFile(suffix: String = ""): File =
+        File(outputDir.asFile.get(), "${parentFile.name}/$nameWithoutExtension$suffix.$extension")
 }
